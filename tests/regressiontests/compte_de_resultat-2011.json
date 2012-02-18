@@ -1,0 +1,25 @@
+{
+    "total_charges": "4048.44", 
+    "charges": {
+        "exploitation": {
+            "autres services ext\u00e9rieurs": "232.00", 
+            "fournitures non stockables": "21.44", 
+            "R\u00e9mun\u00e9rations du personnel": "3795.00"
+        }, 
+        "financi\u00e8res": {}, 
+        "exceptionnelles": {}
+    }, 
+    "produits": {
+        "exploitation": {
+            "prestations de services": "40000.00", 
+            "Autres produits de gestion courante": "0.34"
+        }, 
+        "financi\u00e8res": {}, 
+        "exceptionnelles": {}
+    }, 
+    "label": "Compte de r\u00e9sultat 2011 - MyBusiness", 
+    "total_produits": "40000.34", 
+    "date_fin": "31/12/2011", 
+    "resultat": "35951.90", 
+    "date_debut": "01/03/2011"
+}

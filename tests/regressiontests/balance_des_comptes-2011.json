@@ -1,0 +1,179 @@
+{
+    "comptes": [
+        {
+            "solde_crediteur": "1500.00", 
+            "nom": "Capital et compte de l'exploitant", 
+            "total_credit": "1500.00", 
+            "solde_debiteur": "0.00", 
+            "numero": "100", 
+            "total_debit": "0.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - ventes de biens ou prestations de services", 
+            "total_credit": "24518.00", 
+            "solde_debiteur": "0.00", 
+            "numero": "4111-CL1", 
+            "total_debit": "24518.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - ventes de biens ou prestations de services", 
+            "total_credit": "1794.00", 
+            "solde_debiteur": "0.00", 
+            "numero": "4111-CL2", 
+            "total_debit": "1794.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - ventes de biens ou prestations de services", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "8372.00", 
+            "numero": "4111-CL3", 
+            "total_debit": "8372.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - Factures \u00e0 \u00e9tablir", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "13156.00", 
+            "numero": "4181", 
+            "total_debit": "13156.00"
+        }, 
+        {
+            "solde_crediteur": "3038.00", 
+            "nom": "TVA \u00e0 d\u00e9caisser", 
+            "total_credit": "4278.00", 
+            "solde_debiteur": "0.00", 
+            "numero": "44551", 
+            "total_debit": "1240.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "T.V.A. d\u00e9ductible sur autres biens et services", 
+            "total_credit": "33.66", 
+            "solde_debiteur": "0.00", 
+            "numero": "44566", 
+            "total_debit": "33.66"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "T.V.A. Collect\u00e9e", 
+            "total_credit": "4312.00", 
+            "solde_debiteur": "0.00", 
+            "numero": "44571", 
+            "total_debit": "4312.00"
+        }, 
+        {
+            "solde_crediteur": "3528.00", 
+            "nom": "Taxes sur le CA sur factures \u00e0 \u00e9tablir", 
+            "total_credit": "7840.00", 
+            "solde_debiteur": "0.00", 
+            "numero": "44587", 
+            "total_debit": "4312.00"
+        }, 
+        {
+            "solde_crediteur": "189.45", 
+            "nom": "Associ\u00e9s - Comptes courants", 
+            "total_credit": "189.45", 
+            "solde_debiteur": "0.00", 
+            "numero": "455", 
+            "total_debit": "0.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Banques", 
+            "total_credit": "5132.65", 
+            "solde_debiteur": "22679.35", 
+            "numero": "512", 
+            "total_debit": "27812.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Achats - Fournitures de bureau", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "21.44", 
+            "numero": "60225", 
+            "total_debit": "21.44"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Achats - Frais d'actes et de contentieux", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "160.00", 
+            "numero": "6227", 
+            "total_debit": "160.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Autres frais de commission sur prestations de services", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "72.00", 
+            "numero": "6278-LCL", 
+            "total_debit": "72.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - Salaires et appointements", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "3000.00", 
+            "numero": "6411", 
+            "total_debit": "3000.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations RSI", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "393.00", 
+            "numero": "6411-RSI", 
+            "total_debit": "393.00"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations URSSAF - Allocations familliales", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "161.80", 
+            "numero": "6411-URSF1", 
+            "total_debit": "161.80"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations URSSAF - CSG/RDS d\u00e9ductible", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "153.31", 
+            "numero": "6411-URSF2", 
+            "total_debit": "153.31"
+        }, 
+        {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations URSSAF - CSG/RDS non-d\u00e9ductible", 
+            "total_credit": "0.00", 
+            "solde_debiteur": "86.89", 
+            "numero": "6411-URSF3", 
+            "total_debit": "86.89"
+        }, 
+        {
+            "solde_crediteur": "40000.00", 
+            "nom": "Produits - prestations de services", 
+            "total_credit": "40000.00", 
+            "solde_debiteur": "0.00", 
+            "numero": "706", 
+            "total_debit": "0.00"
+        }, 
+        {
+            "solde_crediteur": "0.34", 
+            "nom": "Produits divers de gestion courante", 
+            "total_credit": "0.34", 
+            "solde_debiteur": "0.00", 
+            "numero": "758", 
+            "total_debit": "0.00"
+        }
+    ], 
+    "total_credits": "89598.10", 
+    "date_fin": "31/12/2011", 
+    "total_soldes_debiteurs": "48255.79", 
+    "total_soldes_crediteurs": "48255.79", 
+    "total_debits": "89598.10", 
+    "date_debut": "01/03/2011", 
+    "label": "Balance des comptes 2011 - MyBusiness"
+}

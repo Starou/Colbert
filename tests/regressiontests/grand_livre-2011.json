@@ -1,0 +1,541 @@
+{
+    "comptes": {
+        "44566": {
+            "solde_crediteur": "0.00", 
+            "nom": "T.V.A. d\u00e9ductible sur autres biens et services", 
+            "total_debit": "33.66", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "33.66", 
+            "ecritures": [
+                {
+                    "date": "18/03/2011", 
+                    "intitule": "Frais de constitution de la soci\u00e9t\u00e9 CFE Paris.", 
+                    "debit": "10.45"
+                }, 
+                {
+                    "date": "18/03/2011", 
+                    "intitule": "Frais de constitution de la soci\u00e9t\u00e9 - Annonce l\u00e9gale.", 
+                    "debit": "19.00"
+                }, 
+                {
+                    "date": "11/06/2011", 
+                    "intitule": "BHV - Fournitures des bureau (Livres comptables).", 
+                    "debit": "4.21"
+                }, 
+                {
+                    "date": "30/09/2011", 
+                    "intitule": "Solde des comptes de TVA du 01/03/2011 au 30/09/2011", 
+                    "credit": "33.66"
+                }
+            ]
+        }, 
+        "44551": {
+            "solde_crediteur": "3038.00", 
+            "nom": "TVA \u00e0 d\u00e9caisser", 
+            "total_debit": "1240.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "4278.00", 
+            "ecritures": [
+                {
+                    "date": "30/09/2011", 
+                    "intitule": "Solde des comptes de TVA du 01/03/2011 au 30/09/2011", 
+                    "credit": "1240.00"
+                }, 
+                {
+                    "date": "06/10/2011", 
+                    "intitule": "Ch\u00e8que WWWWWWW R\u00e8glement de la TVA trimestrielle", 
+                    "debit": "1240.00"
+                }, 
+                {
+                    "date": "31/12/2011", 
+                    "intitule": "Solde des comptes de TVA du 01/10/2011 au 31/12/2011", 
+                    "credit": "3038.00"
+                }
+            ]
+        }, 
+        "512": {
+            "solde_crediteur": "0.00", 
+            "nom": "Banques", 
+            "total_debit": "27812.00", 
+            "solde_debiteur": "22679.35", 
+            "total_credit": "5132.65", 
+            "ecritures": [
+                {
+                    "date": "01/04/2011", 
+                    "intitule": "R\u00e9sultat arr\u00eat\u00e9 compte", 
+                    "credit": "48.00"
+                }, 
+                {
+                    "date": "02/04/2011", 
+                    "intitule": "Capital initial D\u00e9p\u00f4t de 1500 \u20ac par Stanislas Guerra au LCL Ledru Rollin", 
+                    "debit": "1500.00"
+                }, 
+                {
+                    "date": "28/04/2011", 
+                    "intitule": "Cotisation Option PRO  LCL", 
+                    "credit": "15.00"
+                }, 
+                {
+                    "date": "02/05/2011", 
+                    "intitule": "Abonnement LCL Access", 
+                    "credit": "3.00"
+                }, 
+                {
+                    "date": "11/06/2011", 
+                    "intitule": "BHV - Fournitures des bureau (Livres comptables).", 
+                    "credit": "25.65"
+                }, 
+                {
+                    "date": "15/06/2011", 
+                    "intitule": "Remise ch\u00e8que XXXXXXX r\u00e8glement facture 2011-02", 
+                    "debit": "1794.00"
+                }, 
+                {
+                    "date": "05/07/2011", 
+                    "intitule": "Traitement mois de juin g\u00e9rant.", 
+                    "credit": "3000.00"
+                }, 
+                {
+                    "date": "08/08/2011", 
+                    "intitule": "Ch\u00e8que XXXXXXY Cotisation trimestrielle RSI/Pr\u00e9vadi\u00e8s.", 
+                    "credit": "393.00"
+                }, 
+                {
+                    "date": "02/09/2011", 
+                    "intitule": "Virement MyClient1 ZZZZZZZZZZZ Facture 2011-01", 
+                    "debit": "5980.00"
+                }, 
+                {
+                    "date": "03/09/2011", 
+                    "intitule": "Abonnement LCL Access", 
+                    "credit": "3.00"
+                }, 
+                {
+                    "date": "06/10/2011", 
+                    "intitule": "Ch\u00e8que WWWWWWW R\u00e8glement de la TVA trimestrielle", 
+                    "credit": "1240.00"
+                }, 
+                {
+                    "date": "17/11/2011", 
+                    "intitule": "Ch\u00e8que ZZZZZZZ Cotisation sociales Urssaf 4\u00e8me trimestre.", 
+                    "credit": "402.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Abonnement LCL Access", 
+                    "credit": "3.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Virement MyClient1 WWWWWWWWWW Facture 2011-04, 2011-05", 
+                    "debit": "18538.00"
+                }
+            ]
+        }, 
+        "44571": {
+            "solde_crediteur": "0.00", 
+            "nom": "T.V.A. Collect\u00e9e", 
+            "total_debit": "4312.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "4312.00", 
+            "ecritures": [
+                {
+                    "date": "15/06/2011", 
+                    "intitule": "Remise ch\u00e8que XXXXXXX r\u00e8glement facture 2011-02", 
+                    "credit": "294.00"
+                }, 
+                {
+                    "date": "02/09/2011", 
+                    "intitule": "Virement MyClient1 ZZZZZZZZZZZ Facture 2011-01", 
+                    "credit": "980.00"
+                }, 
+                {
+                    "date": "30/09/2011", 
+                    "intitule": "Solde des comptes de TVA du 01/03/2011 au 30/09/2011", 
+                    "debit": "1274.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Virement MyClient1 WWWWWWWWWW Facture 2011-04, 2011-05", 
+                    "credit": "2156.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Virement MyClient1 WWWWWWWWWW Facture 2011-04, 2011-05", 
+                    "credit": "882.00"
+                }, 
+                {
+                    "date": "31/12/2011", 
+                    "intitule": "Solde des comptes de TVA du 01/10/2011 au 31/12/2011", 
+                    "debit": "3038.00"
+                }
+            ]
+        }, 
+        "60225": {
+            "solde_crediteur": "0.00", 
+            "nom": "Achats - Fournitures de bureau", 
+            "total_debit": "21.44", 
+            "solde_debiteur": "21.44", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "11/06/2011", 
+                    "intitule": "BHV - Fournitures des bureau (Livres comptables).", 
+                    "debit": "21.44"
+                }
+            ]
+        }, 
+        "6411-URSF2": {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations URSSAF - CSG/RDS d\u00e9ductible", 
+            "total_debit": "153.31", 
+            "solde_debiteur": "153.31", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "17/11/2011", 
+                    "intitule": "Ch\u00e8que ZZZZZZZ Cotisation sociales Urssaf 4\u00e8me trimestre.", 
+                    "debit": "153.31"
+                }
+            ]
+        }, 
+        "4111-CL3": {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - ventes de biens ou prestations de services", 
+            "total_debit": "8372.00", 
+            "solde_debiteur": "8372.00", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Facture 2011-06 MyClient3", 
+                    "debit": "8372.00"
+                }
+            ]
+        }, 
+        "4111-CL2": {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - ventes de biens ou prestations de services", 
+            "total_debit": "1794.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "1794.00", 
+            "ecritures": [
+                {
+                    "date": "04/04/2011", 
+                    "intitule": "Facture 2011-02 MyClient2 Prestation MyClient2", 
+                    "debit": "1794.00"
+                }, 
+                {
+                    "date": "15/06/2011", 
+                    "intitule": "Remise ch\u00e8que XXXXXXX r\u00e8glement facture 2011-02", 
+                    "credit": "1794.00"
+                }
+            ]
+        }, 
+        "4111-CL1": {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - ventes de biens ou prestations de services", 
+            "total_debit": "24518.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "24518.00", 
+            "ecritures": [
+                {
+                    "date": "31/03/2011", 
+                    "intitule": "Facture 2011-01 MyClient1 Prestation MyClient1 mars 2011", 
+                    "debit": "5980.00"
+                }, 
+                {
+                    "date": "02/09/2011", 
+                    "intitule": "Virement MyClient1 ZZZZZZZZZZZ Facture 2011-01", 
+                    "credit": "5980.00"
+                }, 
+                {
+                    "date": "28/09/2011", 
+                    "intitule": "Facture 2011-04 MyClient1 Prestation aout 2011", 
+                    "debit": "13156.00"
+                }, 
+                {
+                    "date": "01/11/2011", 
+                    "intitule": "Facture 2011-05 MyClient1 Prestation septembre 2011", 
+                    "debit": "5382.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Virement MyClient1 WWWWWWWWWW Facture 2011-04, 2011-05", 
+                    "credit": "18538.00"
+                }
+            ]
+        }, 
+        "758": {
+            "solde_crediteur": "0.34", 
+            "nom": "Produits divers de gestion courante", 
+            "total_debit": "0.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "0.34", 
+            "ecritures": [
+                {
+                    "date": "30/09/2011", 
+                    "intitule": "Solde des comptes de TVA du 01/03/2011 au 30/09/2011", 
+                    "credit": "0.34"
+                }
+            ]
+        }, 
+        "6411": {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - Salaires et appointements", 
+            "total_debit": "3000.00", 
+            "solde_debiteur": "3000.00", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "05/07/2011", 
+                    "intitule": "Traitement mois de juin g\u00e9rant.", 
+                    "debit": "3000.00"
+                }
+            ]
+        }, 
+        "455": {
+            "solde_crediteur": "189.45", 
+            "nom": "Associ\u00e9s - Comptes courants", 
+            "total_debit": "0.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "189.45", 
+            "ecritures": [
+                {
+                    "date": "18/03/2011", 
+                    "intitule": "Frais de constitution de la soci\u00e9t\u00e9 CFE Paris.", 
+                    "credit": "90.45"
+                }, 
+                {
+                    "date": "18/03/2011", 
+                    "intitule": "Frais de constitution de la soci\u00e9t\u00e9 - Annonce l\u00e9gale.", 
+                    "credit": "99.00"
+                }
+            ]
+        }, 
+        "4181": {
+            "solde_crediteur": "0.00", 
+            "nom": "Clients - Factures \u00e0 \u00e9tablir", 
+            "total_debit": "13156.00", 
+            "solde_debiteur": "13156.00", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "31/12/2011", 
+                    "intitule": "Prestation MyClient1 d\u00e9cembre 2011", 
+                    "debit": "13156.00"
+                }
+            ]
+        }, 
+        "44587": {
+            "solde_crediteur": "3528.00", 
+            "nom": "Taxes sur le CA sur factures \u00e0 \u00e9tablir", 
+            "total_debit": "4312.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "7840.00", 
+            "ecritures": [
+                {
+                    "date": "31/03/2011", 
+                    "intitule": "Facture 2011-01 MyClient1 Prestation MyClient1 mars 2011", 
+                    "credit": "980.00"
+                }, 
+                {
+                    "date": "04/04/2011", 
+                    "intitule": "Facture 2011-02 MyClient2 Prestation MyClient2", 
+                    "credit": "294.00"
+                }, 
+                {
+                    "date": "15/06/2011", 
+                    "intitule": "Remise ch\u00e8que XXXXXXX r\u00e8glement facture 2011-02", 
+                    "debit": "294.00"
+                }, 
+                {
+                    "date": "02/09/2011", 
+                    "intitule": "Virement MyClient1 ZZZZZZZZZZZ Facture 2011-01", 
+                    "debit": "980.00"
+                }, 
+                {
+                    "date": "28/09/2011", 
+                    "intitule": "Facture 2011-04 MyClient1 Prestation aout 2011", 
+                    "credit": "2156.00"
+                }, 
+                {
+                    "date": "01/11/2011", 
+                    "intitule": "Facture 2011-05 MyClient1 Prestation septembre 2011", 
+                    "credit": "882.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Virement MyClient1 WWWWWWWWWW Facture 2011-04, 2011-05", 
+                    "debit": "2156.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Virement MyClient1 WWWWWWWWWW Facture 2011-04, 2011-05", 
+                    "debit": "882.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Facture 2011-06 MyClient3", 
+                    "credit": "1372.00"
+                }, 
+                {
+                    "date": "31/12/2011", 
+                    "intitule": "Prestation MyClient1 d\u00e9cembre 2011", 
+                    "credit": "2156.00"
+                }
+            ]
+        }, 
+        "6411-URSF3": {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations URSSAF - CSG/RDS non-d\u00e9ductible", 
+            "total_debit": "86.89", 
+            "solde_debiteur": "86.89", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "17/11/2011", 
+                    "intitule": "Ch\u00e8que ZZZZZZZ Cotisation sociales Urssaf 4\u00e8me trimestre.", 
+                    "debit": "86.89"
+                }
+            ]
+        }, 
+        "6411-RSI": {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations RSI", 
+            "total_debit": "393.00", 
+            "solde_debiteur": "393.00", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "08/08/2011", 
+                    "intitule": "Ch\u00e8que XXXXXXY Cotisation trimestrielle RSI/Pr\u00e9vadi\u00e8s.", 
+                    "debit": "393.00"
+                }
+            ]
+        }, 
+        "6411-URSF1": {
+            "solde_crediteur": "0.00", 
+            "nom": "Charges - cotisations URSSAF - Allocations familliales", 
+            "total_debit": "161.80", 
+            "solde_debiteur": "161.80", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "17/11/2011", 
+                    "intitule": "Ch\u00e8que ZZZZZZZ Cotisation sociales Urssaf 4\u00e8me trimestre.", 
+                    "debit": "161.80"
+                }
+            ]
+        }, 
+        "6227": {
+            "solde_crediteur": "0.00", 
+            "nom": "Achats - Frais d'actes et de contentieux", 
+            "total_debit": "160.00", 
+            "solde_debiteur": "160.00", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "18/03/2011", 
+                    "intitule": "Frais de constitution de la soci\u00e9t\u00e9 CFE Paris.", 
+                    "debit": "80.00"
+                }, 
+                {
+                    "date": "18/03/2011", 
+                    "intitule": "Frais de constitution de la soci\u00e9t\u00e9 - Annonce l\u00e9gale.", 
+                    "debit": "80.00"
+                }
+            ]
+        }, 
+        "100": {
+            "solde_crediteur": "1500.00", 
+            "nom": "Capital et compte de l'exploitant", 
+            "total_debit": "0.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "1500.00", 
+            "ecritures": [
+                {
+                    "date": "02/04/2011", 
+                    "intitule": "Capital initial D\u00e9p\u00f4t de 1500 \u20ac par Stanislas Guerra au LCL Ledru Rollin", 
+                    "credit": "1500.00"
+                }
+            ]
+        }, 
+        "6278-LCL": {
+            "solde_crediteur": "0.00", 
+            "nom": "Autres frais de commission sur prestations de services", 
+            "total_debit": "72.00", 
+            "solde_debiteur": "72.00", 
+            "total_credit": "0.00", 
+            "ecritures": [
+                {
+                    "date": "01/04/2011", 
+                    "intitule": "R\u00e9sultat arr\u00eat\u00e9 compte", 
+                    "debit": "48.00"
+                }, 
+                {
+                    "date": "28/04/2011", 
+                    "intitule": "Cotisation Option PRO  LCL", 
+                    "debit": "15.00"
+                }, 
+                {
+                    "date": "02/05/2011", 
+                    "intitule": "Abonnement LCL Access", 
+                    "debit": "3.00"
+                }, 
+                {
+                    "date": "03/09/2011", 
+                    "intitule": "Abonnement LCL Access", 
+                    "debit": "3.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Abonnement LCL Access", 
+                    "debit": "3.00"
+                }
+            ]
+        }, 
+        "706": {
+            "solde_crediteur": "40000.00", 
+            "nom": "Produits - prestations de services", 
+            "total_debit": "0.00", 
+            "solde_debiteur": "0.00", 
+            "total_credit": "40000.00", 
+            "ecritures": [
+                {
+                    "date": "31/03/2011", 
+                    "intitule": "Facture 2011-01 MyClient1 Prestation MyClient1 mars 2011", 
+                    "credit": "5000.00"
+                }, 
+                {
+                    "date": "04/04/2011", 
+                    "intitule": "Facture 2011-02 MyClient2 Prestation MyClient2", 
+                    "credit": "1500.00"
+                }, 
+                {
+                    "date": "28/09/2011", 
+                    "intitule": "Facture 2011-04 MyClient1 Prestation aout 2011", 
+                    "credit": "11000.00"
+                }, 
+                {
+                    "date": "01/11/2011", 
+                    "intitule": "Facture 2011-05 MyClient1 Prestation septembre 2011", 
+                    "credit": "4500.00"
+                }, 
+                {
+                    "date": "01/12/2011", 
+                    "intitule": "Facture 2011-06 MyClient3", 
+                    "credit": "7000.00"
+                }, 
+                {
+                    "date": "31/12/2011", 
+                    "intitule": "Prestation MyClient1 d\u00e9cembre 2011", 
+                    "credit": "11000.00"
+                }
+            ]
+        }
+    }, 
+    "date_fin": "31/12/2011", 
+    "date_debut": "01/03/2011", 
+    "label": "Grand-Livre 2011"
+}

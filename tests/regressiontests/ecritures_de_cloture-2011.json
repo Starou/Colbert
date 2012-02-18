@@ -1,0 +1,125 @@
+[
+    {
+        "date": "31/12/2011", 
+        "intitule": "Ecritures de cl\u00f4ture des comptes.", 
+        "ecritures": [
+            {
+                "numero_compte_debit": "706", 
+                "credit": "0.00", 
+                "nom_compte": "Produits - prestations de services", 
+                "numero_compte_credit": "", 
+                "debit": "40000.00"
+            }, 
+            {
+                "numero_compte_debit": "758", 
+                "credit": "0.00", 
+                "nom_compte": "Produits divers de gestion courante", 
+                "numero_compte_credit": "", 
+                "debit": "0.34"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "40000.34", 
+                "nom_compte": "Regroupement des comptes de produits", 
+                "numero_compte_credit": "127", 
+                "debit": "0.0"
+            }
+        ]
+    }, 
+    {
+        "date": "31/12/2011", 
+        "intitule": "Ecritures de cl\u00f4ture des comptes.", 
+        "ecritures": [
+            {
+                "numero_compte_debit": "126", 
+                "credit": "0.0", 
+                "nom_compte": "Regroupement des comptes de charges", 
+                "numero_compte_credit": "", 
+                "debit": "4048.44"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "21.44", 
+                "nom_compte": "Achats - Fournitures de bureau", 
+                "numero_compte_credit": "60225", 
+                "debit": "0.00"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "160.00", 
+                "nom_compte": "Achats - Frais d'actes et de contentieux", 
+                "numero_compte_credit": "6227", 
+                "debit": "0.00"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "72.00", 
+                "nom_compte": "Autres frais de commission sur prestations de services", 
+                "numero_compte_credit": "6278-LCL", 
+                "debit": "0.00"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "3000.00", 
+                "nom_compte": "Charges - Salaires et appointements", 
+                "numero_compte_credit": "6411", 
+                "debit": "0.00"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "393.00", 
+                "nom_compte": "Charges - cotisations RSI", 
+                "numero_compte_credit": "6411-RSI", 
+                "debit": "0.00"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "161.80", 
+                "nom_compte": "Charges - cotisations URSSAF - Allocations familliales", 
+                "numero_compte_credit": "6411-URSF1", 
+                "debit": "0.00"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "153.31", 
+                "nom_compte": "Charges - cotisations URSSAF - CSG/RDS d\u00e9ductible", 
+                "numero_compte_credit": "6411-URSF2", 
+                "debit": "0.00"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "86.89", 
+                "nom_compte": "Charges - cotisations URSSAF - CSG/RDS non-d\u00e9ductible", 
+                "numero_compte_credit": "6411-URSF3", 
+                "debit": "0.00"
+            }
+        ]
+    }, 
+    {
+        "date": "31/12/2011", 
+        "intitule": "Enregistrement du r\u00e9sultat net de l'exercice", 
+        "ecritures": [
+            {
+                "numero_compte_debit": "127", 
+                "credit": "0.0", 
+                "nom_compte": "Regroupement des comptes de produits", 
+                "numero_compte_credit": "", 
+                "debit": "40000.34"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "4048.44", 
+                "nom_compte": "Regroupement des comptes de charges", 
+                "numero_compte_credit": "126", 
+                "debit": "0.0"
+            }, 
+            {
+                "numero_compte_debit": "", 
+                "credit": "35951.90", 
+                "nom_compte": "r\u00e9sultat de l'exercice (b\u00e9n\u00e9fice)", 
+                "numero_compte_credit": "120", 
+                "debit": "0.0"
+            }
+        ]
+    }
+]
