@@ -104,12 +104,12 @@ def grand_livre_to_rst(grand_livre, output_file):
             (u"%s - *%s*" %(numero_compte, compte['nom']), GD_LIVRE_TABLE_LEN)
         ])
         table.append([
-            ("Date", DATE_LEN),
-            (u"Libellé", LIBELLE_LEN), 
-            (u"Débit", DEBIT_LEN), 
-            ("Date", DATE_LEN),
-            (u"Libellé", LIBELLE_LEN), 
-            (u"Crédit", CREDIT_LEN),
+            ("*Date*", DATE_LEN),
+            (u"*Libellé*", LIBELLE_LEN), 
+            (u"*Débit*", DEBIT_LEN), 
+            ("*Date*", DATE_LEN),
+            (u"*Libellé*", LIBELLE_LEN), 
+            (u"*Crédit*", CREDIT_LEN),
         ])
         debits = [(e['date'], e['intitule'], e['debit']) for e in compte['ecritures'] if e.has_key('debit')]
         credits = [(e['date'], e['intitule'], e['credit']) for e in compte['ecritures'] if e.has_key('credit')]
