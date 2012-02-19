@@ -2,7 +2,7 @@
     "total_actif": {
         "net": "11964.21", 
         "brut": "11964.21", 
-        "ammortissement": "0.00"
+        "amortissement": "0.00"
     }, 
     "label": "Bilan 2011 - MyBusiness", 
     "passif": [
@@ -15,7 +15,7 @@
                     {
                         "net": "9922.65", 
                         "brut": "9922.65", 
-                        "ammortissement": "0.00"
+                        "amortissement": "0.00"
                     }
                 ]
             ]
@@ -29,7 +29,7 @@
                     {
                         "net": "2041.56", 
                         "brut": "2041.56", 
-                        "ammortissement": "0.00"
+                        "amortissement": "0.00"
                     }
                 ]
             ]
@@ -46,7 +46,7 @@
                     {
                         "net": "11960.00", 
                         "brut": "11960.00", 
-                        "ammortissement": "0.00"
+                        "amortissement": "0.00"
                     }
                 ], 
                 [
@@ -54,7 +54,7 @@
                     {
                         "net": "4.21", 
                         "brut": "4.21", 
-                        "ammortissement": "0.00"
+                        "amortissement": "0.00"
                     }
                 ]
             ]

@@ -9,7 +9,7 @@ CREDIT = 'credit'
 
 BRUT = 'brut'
 NET = 'net'
-AMMORTISSEMENT = 'ammortissement'
+AMORTISSEMENT = 'amortissement'
 
 ACTIF = 'actif'
 ACTIF_IMMOBILISE = u'actif immobilisé'
@@ -207,7 +207,7 @@ def bilan(balance_des_comptes, label="Bilan"):
             solde = DEBIT
             montant = solde_debiteur
 
-        # Passif ou ammortissement.
+        # Passif ou amortissement.
         elif solde_crediteur:
             solde = CREDIT
             montant = solde_crediteur
@@ -232,11 +232,11 @@ def bilan(balance_des_comptes, label="Bilan"):
         categorie = bilan[cote].setdefault(categorie, {})
         rubrique = categorie.setdefault(rubrique, {})
         ligne = rubrique.setdefault(ligne, {BRUT: Decimal("0.00"),
-                                            AMMORTISSEMENT: Decimal("0.00"),
+                                            AMORTISSEMENT: Decimal("0.00"),
                                             NET: Decimal("0.00")})
-        # màj du brut ou de l'ammortissement.
+        # màj du brut ou de l'amortissement.
         ligne[colonne] += montant
-        ligne[NET] = ligne[BRUT] - ligne[AMMORTISSEMENT]
+        ligne[NET] = ligne[BRUT] - ligne[AMORTISSEMENT]
         
     # Résultat, totaux.
     total_actif, total_passif_avant_resultat, resultat = resultat_bilan(bilan)
@@ -244,7 +244,7 @@ def bilan(balance_des_comptes, label="Bilan"):
     capitaux_propres = bilan[PASSIF].setdefault(CAPITAUX_PROPRES, {None: {}})
     capitaux_propres[None][RESULTAT] = {
         NET: resultat,
-        AMMORTISSEMENT: Decimal("0.00"),
+        AMORTISSEMENT: Decimal("0.00"),
         BRUT: resultat
     }
 
@@ -255,15 +255,15 @@ def resultat_bilan(pre_bilan):
     """Calcul le résultat de l'exercice. """
 
     def calcul_total(cote_bilan):
-        total_brut, total_ammortissement, total_net = Decimal("0.00"), Decimal("0.00"), Decimal("0.00")
+        total_brut, total_amortissement, total_net = Decimal("0.00"), Decimal("0.00"), Decimal("0.00")
         for categorie in pre_bilan[cote_bilan].values():
             for rubrique in categorie.values():
                 for values in rubrique.values():
                     total_brut += values[BRUT]
-                    total_ammortissement += values[AMMORTISSEMENT]
+                    total_amortissement += values[AMORTISSEMENT]
                     total_net += values[NET]
         return {BRUT: total_brut,
-                AMMORTISSEMENT: total_ammortissement,
+                AMORTISSEMENT: total_amortissement,
                 NET: total_net}
 
     total_actif = calcul_total(ACTIF)
@@ -300,7 +300,7 @@ def ordered_bilan(pre_bilan):
 
 ACTIF_LEN = 45
 BRUT_LEN = 20
-AMMORTISSEMENT_LEN = 20
+AMORTISSEMENT_LEN = 20
 NET_LEN = 20
 PASSIF_LEN = 45
 MONTANT_LEN = 20
@@ -317,7 +317,7 @@ def bilan_to_rst(bilan, output_file):
     table = [
         [(u"Actif", ACTIF_LEN), 
          (u"Brut", BRUT_LEN), 
-         (u"Ammortissement", AMMORTISSEMENT_LEN), 
+         (u"Amortissement", AMORTISSEMENT_LEN), 
          (u"Net", NET_LEN), 
          (u"Passif", PASSIF_LEN), 
          (u"Montant", MONTANT_LEN)]
@@ -340,7 +340,7 @@ def bilan_to_rst(bilan, output_file):
                 for intitule, values in rubriques[1:]:
                     flattened.append([u'%s' % intitule.capitalize(), 
                                       Decimal(values['brut']),
-                                      Decimal(values['ammortissement']),
+                                      Decimal(values['amortissement']),
                                       Decimal(values['net'])])
             return flattened
 
@@ -352,7 +352,7 @@ def bilan_to_rst(bilan, output_file):
             ((ligne_actif and ligne_actif[1]) and \
               fmt_number(ligne_actif[1]) or '', BRUT_LEN), 
             ((ligne_actif and ligne_actif[2]) and \
-              fmt_number(ligne_actif[2]) or '', AMMORTISSEMENT_LEN), 
+              fmt_number(ligne_actif[2]) or '', AMORTISSEMENT_LEN), 
             ((ligne_actif and ligne_actif[3]) and \
               fmt_number(ligne_actif[3]) or '', NET_LEN), 
             (ligne_passif and ligne_passif[0] or '', PASSIF_LEN), 
@@ -366,7 +366,7 @@ def bilan_to_rst(bilan, output_file):
     table.append([
         (u"*Total*", ACTIF_LEN), 
         (u"*%s*" % fmt_number(Decimal(bilan['total_actif'][BRUT])), BRUT_LEN), 
-        (u"*%s*" % fmt_number(Decimal(bilan['total_actif'][AMMORTISSEMENT])), AMMORTISSEMENT_LEN), 
+        (u"*%s*" % fmt_number(Decimal(bilan['total_actif'][AMORTISSEMENT])), AMORTISSEMENT_LEN), 
         (u"**%s**" % fmt_number(Decimal(bilan['total_actif'][NET])), NET_LEN), 
         (u"*Total*", PASSIF_LEN), 
         (u"**%s**"% fmt_number(Decimal(bilan['total_actif'][NET])), MONTANT_LEN)
