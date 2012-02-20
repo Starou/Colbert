@@ -65,11 +65,11 @@ def balance_des_comptes(grand_livre, label="Balance des comptes"):
 
     return balance
 
-TABLE_LEN = 149
+TABLE_LEN = 153
 COMPTES_LEN = 79
 TOTAUX_LEN = 33
 SOLDES_LEN = 33
-NUMERO_COMPTE_LEN = 11
+NUMERO_COMPTE_LEN = 14
 LIBELLE_COMPTE_LEN = 67
 DEBIT_LEN = 18
 CREDIT_LEN = 18

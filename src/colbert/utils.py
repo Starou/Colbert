@@ -33,6 +33,7 @@ def rst_table(table):
             for j, subrow in enumerate(row):
                 line = []
                 for cell_content, cell_length in subrow:
+                    cell_content = truncate_words(cell_content, cell_length-2)
                     # Idéalement, on devrait faire le stroke sur la dernière sous-ligne, pas la premiere.
                     if j == 0:
                         stroke.append(u'+%s' % (stroke_char*cell_length))
@@ -47,6 +48,7 @@ def rst_table(table):
 
         else:
             for cell_content, cell_length in row:
+                cell_content = truncate_words(cell_content, cell_length-2)
                 stroke.append(u'+%s' % (stroke_char*cell_length))
                 line.append(u'| %s%s' % (cell_content, 
                                          u' ' * (cell_length - 1 - len(cell_content))))
@@ -60,3 +62,11 @@ def rst_table(table):
     # A final line of strokes.
     lines.append(''.join(stroke))
     return u"\n".join(lines)
+
+# http://stackoverflow.com/questions/250357/smart-truncate-in-python
+def truncate_words(content, length=100, suffix='...'):
+    if len(content) <= length:
+        return content
+    else:
+        return ' '.join(content[:length+1-len(suffix)].split(' ')[0:-1]) + suffix
+

@@ -81,7 +81,7 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
 def grand_livre_to_rst(grand_livre, output_file):
     """Convert a `grand_livre` json load to a RestructuredText file. """
 
-    from colbert.utils import fmt_number, rst_table
+    from colbert.utils import fmt_number, rst_table, truncate_words
     from colbert.common import titre_principal_rst
 
     lines = []
@@ -90,10 +90,10 @@ def grand_livre_to_rst(grand_livre, output_file):
     def row(debit, credit):
         return [
             (debit and debit[0] or '', DATE_LEN),
-            (debit and debit[1][:LIBELLE_LEN -4] or '', LIBELLE_LEN), 
+            (debit and debit[1] or '', LIBELLE_LEN), 
             (debit and fmt_number(Decimal(debit[2])) or '', DEBIT_LEN), 
             (credit and credit[0] or '', DATE_LEN),
-            (credit and credit[1][:LIBELLE_LEN -4] or '', LIBELLE_LEN), 
+            (credit and credit[1] or '', LIBELLE_LEN), 
             (credit and fmt_number(Decimal(credit[2])) or '', CREDIT_LEN),
         ]
 
