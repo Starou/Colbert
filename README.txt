@@ -1,0 +1,88 @@
+=======
+Colbert
+=======
+
+
+*Colbert* is not about Stephen Colbert. It is serious matter.
+
+The name is a homage to Jean-Baptiste Colbert, the Minister of Finance of France in 17th century also known for being the father of
+the modern accountancy.
+
+
+The big disclaimer(s)
+====================
+
+I don't know shit about accountancy. I am running a very small company since 2011 and there is two things I want to avoid for my accountancy :
+
+1. to throw 3k€/year to pay someone Porsche ;
+2. to learn a terrible closed source piece of accountancy software instead of understanding the roots.
+
+So I first decided to write a *Django* project to record my expenses, my incomes and automagically generate the client's invoices.
+That worked pretty well and I am still using it for the *LaTeX* invoices.
+
+But when the administrative procedures are falling you are facing the reality. You cannot do accountancy without understanding accountancy.
+
+I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to quickly adapt to the new knowledge I was going to acquire
+during the development process. Learning accountancy is a big task and this is illusion to think that you can learn first and modelize it in a second step.
+
+And you know what ? The concepts behind the accountancy as they were thought four centuries ago are pure beauty. As beautiful as Unix' pipes.
+Simple, universal and powerful. 
+
+It is all about *inputs* and *outputs*. Every single input must be balanced by an output of the same amount and *vice-versa*.
+
+The idea behind the *Plan Comptable Général* (Chart of accounts I think) is of the same blood.
+In Unix, everything is a file. In accountancy, everything is an account.
+
+You can see accounts like a filesystem. You can create as much leafs and forks as you need.
+
+
+This is a work in progress and the product is at his very early stage. A lot of refactoring in the code will happen but for now
+I keep it as much simple as I can. This is not yet an object-oriented program with metaclasses and other fancy concepts. I need to 
+keep the codebase easy to move as long as I have not validate my knowledge which may take one or two years.
+Some stuffs are hard-coded, this is a proof-of-concept.
+
+
+All that prose to say «don't blind-trust this software if you want to use it».
+
+
+Being french, this software is written for french accountancy with french words. But the concept seems to be universal and with a little
+effort you can fork it to match what you need in your own country.
+
+I am using the BSD implementation of your favorite tools (*sed*, *grep* etc).
+
+
+The concepts
+============
+
+
+*Colbert* is all about human-readable text files. *RestructuredText* and *JSON* files. You organize those files in a logical manner and extensively
+use *Makefiles* to generate other files and produce beautiful *LaTeX* and *PDF* outputs.
+
+The core of accountancy is *le livre-journal* (grow a mustache and try to pronounce it with a glass of *Bordeaux Haut-Médoc* in your right-hand).
+This is our «database» where every single operation occuring in your business is recorded. 
+
+This book is usualy splitted in several ones to regroup together operations by type. I don't need that, so I don't do that.
+
+
+my organization is the following :
+
+
+    + MyBusiness/   +-- accountancy/    +-- livre-journal/  +-- livre-journal.txt
+                                        |                   |
+                                        |                   +-- Makefile
+                                        |
+                                        +-- 2011/   +-- grand-livre/
+                                                    |
+                                                    +-- releves-bancaires/  
+                                                    |
+                                                    +-- factures/           
+                                                    |
+                                                    +-- balance-des-comptes/
+                                                    |
+                                                    +-- bilan/
+                                                    |
+                                                    +-- compte-de-resultat/ 
+                                                    |
+                                                    +-- TVA/                
+                                                    |
+                                                    +-- ecritures-de-cloture/
