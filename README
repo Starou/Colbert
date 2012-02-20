@@ -12,7 +12,7 @@ also known for being the father of the modern accountancy.
 The big disclaimer(s)
 =====================
 
-I don't know shit about accountancy. I am running a very small company since 2011 and there is two things I want to avoid for my accountancy :
+I don't know shit about accountancy. I am running a very small company since 2011 and there is two things I wanted to avoid for my fiscal and financial obligations :
 
 1. to throw 3k€/year to pay someone Porsche ;
 2. to learn a terrible closed source piece of accountancy software instead of understanding the roots.
@@ -30,23 +30,24 @@ Simple, universal and powerful.
 
 It is all about *inputs* and *outputs*. Every single input must be balanced by an output of the same amount and *vice-versa*.
 
-The idea behind the *Plan Comptable Général* (Chart of accounts I think) is of the same blood.
+The idea behind the *Plan Comptable Général* (Chart of accounts) is of the same blood.
 In Unix, everything is a file. In accountancy, everything is an account.
 
 You can see accounts like a filesystem. You can create as much leafs and forks as you need.
 
+|
 
 This is a work in progress and the product is at his very early stage. A lot of refactoring in the code will happen but for now I keep it as much simple as I can.
 This is not yet an object-oriented program with metaclasses and other fancy concepts. 
 I need to keep the codebase easy to move as long as I have not validate my knowledge which may take one or two years.
 
-Some stuffs are hard-coded, this is a proof-of-concept.
+Some stuffs are hard-coded because at a proof-of-concept stage.
 
 
 All that prose to say «don't blind-trust this software if you want to use it».
 
 
-Being french, this software is written for french accountancy with french words. But the concept seems to be universal and with a little
+Being french, this software is written for french accountancy in a french vocable. But the concept seems to be universal and with a little
 effort you can fork it to match what you need in your own country.
 
 I am using the BSD implementation of your favorite tools (*sed*, *grep* etc).
@@ -99,10 +100,10 @@ Almost every sub-directory should contains a Makefile to automatically call some
 (which may be the *livre-journal* or the *Grand-livre*).
 
 
-In a nutshell, a typical usage at the end of a fiscal year is :
+In a nutshell, a typical usage at the end of a fiscal year is:
 
 1. Having a *Livre-journal* up-to-date and accurate ;
-2. Check your *relevés bancaires* (statement of account ?) against the Livre-journal. Go back to (1) if it is not the case ;
+2. check your *relevés bancaires* (statement of account ?) against the Livre-journal. Go back to (1) if it is not the case ;
 3. generate the *Grand-livre* as JSON from the Livre-journal ;
 4. generate the *Balance des comptes* from the *grand_livre.json* file ;
 5. compute the *Bilan* from  the *grand_livre.json* file ;
@@ -111,8 +112,53 @@ In a nutshell, a typical usage at the end of a fiscal year is :
 
 
 
-**Note** : each *JSON* file can be converted in a RestructuredText format with a *colbert_\*_to_rst* script. 
+**Note** : each *JSON* file can be converted in a *RestructuredText* format with a *colbert_\*_to_rst* script. 
 
+
+Le Livre-journal
+----------------
+
+The Livre-journal is a diary or a book where every flow of money is logged. There is a tight legislation concerning those books in general and
+you must refer yourself to the legislation of your country or juridiction.
+
+In Colbert, this is a RestructuredText file meeting the french administration requirements::
+
+
+    ==================
+    MyBusiness S.A.R.L
+    ==================
+
+    -------------
+    Livre-Journal
+    -------------
+
+    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+    | Date        |  N°compte débit | N°compte crédit |   Intitulé / nom du compte                                   | Montant débit € | Montant crédit €|
+    +=============+=================+=================+==============================================================+=================+=================+
+    | *Mars 2011*                                                                                                                                        |
+    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+    || 18/03/2011 ||                ||                || Frais de constitution de la société CFE Paris.              ||                ||                |
+    ||            ||    6227        ||                || Achats - Frais d'actes et de contentieux                    ||       80.00    ||                |
+    ||            ||    44566       ||                || T.V.A. déductible sur autres biens et services              ||       10.45    ||                |
+    ||            ||                ||     455        ||     Associés - Comptes courants                             ||                ||      90.45     |
+    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+    || 18/03/2011 ||                ||                || Frais de constitution de la société - Annonce légale.       ||                ||                |
+    ||            ||    6227        ||                || Achats - Frais d'actes et de contentieux MONTANT à vérifier ||       80.00    ||                |
+    ||            ||    44566       ||                || T.V.A. déductible sur autres biens et services              ||       19.00    ||                |
+    ||            ||                ||     455        ||     Associés - Comptes courants                             ||                ||      99.00     |
+    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+    || 31/03/2011 ||                ||                || Facture 2011-01 MyClient1                                   ||                ||                |
+    ||            ||                ||                ||       Prestation MyClient1 mars 2011                        ||                ||                |
+    ||            ||    4111-CL1    ||                ||     Clients - ventes de biens ou prestations de services    ||     5 980.00   ||                |
+    ||            ||                ||    706         ||      Produits - prestations de services                     ||                ||  5 000.00      |
+    ||            ||                ||    44587       ||      Taxes sur le CA sur factures à établir                 ||                ||  980.00        |
+    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+    | *Avril 2011*                                                                                                                                       |
+    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+    || 01/04/2011 ||                ||                || Résultat arrêté compte                                      ||                ||                |
+    ||            ||    6278-LCL    ||                || Autres frais de commission sur prestations de services      ||       48.00    ||                |
+    ||            ||                ||     512        ||     Banques                                                 ||                ||       48.00    |
+    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
 
 
 Installation
@@ -125,7 +171,8 @@ Requirements
 ============
 
 - Python 2.6+.
-- LaTex if you want to render the RestructuredText in LaTex and then in PDF. 
+- Docutils.
+- a LaTex suite if you want to render the RestructuredText in LaTex and then in PDF. 
 - Make.
 - Sed.
 
