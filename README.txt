@@ -5,8 +5,7 @@ Colbert
 
 *Colbert* is not about Stephen Colbert. It is serious matter.
 
-The name is a homage to Jean-Baptiste Colbert, the Minister of Finance of France in 17th century also known for being the father of
-the modern accountancy.
+The name is a homage to Jean-Baptiste Colbert, the Minister of Finance of France in 17th century also known for being the father of the modern accountancy.
 
 
 The big disclaimer(s)
@@ -22,8 +21,7 @@ That worked pretty well and I am still using it for the *LaTeX* invoices.
 
 But when the administrative procedures are falling you are facing the reality. You cannot do accountancy without understanding accountancy.
 
-I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to quickly adapt to the new knowledge I was going to acquire
-during the development process. Learning accountancy is a big task and this is illusion to think that you can learn first and modelize it in a second step.
+I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to quickly adapt to the new knowledge I was going to acquire during the development process. Learning accountancy is a big task and this is illusion to think that you can learn first and modelize it in a second step.
 
 And you know what ? The concepts behind the accountancy as they were thought four centuries ago are pure beauty. As beautiful as Unix' pipes.
 Simple, universal and powerful. 
@@ -36,9 +34,10 @@ In Unix, everything is a file. In accountancy, everything is an account.
 You can see accounts like a filesystem. You can create as much leafs and forks as you need.
 
 
-This is a work in progress and the product is at his very early stage. A lot of refactoring in the code will happen but for now
-I keep it as much simple as I can. This is not yet an object-oriented program with metaclasses and other fancy concepts. I need to 
-keep the codebase easy to move as long as I have not validate my knowledge which may take one or two years.
+This is a work in progress and the product is at his very early stage. A lot of refactoring in the code will happen but for now I keep it as much simple as I can.
+This is not yet an object-oriented program with metaclasses and other fancy concepts. 
+I need to keep the codebase easy to move as long as I have not validate my knowledge which may take one or two years.
+
 Some stuffs are hard-coded, this is a proof-of-concept.
 
 
