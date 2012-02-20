@@ -63,12 +63,12 @@ This is our «database» where every single operation occuring in your business 
 This book is usualy splitted in several ones to regroup together operations by type. I don't need that, so I don't do that.
 
 
-my organization is the following :
+my organization is the following ::
 
 
-    + MyBusiness/   +-- accountancy/    +-- livre-journal/  +-- livre-journal.txt
-                                        |                   |
-                                        |                   +-- Makefile
+    + MyBusiness/   +-- accountancy/    +-- livre-journal/  +-- livre-journal.txt 
+                                        |                   | 
+                                        |                   +-- Makefile 
                                         |
                                         +-- 2011/   +-- grand-livre/
                                                     |
