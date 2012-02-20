@@ -5,7 +5,8 @@ Colbert
 
 *Colbert* is not about Stephen Colbert. It is serious matter.
 
-The name is a homage to Jean-Baptiste Colbert, the Minister of Finance of France in 17th century also known for being the father of the modern accountancy.
+The name is a homage to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_, the Minister of Finance of France in the 17th century 
+also known for being the father of the modern accountancy.
 
 
 The big disclaimer(s)
@@ -21,7 +22,8 @@ That worked pretty well and I am still using it for the *LaTeX* invoices.
 
 But when the administrative procedures are falling you are facing the reality. You cannot do accountancy without understanding accountancy.
 
-I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to quickly adapt to the new knowledge I was going to acquire during the development process. Learning accountancy is a big task and this is illusion to think that you can learn first and modelize it in a second step.
+I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to quickly adapt to the new knowledge 
+I was going to acquire during the development process. Learning accountancy is a big task and this is illusion to think that you can learn first and modelize it in a second step.
 
 And you know what ? The concepts behind the accountancy as they were thought four centuries ago are pure beauty. As beautiful as Unix' pipes.
 Simple, universal and powerful. 
@@ -55,7 +57,7 @@ The concepts
 
 
 *Colbert* is all about human-readable text files. *RestructuredText* and *JSON* files. You organize those files in a logical manner and extensively
-use *Makefiles* to generate other files and produce beautiful *LaTeX* and *PDF* outputs.
+use *Makefiles* to generate other files and produce beautiful *LaTeX* and *PDF* outputs for the administration and youself.
 
 The core of accountancy is *le livre-journal* (grow a mustache and try to pronounce it with a glass of *Bordeaux Haut-Médoc* in your right-hand).
 This is our «database» where every single operation occuring in your business is recorded. 
@@ -63,7 +65,7 @@ This is our «database» where every single operation occuring in your business 
 This book is usualy splitted in several ones to regroup together operations by type. I don't need that, so I don't do that.
 
 
-my organization is the following ::
+my organization is the following::
 
 
     + MyBusiness/   +-- accountancy/    +-- livre-journal/  +-- livre-journal.txt 
@@ -85,3 +87,45 @@ my organization is the following ::
                                                     +-- TVA/                
                                                     |
                                                     +-- ecritures-de-cloture/
+
+
+*Le livre-journal* is a never-ending story, this is the reason for keeping it at the root level. In accountancy, a main concept is
+*l'indépendance des exercices comptables* which is why I have broken down my organization by year (I am opening my accounts the 1st of
+junary and closing them the 31th of december, every year).
+
+In each year directory reside sub-directories named with the tasks, books or documents you have to deal with and produce all along the financial/fiscal year.
+
+Almost every sub-directory should contains a Makefile to automatically call some Colbert or LaTeX routines to update your files from the source 
+(which may be the *livre-journal* or the *Grand-livre*).
+
+
+In a nutshell, a typical usage at the end of a fiscal year is :
+
+1. Having a *Livre-journal* up-to-date and accurate ;
+2. Check your *relevés bancaires* (statement of account ?) against the Livre-journal. Go back to (1) if it is not the case ;
+3. generate the *Grand-livre* as JSON from the Livre-journal ;
+4. generate the *Balance des comptes* from the *grand_livre.json* file ;
+5. compute the *Bilan* from  the *grand_livre.json* file ;
+6. compute the *Compte de résultat* from  the *grand_livre.json* file ;
+7. compute the *écritures de clôture* from  the *grand_livre.json* file and write them back to the Livre-journal ;
+
+
+
+**Note** : each *JSON* file can be converted in a RestructuredText format with a *colbert_\*_to_rst* script. 
+
+
+
+Installation
+============
+
+Hey, this is a Python package, so just run *python setup.py install* and your done.
+
+
+Requirements
+============
+
+- Python 2.6+.
+- LaTex if you want to render the RestructuredText in LaTex and then in PDF. 
+- Make.
+- Sed.
+
