@@ -12,7 +12,7 @@ also known for being the father of the modern accountancy.
 The big disclaimer(s)
 =====================
 
-I don't know shit about accountancy. I am running a very small company since 2011 and there is two things I wanted to avoid for my fiscal and financial obligations :
+I don't know shit about accountancy. I am running a very small company since 2011 and there is two things I wanted to avoid for my fiscal and financial obligations:
 
 1. to throw 3k€/year to pay someone Porsche ;
 2. to learn a terrible closed source piece of accountancy software instead of understanding the roots.
@@ -121,7 +121,7 @@ Le Livre-journal
 The Livre-journal is a diary or a book where every flow of money is logged. There is a tight legislation concerning those books in general and
 you must refer yourself to the legislation of your country or juridiction.
 
-In Colbert, this is a RestructuredText file meeting the french administration requirements::
+In Colbert, this is a RestructuredText file meeting the french administration requirements (the columns' width had been reduced to fit properly in this document)::
 
 
     ==================
@@ -132,33 +132,33 @@ In Colbert, this is a RestructuredText file meeting the french administration re
     Livre-Journal
     -------------
 
-    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-    | Date        |  N°compte débit | N°compte crédit |   Intitulé / nom du compte                                   | Montant débit € | Montant crédit €|
-    +=============+=================+=================+==============================================================+=================+=================+
-    | *Mars 2011*                                                                                                                                        |
-    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-    || 18/03/2011 ||                ||                || Frais de constitution de la société CFE Paris.              ||                ||                |
-    ||            ||    6227        ||                || Achats - Frais d'actes et de contentieux                    ||       80.00    ||                |
-    ||            ||    44566       ||                || T.V.A. déductible sur autres biens et services              ||       10.45    ||                |
-    ||            ||                ||     455        ||     Associés - Comptes courants                             ||                ||      90.45     |
-    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-    || 18/03/2011 ||                ||                || Frais de constitution de la société - Annonce légale.       ||                ||                |
-    ||            ||    6227        ||                || Achats - Frais d'actes et de contentieux MONTANT à vérifier ||       80.00    ||                |
-    ||            ||    44566       ||                || T.V.A. déductible sur autres biens et services              ||       19.00    ||                |
-    ||            ||                ||     455        ||     Associés - Comptes courants                             ||                ||      99.00     |
-    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-    || 31/03/2011 ||                ||                || Facture 2011-01 MyClient1                                   ||                ||                |
-    ||            ||                ||                ||       Prestation MyClient1 mars 2011                        ||                ||                |
-    ||            ||    4111-CL1    ||                ||     Clients - ventes de biens ou prestations de services    ||     5 980.00   ||                |
-    ||            ||                ||    706         ||      Produits - prestations de services                     ||                ||  5 000.00      |
-    ||            ||                ||    44587       ||      Taxes sur le CA sur factures à établir                 ||                ||  980.00        |
-    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-    | *Avril 2011*                                                                                                                                       |
-    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-    || 01/04/2011 ||                ||                || Résultat arrêté compte                                      ||                ||                |
-    ||            ||    6278-LCL    ||                || Autres frais de commission sur prestations de services      ||       48.00    ||                |
-    ||            ||                ||     512        ||     Banques                                                 ||                ||       48.00    |
-    +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+    +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------------+
+    | Date        |  N°compte débit | N°compte crédit |   Intitulé / nom du compte                      | Débit en €| Crédit en €     |
+    +=============+=================+=================+=================================================+===========+=================+
+    | *Mars 2011*                                                                                                                     |
+    +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------------+
+    || 18/03/2011 ||                ||                || Frais de constitution de la société CFE Paris. ||          ||                |
+    ||            ||    6227        ||                || Achats - Frais d'actes et de contentieux       ||  80.00   ||                |
+    ||            ||    44566       ||                || T.V.A. déductible sur autres biens et services ||  10.45   ||                |
+    ||            ||                ||     455        ||     Associés - Comptes courants                ||          ||      90.45     |
+    +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------------+
+    || 18/03/2011 ||                ||                || Frais de constitution de la société - Annonce  ||          ||                |
+    ||            ||    6227        ||                || Achats - Frais d'actes et de contentieux       ||  80.00   ||                |
+    ||            ||    44566       ||                || T.V.A. déductible sur autres biens et services ||  19.00   ||                |
+    ||            ||                ||     455        ||     Associés - Comptes courants                ||          ||      99.00     |
+    +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------------+
+    || 31/03/2011 ||                ||                || Facture 2011-01 MyClient1                      ||          ||                |
+    ||            ||                ||                ||       Prestation MyClient1 mars 2011           ||          ||                |
+    ||            ||    4111-CL1    ||                ||     Clients - ventes de biens ou prestations   ||  980.00  ||                |
+    ||            ||                ||    706         ||      Produits - prestations de services        ||          ||  5 000.00      |
+    ||            ||                ||    44587       ||      Taxes sur le CA sur factures à établir    ||          ||  980.00        |
+    +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------------+
+    | *Avril 2011*                                                                                                                    |
+    +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------------+
+    || 01/04/2011 ||                ||                || Résultat arrêté compte                         ||          ||                |
+    ||            ||    6278-LCL    ||                || Autres frais de commission sur prestations     ||  48.00   ||                |
+    ||            ||                ||     512        ||     Banques                                    ||          ||       48.00    |
+    +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------------+
 
 
 Installation
