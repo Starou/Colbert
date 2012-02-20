@@ -104,7 +104,7 @@ def balance_des_comptes_to_rst(balance_des_comptes, output_file):
 
         table.append([
             (compte['numero'], NUMERO_COMPTE_LEN), 
-            (compte['nom'][:LIBELLE_COMPTE_LEN-2], LIBELLE_COMPTE_LEN), 
+            (compte['nom'], LIBELLE_COMPTE_LEN), 
             (total_debit and fmt_number(total_debit) or '', DEBIT_LEN),
             (total_credit and fmt_number(total_credit) or '', CREDIT_LEN),
             (solde_debiteur and fmt_number(solde_debiteur) or '', DEBIT_LEN),
