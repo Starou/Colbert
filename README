@@ -167,6 +167,8 @@ Each entry is a multiline row in the table.
 I use *Line Blocks* to get a descent formatting in the muttiline cells. Trying to right-align the content of the two last columns was a failure.
 In fact for a reason I don't get, if those values are not left-aligned, the LaTeX conversion sucks.
 
+The optional *thousand separator* cannot be anything else than a space character at the moment. This is on the TODO list.
+
 Checking the Livre-journal
 ''''''''''''''''''''''''''
 
@@ -228,6 +230,7 @@ And then in reStructuredText::
     $ colbert_grand_livre_to_rst.py grand-livre_2011.json > grand-livre_2011.txt
 
 
+
 Or in a Makefile::
 
     FILENAME="grand_livre-2011"
@@ -246,7 +249,7 @@ Or in a Makefile::
         @sed -E -f fix_table.sed < $(FILENAME).tex.tmp > $(FILENAME).tex
 
     rst:	json
-        @echo "Conversion du grand livre au format RestructuredText..."
+        @echo "Conversion du grand livre au format reStructuredText..."
         @colbert_grand_livre_to_rst.py $(FILENAME).json > $(FILENAME).txt
 
     json:
@@ -262,6 +265,63 @@ Or in a Makefile::
         @rm $(FILENAME).out 
         @rm $(FILENAME).aux 
         @rm $(FILENAME).log 
+
+The *fix_table.sed* in the TeX conversion rule is a Sed script managing the right-alignment of the money columns::
+
+    s/\\begin{longtable\*}.*/\\newcolumntype{x}[1]{% \
+    >{\\raggedleft\\hspace{0pt}}p{#1}}% \
+    \\newcolumntype{y}[1]{% \
+    >{\\raggedright\\hspace{0pt}}p{#1}}% \
+    \\begin{longtable*}[c]{y{2cm}y{7.5cm}x{2cm}|y{2cm}y{7.5cm}x{2cm}}/
+    s/\\\\/\\tabularnewline/
+
+Here an example of the reStructuredText output::
+
+    ================
+    Grand-Livre 2011
+    ================
+
+
+    -----------------------------------
+    Période du 01/03/2011 au 31/12/2011
+    -----------------------------------
+
+
+    +---------------------------------------------------------------------------------------------------------------------------+
+    | 100 - *Capital et compte de l'exploitant*                                                                                 |
+    +============+=================================+=============+============+=======================================+=========+
+    | *Date*     | *Libellé*                       | *Débit*     | *Date*     | *Libellé*                             | *Crédit*|
+    +------------+---------------------------------+-------------+------------+---------------------------------------+---------+
+    |            |                                 |             | 02/04/2011 | Capital initial Dépôt de 1500 € par...| 1500.00 |
+    +------------+---------------------------------+-------------+------------+---------------------------------------+---------+
+    |            | *Solde créditeur au 31/12/2011* | **1500.00** |            |                                       |         |
+    +------------+---------------------------------+-------------+------------+---------------------------------------+---------+
+
+    .. raw:: latex
+
+        \newpage
+
+    +---------------------------------------------------------------------------------------------------------------------------+
+    | 4111-CL1 - *Clients - ventes de biens ou prestations de services*                                                         |
+    +============+=================================+==========+============+=========================================+==========+
+    | *Date*     | *Libellé*                       | *Débit*  | *Date*     | *Libellé*                               | *Crédit* |
+    +------------+---------------------------------+----------+------------+-----------------------------------------+----------+
+    | 31/03/2011 | Facture 2011-01 MyClient1 ...   | 5980.00  | 02/09/2011 | Virement MyClient1 ZZZZZZZZZZZ Facture..| 5980.00  |
+    +------------+---------------------------------+----------+------------+-----------------------------------------+----------+
+    | 28/09/2011 | Facture 2011-04 MyClient1 ...   | 13156.00 | 01/12/2011 | Virement MyClient1 WWWWWWWWWW Facture...| 18538.00 |
+    +------------+---------------------------------+----------+------------+-----------------------------------------+----------+
+    | 01/11/2011 | Facture 2011-05 MyClient1 ...   | 5382.00  |            |                                         |          |
+    +------------+---------------------------------+----------+------------+-----------------------------------------+----------+
+    |            | *Compte soldé au 31/12/2011.*   |          |            | *Compte soldé au 31/12/2011.*           |          |
+    +------------+---------------------------------+----------+------------+-----------------------------------------+----------+
+
+    .. raw:: latex
+
+
+La balance des comptes
+----------------------
+
+The next financial piece is a single table regrouping the balance of the accounts. It is computed from the Grand-livre for the sake of simplicity. 
 
 
 
