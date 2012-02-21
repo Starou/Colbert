@@ -616,6 +616,35 @@ The reStructuredText output::
     +---------------------------------+-----------+--------------------------------------------------+------------------+
 
 
+Managing the transition between 2 fiscal years
+==============================================
+
+When you have closed your fiscal year (say 2011) you have to create a new one (2012). In Colbert, you create a new directory, *2012*, 
+aside *2011*. You can simply make a *cp 2011 2012*, run the *make purge* rules in each subdirectories and replace the dates and the 
+filenames at the top of each Makefile.
+
+This may looks a bit awkward but this occurs only once a year !
+
+
+Les écritures de clôture
+------------------------
+
+When a fiscal year is closed and when your documents and books are up-to-date (*Grand-livre*, *Balance des comptes*, *Bilan* and *Compte
+de résultat*) you have to insert in the Livre-journal the *écritures de clôture* (accounts closing entries). The purpose of these entries
+is:
+
+1. to reset the *comptes de résultat* (in France, it is those having a number in *6xx* and *7xx*) ;
+2. transfert the gain or the lost registred at the end of the fiscal year on the *comptes de bilan*.
+
+Colbert come with a script to compute such entries::
+
+    $ colbert_ecritures_de_cloture.py ../balance-des-comptes/balance_des_comptes-2011.json  > ecritures-de-cloture.json
+    $ colbert_ecritures_to_livre_journal.py --label="Ecriture de cloture a reporter au Livre-journal" ecritures-de-cloture.json > ecritures-de-cloture.txt
+
+
+And copy/paste the body of *ecritures-de-cloture.txt* into the Livre-journal at the right place.
+
+
 Working with LaTeX
 ==================
 
