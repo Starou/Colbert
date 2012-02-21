@@ -329,7 +329,7 @@ Again, you first generate a JSON file and then a reStructuredText file::
     $ colbert_balance_des_comptes_to_rst.py balance-des-comptes.json > balance-des-comptes.txt
 
 
-And again, you hould use this Makefile::
+And again, you should use this Makefile::
 
     FILENAME="balance_des_comptes-2011"
 
@@ -511,6 +511,109 @@ The reStructuredText output::
     | *Total*                      | *11964.21*       | *0.00*         | **11964.21**  | *Total*               | **11964.21**  |
     +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
 
+
+Le compte de résultat
+---------------------
+
+The purpose of this last document is to give an idea of your activity during the fiscal year::
+
+    $ colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Compte de résultat 2011 en €"  > compte-de-resultat.json
+    $ colbert_compte_de_resultat_to_rst.py compte-de-resultat.json > compte-de-resultat.txt
+
+
+In a Makefile::
+
+    FILENAME="compte_de_resultat-2011"
+
+    all:	pdf
+
+    pdf:	tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+
+    tex:	rst
+        @rst2latex.py --table-style=booktabs --output-encoding=utf-8 $(FILENAME).txt >  $(FILENAME).tex.tmp
+        @sed -E -f fix_table.sed < $(FILENAME).tex.tmp > $(FILENAME).tex
+
+    rst:	json
+        @echo "Conversion du compte de résultat au format reStructuredText..."
+        @colbert_compte_de_resultat_to_rst.py $(FILENAME).json > $(FILENAME).txt
+
+    json:
+        @echo "calcul du compte de résultat..."
+        @colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Compte de résultat 2011 en €"  > $(FILENAME).json
+
+    purge:	clean
+        @rm $(FILENAME).pdf
+        @rm $(FILENAME).tex
+        @rm $(FILENAME).txt
+
+    clean:
+        @rm $(FILENAME).out 
+        @rm $(FILENAME).aux 
+        @rm $(FILENAME).log 
+
+
+The Sed script::
+
+    s/\\begin{longtable\*}.*/\\newcolumntype{x}[1]{% \
+    >{\\raggedleft\\hspace{0pt}}p{#1}}% \
+    \\newcolumntype{y}[1]{% \
+    >{\\raggedright\\hspace{0pt}}p{#1}}% \
+    \\begin{longtable*}[c]{y{8.5cm}x{2.2cm}|y{8.5cm}x{2.2cm}}/
+    s/} \\\\/} \\tabularnewline/
+    s/&[[:space:]]+\\\\/\& \\tabularnewline/
+    s/[[:space:]]+\\\\$/\\tabularnewline/
+
+
+The reStructuredText output::
+
+    ====================================
+    Compte de résultat 2011 - MyBusiness
+    ====================================
+
+
+    -----------------------------------
+    Période du 01/03/2011 au 31/12/2011
+    -----------------------------------
+
+
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | Charges                         | Montant   | Produits                                         | Montant          |
+    +=================================+===========+==================================================+==================+
+    | *Charges d'exploitation*        |           | *Produits d'exploitation*                        |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | Rémunérations du personnel      | 3795.00   | Prestations de services                          | 40000.00         |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | Fournitures non stockables      | 21.44     | Autres produits de gestion courante              | 0.34             |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | Autres services extérieurs      | 232.00    |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | *Charges financières*           |           | *Produits financiers*                            |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | *Charges exceptionnelles*       |           | *Produits exceptionnels*                         |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    |                                 |           |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | **Sous-total charges**          | 4048.44   | **Sous-total produits**                          | 40000.34         |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
+    | **Résultat (bénéfice)**         | 35951.90  |                                                  |                  |
+    +---------------------------------+-----------+--------------------------------------------------+------------------+
 
 
 Working with LaTeX
