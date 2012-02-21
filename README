@@ -97,7 +97,7 @@ junary and closing them the 31th of december, every year).
 In each year directory reside sub-directories named with the tasks, books or documents you have to deal with and produce all along the financial/fiscal year.
 
 Almost every sub-directory should contains a Makefile to automatically call some Colbert or LaTeX routines to update your files from the source 
-(which may be the *livre-journal* or the *Grand-livre*).
+(which may be the *livre-journal*, the *Grand-livre* or the *Balance des comptes*).
 
 
 In a nutshell, a typical usage at the end of a fiscal year is:
@@ -106,9 +106,9 @@ In a nutshell, a typical usage at the end of a fiscal year is:
 2. check your *relevés bancaires* (statement of account ?) against the Livre-journal. Go back to (1) if it is not the case ;
 3. generate the *Grand-livre* as JSON from the Livre-journal ;
 4. generate the *Balance des comptes* from the *grand_livre.json* file ;
-5. compute the *Bilan* from  the *grand_livre.json* file ;
-6. compute the *Compte de résultat* from  the *grand_livre.json* file ;
-7. compute the *écritures de clôture* from  the *grand_livre.json* file and write them back to the Livre-journal ;
+5. compute the *Bilan* from  the *balance_des_comptes.json* file ;
+6. compute the *Compte de résultat* from  the *balance_des_comptes.json* file ;
+7. compute the *écritures de clôture* from  the *balance_des_comptes.json* file and write them back to the Livre-journal ;
 
 
 
