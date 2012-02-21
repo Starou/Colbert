@@ -36,10 +36,9 @@ In Unix, everything is a file. In accountancy, everything is an account.
 You can see accounts like a filesystem. You can create as much leafs and forks as you need.
 
 |
-
 This is a work in progress and the product is at his very early stage. A lot of refactoring in the code will happen but for now I keep it as much simple as I can.
 This is not yet an object-oriented program with metaclasses and other fancy concepts. 
-I need to keep the codebase easy to move as long as I have not validate my knowledge which may take one or two years.
+I need to keep the codebase easy to move as long as I have not validate my knowledge which may take a couple of years.
 
 Some stuffs are hard-coded because at a proof-of-concept stage.
 
@@ -212,6 +211,59 @@ In the *TVA* directory::
     $ colbert_ecritures_to_livre_journal solde-tva-sept-2011.json > solde-tva-sept-2011.txt
 
 
+Le Grand-livre
+--------------
+
+In that book are gathered the entries of the Livre-journal by account number for a period of time (a fiscal year). One table for every single account.
+
+Every account should starts with the *report à nouveau* (the balance) of the previous fiscal year. This is not implemented yet in Colbert.
+
+To generate the Grand-livre, run the following::
+
+    $ @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2011" -d 1/1/2011 -f 31/12/2011 > grand-livre_2011.json
+
+And then in reStructuredText::
+
+    $ colbert_grand_livre_to_rst.py grand-livre_2011.json > grand-livre_2011.txt
+
+
+Or in a Makefile::
+
+    FILENAME="grand_livre-2011"
+    DATE_DEBUT="18/03/2011"
+    DATE_FIN="31/12/2011"
+
+    all:	pdf
+
+    pdf:	tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+
+    tex:	rst
+        @rst2latex.py --table-style=booktabs $(FILENAME).txt >  $(FILENAME).tex.tmp
+        @sed -E -f fix_table.sed < $(FILENAME).tex.tmp > $(FILENAME).tex
+
+    rst:	json
+        @echo "Conversion du grand livre au format RestructuredText..."
+        @colbert_grand_livre_to_rst.py $(FILENAME).json > $(FILENAME).txt
+
+    json:
+        @echo "calcul du Grand-Livre..."
+        @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2011" -d $(DATE_DEBUT) -f $(DATE_FIN) > $(FILENAME).json
+
+    purge:	clean
+        @rm $(FILENAME).pdf
+        @rm $(FILENAME).tex
+        @rm $(FILENAME).txt
+
+    clean:
+        @rm $(FILENAME).out 
+        @rm $(FILENAME).aux 
+        @rm $(FILENAME).log 
+
+
+
 Working with LaTeX
 ==================
 
@@ -278,12 +330,18 @@ Installation
 Hey, this is a Python package, so just run *python setup.py install* and you're done.
 
 
+Tests
+=====
+
+There are some regression tests in the *test* directory.
+
+
 Requirements
 ============
 
 - Python 2.6+.
-- Docutils.
-- a LaTex suite if you want to render the reStructuredText in LaTex and then in PDF. 
+- Docutils, the SVN version is better.
+- A LaTex suite if you want to render the reStructuredText in PDF. 
 - Make.
 - Sed.
 
