@@ -323,6 +323,117 @@ La balance des comptes
 
 The next financial piece is a single table regrouping the balance of the accounts. It is computed from the Grand-livre for the sake of simplicity. 
 
+Again, you first generate a JSON file and then a reStructuredText file::
+
+    $ colbert_balance_des_comptes.py ../grand-livre/grand_livre-2011.json --label="MyBusiness - Balance des comptes 2011 en €"  > $balance-des-comptes.json
+
+
+And again, you hould use this Makefile::
+
+    FILENAME="balance_des_comptes-2011"
+
+    all:	pdf
+
+    pdf:	tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+
+    tex:	rst
+        @rst2latex.py --table-style=booktabs $(FILENAME).txt >  $(FILENAME).tex.tmp
+        @sed -E -f fix_table.sed < $(FILENAME).tex.tmp > $(FILENAME).tex
+
+    rst:	json
+        @echo "Conversion de la balance des comptes au format reStructuredText..."
+        @colbert_balance_des_comptes_to_rst.py $(FILENAME).json > $(FILENAME).txt
+
+    json:
+        @echo "calcul de la balance des comptes..."
+        @colbert_balance_des_comptes.py ../grand-livre/grand_livre-2011.json --label="MyBusiness - Balance des comptes 2011 en €"  > $(FILENAME).json
+
+    purge:	clean
+        @rm $(FILENAME).pdf
+        @rm $(FILENAME).tex
+        @rm $(FILENAME).txt
+
+    clean:
+        @rm $(FILENAME).out 
+        @rm $(FILENAME).aux 
+        @rm $(FILENAME).log 
+
+
+With the Sed fix::
+
+    s/\\begin{longtable\*}.*/\\newcolumntype{x}[1]{% \
+    >{\\raggedleft\\hspace{0pt}}p{#1}}% \
+    \\newcolumntype{y}[1]{% \
+    >{\\raggedright\\hspace{0pt}}p{#1}}% \
+    \\begin{longtable*}[c]{y{2cm}y{8.5cm}x{2.2cm}x{2.2cm}x{2.2cm}x{2.2cm}}/
+    s/} \\\\/} \\tabularnewline/
+    s/&[[:space:]]+\\\\/\& \\tabularnewline/
+    s/[[:space:]]+\\\\$/\\tabularnewline/
+
+
+And here a example of the reStructuredText output (again, the table width had been reduced here to fit well)::
+
+    =====================================
+    Balance des comptes 2011 - MyBusiness
+    =====================================
+
+
+    -----------------------------------
+    Période du 01/03/2011 au 31/12/2011
+    -----------------------------------
+
+
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | N°           | Libellé                                           | Total débit | Total crédit | Solde débit | Solde crédit|
+    +==============+===================================================+=============+==============+=============+=============+
+    | 100          | Capital et compte de l'exploitant                 |             | 1500.00      |             | 1500.00     |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 4111-CL1     | Clients - ventes de biens ou prestations de ser...| 24518.00    | 24518.00     |             |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 4111-CL2     | Clients - ventes de biens ou prestations de ser...| 1794.00     | 1794.00      |             |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 4111-CL3     | Clients - ventes de biens ou prestations de ser...| 8372.00     |              | 8372.00     |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 4181         | Clients - Factures à établir                      | 13156.00    |              | 13156.00    |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 44551        | TVA à décaisser                                   | 1240.00     | 4278.00      |             | 3038.00     |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 44566        | T.V.A. déductible sur autres biens et services    | 33.66       | 33.66        |             |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 44571        | T.V.A. Collectée                                  | 4312.00     | 4312.00      |             |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 44587        | Taxes sur le CA sur factures à établir            | 4312.00     | 7840.00      |             | 3528.00     |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 455          | Associés - Comptes courants                       |             | 189.45       |             | 189.45      |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 512          | Banques                                           | 27812.00    | 5132.65      | 22679.35    |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 60225        | Achats - Fournitures de bureau                    | 21.44       |              | 21.44       |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 6227         | Achats - Frais d'actes et de contentieux          | 160.00      |              | 160.00      |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 6278-LCL     | Autres frais de commission sur prestations de s...| 72.00       |              | 72.00       |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 6411         | Charges - Salaires et appointements               | 3000.00     |              | 3000.00     |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 6411-RSI     | Charges - cotisations RSI                         | 393.00      |              | 393.00      |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 6411-URSF1   | Charges - cotisations URSSAF - Allocations famil..| 161.80      |              | 161.80      |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 6411-URSF2   | Charges - cotisations URSSAF - CSG/RDS déducti... | 153.31      |              | 153.31      |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 6411-URSF3   | Charges - cotisations URSSAF - CSG/RDS non-dédu...| 86.89       |              | 86.89       |             |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 706          | Produits - prestations de services                |             | 40000.00     |             | 40000.00    |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    | 758          | Produits divers de gestion courante               |             | 0.34         |             | 0.34        |
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+    |              | **Totaux**                                        | **89598.10**| **89598.10** | **48255.79**| **48255.79**|
+    +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+
 
 
 Working with LaTeX
