@@ -36,6 +36,7 @@ In Unix, everything is a file. In accountancy, everything is an account.
 You can see accounts like a filesystem. You can create as much leafs and forks as you need.
 
 |
+
 This is a work in progress and the product is at his very early stage. A lot of refactoring in the code will happen but for now I keep it as much simple as I can.
 This is not yet an object-oriented program with metaclasses and other fancy concepts. 
 I need to keep the codebase easy to move as long as I have not validate my knowledge which may take a couple of years.
