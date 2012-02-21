@@ -326,6 +326,7 @@ The next financial piece is a single table regrouping the balance of the account
 Again, you first generate a JSON file and then a reStructuredText file::
 
     $ colbert_balance_des_comptes.py ../grand-livre/grand_livre-2011.json --label="MyBusiness - Balance des comptes 2011 en €"  > $balance-des-comptes.json
+    $ colbert_balance_des_comptes_to_rst.py balance-des-comptes.json > balance-des-comptes.txt
 
 
 And again, you hould use this Makefile::
@@ -433,6 +434,82 @@ And here a example of the reStructuredText output (again, the table width had be
     +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
     |              | **Totaux**                                        | **89598.10**| **89598.10** | **48255.79**| **48255.79**|
     +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
+
+
+Le Bilan
+--------
+
+This document is a *résumé* or a «picture» of your business. It is generated from the *Balance des comptes*::
+
+    $ colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Bilan 2011 en €"  > bilan.json
+    $ colbert_bilan_to_rst.py bilan.json > bilan.txt
+
+
+A Makefile to automatically do all the work::
+
+    FILENAME="bilan-2011"
+
+    all:	pdf
+
+    pdf:	tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+
+    tex:	rst
+        @rst2latex.py --table-style=booktabs --output-encoding=utf-8 $(FILENAME).txt >  $(FILENAME).tex.tmp
+        @sed -E -f fix_table.sed < $(FILENAME).tex.tmp > $(FILENAME).tex
+
+    rst:	json
+        @echo "Conversion du bilan au format reStructuredText..."
+        @colbert_bilan_to_rst.py $(FILENAME).json > $(FILENAME).txt
+
+    json:
+        @echo "calcul de la bilan..."
+        @colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Bilan 2011 en €"  > $(FILENAME).json
+
+    purge:	clean
+        @rm $(FILENAME).pdf
+        @rm $(FILENAME).tex
+        @rm $(FILENAME).txt
+
+    clean:
+        @rm $(FILENAME).out 
+        @rm $(FILENAME).aux 
+        @rm $(FILENAME).log 
+
+
+And the Sed script::
+
+    s/\\setlength{\\DUtablewidth}{\\linewidth}/\\setlength{\\tabcolsep}{25pt} \\setlength{\\extrarowheight}{4.5pt}/
+    s/\\begin{longtable\*}.*/\\begin{longtable*}[c]{lrrr|lr}/
+    
+
+The reStructuredText output::
+
+    =======================
+    Bilan 2011 - MyBusiness
+    =======================
+
+
+    -----------------------------------
+    Période du 01/04/2011 au 31/12/2011
+    -----------------------------------
+
+
+    +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
+    | Actif                        | Brut             | Amortissement  | Net           | Passif                | Montant       |
+    +==============================+==================+================+===============+=======================+===============+
+    | **Actif_circulant**          |                  |                |               | **Capitaux_propres**  |               |
+    +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
+    | Client_et_comptes_rattaches  | 11960.00         |                | 11960.00      | Resultat              | 9922.65       |
+    +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
+    | Autres_creances              | 4.21             |                | 4.21          | **Dettes**            |               |
+    +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
+    |                              |                  |                |               | Autres_dettes         | 2041.56       |
+    +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
+    | *Total*                      | *11964.21*       | *0.00*         | **11964.21**  | *Total*               | **11964.21**  |
+    +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
 
 
 
