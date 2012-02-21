@@ -12,7 +12,7 @@ also known for being the father of the modern accountancy.
 The big disclaimer(s)
 =====================
 
-I don't know shit about accountancy. I am running a very small company since 2011 and there is two things I wanted to avoid for my fiscal and financial obligations:
+I don't know shit about accountancy. I am running a very small business since 2011 and there is two things I wanted to avoid for my fiscal and financial obligations:
 
 1. to throw 3k€/year to pay someone Porsche ;
 2. to learn a terrible closed source piece of accountancy software instead of understanding the roots.
@@ -161,10 +161,61 @@ In Colbert, this is a RestructuredText file meeting the french administration re
     +-------------+-----------------+-----------------+-------------------------------------------------+-----------+-----------+
 
 
+
+Each entry is a multiline row in the table. 
+
+I use *line blocks* to get a descent formatting in the muttiline cells. Trying to right-align the content of the two last columns was a failure.
+In fact for a reason I don't get, if those values are not left-aligned, the LaTeX conversion sucks.
+
+Checking the Livre-journal
+''''''''''''''''''''''''''
+
+A first script allows you to check the entries balance of the book::
+
+    $ colbert_check_livre_journal.py my_livre_journal.txt
+
+
+My Makefile in the Livre-journal directory being::
+
+    
+    FILENAME="livre-journal"
+
+    all:	pdf
+
+    pdf:	tex
+        @pdflatex $(FILENAME).tex
+        @pdflatex $(FILENAME).tex
+        @colbert_check_livre_journal.py $(FILENAME).txt
+
+    tex:
+        @rst2latex.py $(FILENAME).txt > $(FILENAME).tex
+
+    clean:
+        @rm $(FILENAME).out 
+        @rm $(FILENAME).aux 
+        @rm $(FILENAME).log 
+
+
+Computing VAT
+'''''''''''''
+
+The *colbert_solder_tva.py* script compute the flow of money on the VAT-related accounts for a period of time and produce an JSON-entry
+to counter-balance these entries. Then you (manually) copy/paste this entry in the Livre-journal.
+Obviously, the JSON-entry need to be converted first in the RestructuredText format of the Livre-journal with the *colbert_ecritures_to_livre_journal.py*
+utility.
+
+This is something you have to do every month or every quarter in France.
+
+In the *TVA* directory::
+
+    $ colbert_solder_tva ../../livre-journal/livre-journal.txt -d 01/03/2011 -f 30/9/2011 > solde-tva-sept-2011.json
+    $ colbert_ecritures_to_livre_journal solde-tva-sept-2011.json > solde-tva-sept-2011.txt
+
+
 Installation
 ============
 
-Hey, this is a Python package, so just run *python setup.py install* and your done.
+Hey, this is a Python package, so just run *python setup.py install* and you're done.
 
 
 Requirements
