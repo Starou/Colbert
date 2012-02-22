@@ -9,7 +9,7 @@ from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 
 from colbert.livre_journal import livre_journal_to_list, get_solde_compte
-from colbert.livre_journal import ECRITURES
+from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 
 def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
     """Calcule l'écriture nécessaire au solde des comptes de TVA sur une période. """
@@ -33,17 +33,17 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
         ecritures.append({
             CREDIT: Decimal('0.00'),
             DEBIT: credit_tva_collectee,
-            'nom_compte': PCG['tva-collectee'][NOM],
-            'numero_compte_credit': u'',
-            'numero_compte_debit': PCG['tva-collectee'][NUMERO],
+            NOM_COMPTE: PCG['tva-collectee'][NOM],
+            NUMERO_COMPTE_CREDIT: u'',
+            NUMERO_COMPTE_DEBIT: PCG['tva-collectee'][NUMERO],
         })
     if debit_tva_deductible:
         ecritures.append({
             CREDIT: debit_tva_deductible,
             DEBIT: Decimal('0.00'),
-            'nom_compte': PCG['tva-deductible'][NOM],
-            'numero_compte_credit': PCG['tva-deductible'][NUMERO],
-            'numero_compte_debit': u'',
+            NOM_COMPTE: PCG['tva-deductible'][NOM],
+            NUMERO_COMPTE_CREDIT: PCG['tva-deductible'][NUMERO],
+            NUMERO_COMPTE_DEBIT: u'',
         })
 
     if credit_tva_collectee == debit_tva_deductible:
@@ -57,9 +57,9 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
         ecritures.append({
             CREDIT: credit_tva_arrondi,
             DEBIT: Decimal('0.00'),
-            'nom_compte': PCG['tva-a-decaisser'][NOM],
-            'numero_compte_credit': PCG['tva-a-decaisser'][NUMERO],
-            'numero_compte_debit': u'',
+            NOM_COMPTE: PCG['tva-a-decaisser'][NOM],
+            NUMERO_COMPTE_CREDIT: PCG['tva-a-decaisser'][NUMERO],
+            NUMERO_COMPTE_DEBIT: u'',
         })
 
         # L'arrondi est équilibré avec les comptes 658/758.
@@ -67,18 +67,18 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
             ecritures.append({
                 CREDIT: Decimal('0.00'),
                 DEBIT: credit_tva_arrondi - credit_tva,
-                'nom_compte': PCG['charges-diverses-gestion-courante'][NOM],
-                'numero_compte_credit': u'',
-                'numero_compte_debit': PCG['charges-diverses-gestion-courante'][NUMERO],
+                NOM_COMPTE: PCG['charges-diverses-gestion-courante'][NOM],
+                NUMERO_COMPTE_CREDIT: u'',
+                NUMERO_COMPTE_DEBIT: PCG['charges-diverses-gestion-courante'][NUMERO],
             })
 
         elif credit_tva_arrondi < credit_tva:
             ecritures.append({
                 CREDIT: credit_tva - credit_tva_arrondi,
                 DEBIT: Decimal('0.00'),
-                'nom_compte': PCG['produits-divers-gestion-courante'][NOM],
-                'numero_compte_credit': PCG['produits-divers-gestion-courante'][NUMERO],
-                'numero_compte_debit': u'',
+                NOM_COMPTE: PCG['produits-divers-gestion-courante'][NOM],
+                NUMERO_COMPTE_CREDIT: PCG['produits-divers-gestion-courante'][NUMERO],
+                NUMERO_COMPTE_DEBIT: u'',
             })
 
 

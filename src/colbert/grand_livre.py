@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 from colbert.livre_journal import livre_journal_to_list
-from colbert.livre_journal import ECRITURES
+from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 from colbert.utils import DATE_FMT
 from colbert.common import DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM
 
@@ -50,11 +50,11 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
     for ecriture in livre_journal:
         if date_debut <= ecriture[DATE] <= date_fin:
             for e in ecriture["ecritures"]:
-                if e['numero_compte_debit']:
-                    param, mvt = 'numero_compte_debit', DEBIT
-                elif e['numero_compte_credit']:
-                    param, mvt = 'numero_compte_credit', CREDIT
-                compte = comptes.setdefault(e[param], {NOM: e['nom_compte'],
+                if e[NUMERO_COMPTE_DEBIT]:
+                    param, mvt = NUMERO_COMPTE_DEBIT, DEBIT
+                elif e[NUMERO_COMPTE_CREDIT]:
+                    param, mvt = NUMERO_COMPTE_CREDIT, CREDIT
+                compte = comptes.setdefault(e[param], {NOM: e[NOM_COMPTE],
                                                        ECRITURES: []})
                 compte[ECRITURES].append({DATE: ecriture[DATE], 
                                             INTITULE: ecriture[INTITULE],
