@@ -17,6 +17,7 @@ LABEL = u'label'
 INTITULE = 'intitule'
 NOM = u'nom'
 NUMERO = u'numero'
+NUMERO_COMPTE = u'numero_compte'
 
 CATEGORIE = u'categorie'
 RUBRIQUES = u'rubriques'

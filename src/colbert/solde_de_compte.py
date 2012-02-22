@@ -4,9 +4,10 @@ import datetime
 from decimal import Decimal
 
 from colbert.livre_journal import livre_journal_to_list
-from colbert.livre_journal import ECRITURES
+from colbert.livre_journal import ECRITURES, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE
+from colbert.common import (DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, 
+                            LABEL, INTITULE, NUMERO_COMPTE)
 
 SOLDE_TABLE_LEN = 134
 DATE_LEN = 12
@@ -25,7 +26,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
     lines = []
     livre_journal = livre_journal_to_list(livre_journal_file)
     for compte in comptes:
-        lines.append(rst_title(u"Compte n°%s en Euros" % compte['numero_compte']))
+        lines.append(rst_title(u"Compte n°%s en Euros" % compte[NUMERO_COMPTE]))
         lines.append(u"\n")
         table = []
         for journal in compte['journaux']:
@@ -52,7 +53,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
                     break
                 else:
                     for e in ecriture[ECRITURES]:
-                        if compte['numero_compte'] in[e['numero_compte_debit'], e['numero_compte_credit']]:
+                        if compte[NUMERO_COMPTE] in[e[NUMERO_COMPTE_DEBIT], e[NUMERO_COMPTE_CREDIT]]:
                             debit = e[DEBIT] and Decimal(e[DEBIT]) or Decimal("0.00")
                             credit = e[CREDIT] and Decimal(e[CREDIT]) or Decimal("0.00")
 
