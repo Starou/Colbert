@@ -5,10 +5,11 @@ import datetime
 from decimal import Decimal
 from colbert.utils import fmt_number
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE, INTITULE
+from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 
-from livre_journal import livre_journal_to_list, get_solde_compte
+from colbert.livre_journal import livre_journal_to_list, get_solde_compte
+from colbert.livre_journal import ECRITURES
 
 def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
     """Calcule l'écriture nécessaire au solde des comptes de TVA sur une période. """
@@ -17,11 +18,11 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
 
     # On ne devrait avoir que du crédit en tva collecté et du débit en tva déductible.
     debit_tva_collectee, credit_tva_collectee = get_solde_compte(livre_journal,
-                                                                 PCG['tva-collectee']['numero'],
+                                                                 PCG['tva-collectee'][NUMERO],
                                                                  date_debut, date_fin)
     
     debit_tva_deductible, credit_tva_deductible = get_solde_compte(livre_journal,
-                                                                   PCG['tva-deductible']['numero'],
+                                                                   PCG['tva-deductible'][NUMERO],
                                                                    date_debut, date_fin)
 
     compte_tva, debit_tva, credit_tva = None, Decimal("0"), Decimal("0")
@@ -32,16 +33,16 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
         ecritures.append({
             CREDIT: Decimal('0.00'),
             DEBIT: credit_tva_collectee,
-            'nom_compte': PCG['tva-collectee']['nom'],
+            'nom_compte': PCG['tva-collectee'][NOM],
             'numero_compte_credit': u'',
-            'numero_compte_debit': PCG['tva-collectee']['numero'],
+            'numero_compte_debit': PCG['tva-collectee'][NUMERO],
         })
     if debit_tva_deductible:
         ecritures.append({
             CREDIT: debit_tva_deductible,
             DEBIT: Decimal('0.00'),
-            'nom_compte': PCG['tva-deductible']['nom'],
-            'numero_compte_credit': PCG['tva-deductible']['numero'],
+            'nom_compte': PCG['tva-deductible'][NOM],
+            'numero_compte_credit': PCG['tva-deductible'][NUMERO],
             'numero_compte_debit': u'',
         })
 
@@ -56,8 +57,8 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
         ecritures.append({
             CREDIT: credit_tva_arrondi,
             DEBIT: Decimal('0.00'),
-            'nom_compte': PCG['tva-a-decaisser']['nom'],
-            'numero_compte_credit': PCG['tva-a-decaisser']['numero'],
+            'nom_compte': PCG['tva-a-decaisser'][NOM],
+            'numero_compte_credit': PCG['tva-a-decaisser'][NUMERO],
             'numero_compte_debit': u'',
         })
 
@@ -66,17 +67,17 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
             ecritures.append({
                 CREDIT: Decimal('0.00'),
                 DEBIT: credit_tva_arrondi - credit_tva,
-                'nom_compte': PCG['charges-diverses-gestion-courante']['nom'],
+                'nom_compte': PCG['charges-diverses-gestion-courante'][NOM],
                 'numero_compte_credit': u'',
-                'numero_compte_debit': PCG['charges-diverses-gestion-courante']['numero'],
+                'numero_compte_debit': PCG['charges-diverses-gestion-courante'][NUMERO],
             })
 
         elif credit_tva_arrondi < credit_tva:
             ecritures.append({
                 CREDIT: credit_tva - credit_tva_arrondi,
                 DEBIT: Decimal('0.00'),
-                'nom_compte': PCG['produits-divers-gestion-courante']['nom'],
-                'numero_compte_credit': PCG['produits-divers-gestion-courante']['numero'],
+                'nom_compte': PCG['produits-divers-gestion-courante'][NOM],
+                'numero_compte_credit': PCG['produits-divers-gestion-courante'][NUMERO],
                 'numero_compte_debit': u'',
             })
 
@@ -88,7 +89,7 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
     if ecritures:
         return {
             DATE: date_fin,
-            'ecritures': ecritures,
+            ECRITURES: ecritures,
             INTITULE: u"Solde des comptes de TVA du %s au %s" % (date_debut.strftime(DATE_FMT),
                                                                    date_fin.strftime(DATE_FMT))
         }

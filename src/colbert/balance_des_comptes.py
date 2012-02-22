@@ -3,7 +3,7 @@
 import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
+from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL, NOM, NUMERO
 
 
 def balance_des_comptes(grand_livre, label="Balance des comptes"):
@@ -56,8 +56,8 @@ def balance_des_comptes(grand_livre, label="Balance des comptes"):
         balance['total_soldes_crediteurs'] += solde_crediteur
 
         comptes.append({
-            'numero': numero_compte,
-            'nom': compte['nom'],
+            NUMERO: numero_compte,
+            NOM: compte[NOM],
             'solde_debiteur': solde_debiteur,
             'solde_crediteur': solde_crediteur,
             'total_debit': total_debit,
@@ -104,8 +104,8 @@ def balance_des_comptes_to_rst(balance_des_comptes, output_file):
         solde_crediteur = Decimal(compte['solde_crediteur'])
 
         table.append([
-            (compte['numero'], NUMERO_COMPTE_LEN), 
-            (compte['nom'], LIBELLE_COMPTE_LEN), 
+            (compte[NUMERO], NUMERO_COMPTE_LEN), 
+            (compte[NOM], LIBELLE_COMPTE_LEN), 
             (total_debit and fmt_number(total_debit) or '', DEBIT_LEN),
             (total_credit and fmt_number(total_credit) or '', CREDIT_LEN),
             (solde_debiteur and fmt_number(solde_debiteur) or '', DEBIT_LEN),

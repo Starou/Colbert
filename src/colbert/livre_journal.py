@@ -4,7 +4,9 @@ import re
 import datetime
 from decimal import Decimal
 from colbert.utils import fmt_number, DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE, INTITULE
+from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
+
+ECRITURES = u'ecritures'
 
 def check_livre_journal(livre_journal_file):
     """Vérifie l'équilibre de chaque écriture du Livre-Journal. """
@@ -16,7 +18,7 @@ def check_livre_journal(livre_journal_file):
         total_debit, total_credit = Decimal("0.0"), Decimal("0.0")
         check = [u"%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
                                ecriture[INTITULE])]
-        for e in ecriture['ecritures']:
+        for e in ecriture[ECRITURES]:
             total_debit += e[DEBIT]
             total_credit += e[CREDIT]
         if total_debit == total_credit:
@@ -52,11 +54,11 @@ def ecritures_de_cloture(balance_des_comptes):
     
     # Préparation des sous-écritures à passer.
     for compte in balance_des_comptes['comptes']:
-        if compte['numero'][0] not in COMPTES_DE_RESULTAT:
+        if compte[NUMERO][0] not in COMPTES_DE_RESULTAT:
             continue
-        if compte['numero'][0] == COMPTES_DE_PRODUITS:
+        if compte[NUMERO][0] == COMPTES_DE_PRODUITS:
             compte_cible = COMPTE_REGROUPEMENT_PRODUITS
-        elif compte['numero'][0] == COMPTES_DE_CHARGES:
+        elif compte[NUMERO][0] == COMPTES_DE_CHARGES:
             compte_cible = COMPTE_REGROUPEMENT_CHARGES
 
         solde_debiteur = Decimal(compte['solde_debiteur'])
@@ -69,9 +71,9 @@ def ecritures_de_cloture(balance_des_comptes):
         ecritures[compte_cible].append({
             DEBIT: solde_crediteur,
             CREDIT: solde_debiteur,
-            'nom_compte': compte['nom'],
-            'numero_compte_debit': solde_crediteur and compte['numero'] or u'',
-            'numero_compte_credit': solde_debiteur and compte['numero'] or u'' 
+            'nom_compte': compte[NOM],
+            'numero_compte_debit': solde_crediteur and compte[NUMERO] or u'',
+            'numero_compte_credit': solde_debiteur and compte[NUMERO] or u'' 
         })
     
     # Création des écritures finales.
@@ -92,7 +94,7 @@ def ecritures_de_cloture(balance_des_comptes):
         ecriture_finale = {
             DATE: datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
             INTITULE: u"Ecritures de clôture des comptes.",
-            'ecritures': ecritures[compte_regroupement],
+            ECRITURES: ecritures[compte_regroupement],
         }
 
         # Les écritures sont équilibrées aves les comptes 126/127.
@@ -120,9 +122,9 @@ def ecritures_de_cloture(balance_des_comptes):
 
         # On respecte la règle du débit en premier dans une écriture.
         if debit:
-            ecriture_finale['ecritures'].insert(0, ecriture_equilibre)
+            ecriture_finale[ECRITURES].insert(0, ecriture_equilibre)
         elif credit:
-            ecriture_finale['ecritures'].append(ecriture_equilibre)
+            ecriture_finale[ECRITURES].append(ecriture_equilibre)
 
         ecritures_finales.append(ecriture_finale)
 
@@ -135,7 +137,7 @@ def ecritures_de_cloture(balance_des_comptes):
     ecriture_resultat = {
         DATE: datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
         INTITULE: u"Enregistrement du résultat net de l'exercice",
-        'ecritures': [],
+        ECRITURES: [],
     }
 
     # On commence par solder les comptes de regroupement.
@@ -144,7 +146,7 @@ def ecritures_de_cloture(balance_des_comptes):
         soldes_compte_regroupement = soldes_comptes_regroupements[compte_regroupement] 
         debit = soldes_compte_regroupement[CREDIT]
         credit = soldes_compte_regroupement[DEBIT]
-        ecriture_resultat['ecritures'].append(
+        ecriture_resultat[ECRITURES].append(
             {
                 DEBIT: debit,
                 CREDIT: credit,
@@ -176,9 +178,9 @@ def ecritures_de_cloture(balance_des_comptes):
         'numero_compte_credit': credit and COMPTE_BENEFICE or u'' 
     }
     if debit:
-        ecriture_resultat['ecritures'].insert(0, ecriture_equilibre)
+        ecriture_resultat[ECRITURES].insert(0, ecriture_equilibre)
     elif credit:
-        ecriture_resultat['ecritures'].append(ecriture_equilibre)
+        ecriture_resultat[ECRITURES].append(ecriture_equilibre)
 
     ecritures_finales.append(ecriture_resultat)
 
@@ -255,9 +257,9 @@ def livre_journal_to_list(livre_journal_file):
                 m = m.groupdict()
                 ecriture[DATE] = datetime.datetime.strptime(m[DATE], "%d/%m/%Y").date()
                 ecriture[INTITULE] = m[INTITULE].strip()
-                ecriture['ecritures'] = []
+                ecriture[ECRITURES] = []
             elif RX_SUITE_INTITULE.match(line):
-                if ecriture['ecritures']:
+                if ecriture[ECRITURES]:
                     raise BaseException, u"Les lignes supplémentaires d'intitulé doivent apparaitre exclusivement sous la première ligne."
                 m = RX_SUITE_INTITULE.match(line).groupdict()
                 ecriture[INTITULE] += u" %s" % m[INTITULE].strip()
@@ -271,7 +273,7 @@ def livre_journal_to_list(livre_journal_file):
                     DEBIT: Decimal(m[DEBIT].replace(' ', '') or '0.00'),
                     CREDIT: Decimal(m[CREDIT].replace(' ', '') or '0.00'),
                 }
-                ecriture['ecritures'].append(sous_ecriture)
+                ecriture[ECRITURES].append(sous_ecriture)
 
     return livre_journal
 
@@ -302,7 +304,7 @@ def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour 
                 (u"", CREDIT_LEN),
             ],
         ]
-        for e in ecriture['ecritures']:
+        for e in ecriture[ECRITURES]:
             debit = Decimal(e[DEBIT])
             credit = Decimal(e[CREDIT])
 
@@ -329,7 +331,7 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
     debit, credit = Decimal("0.00"), Decimal("0.00")
     for ecriture in livre_journal:
         if (date_debut <= ecriture[DATE] <= date_fin):
-            for e in ecriture['ecritures']:
+            for e in ecriture[ECRITURES]:
                 if e['numero_compte_debit'] == numero_compte:
                     debit += e[DEBIT]
                 elif e['numero_compte_credit'] == numero_compte:

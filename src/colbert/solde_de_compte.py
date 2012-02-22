@@ -4,6 +4,7 @@ import datetime
 from decimal import Decimal
 
 from colbert.livre_journal import livre_journal_to_list
+from colbert.livre_journal import ECRITURES
 from colbert.utils import DATE_FMT
 from colbert.common import DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE
 
@@ -50,7 +51,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
                 elif ecriture[DATE] > date_fin:
                     break
                 else:
-                    for e in ecriture['ecritures']:
+                    for e in ecriture[ECRITURES]:
                         if compte['numero_compte'] in[e['numero_compte_debit'], e['numero_compte_credit']]:
                             debit = e[DEBIT] and Decimal(e[DEBIT]) or Decimal("0.00")
                             credit = e[CREDIT] and Decimal(e[CREDIT]) or Decimal("0.00")
