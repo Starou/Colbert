@@ -4,7 +4,8 @@ import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
 
-from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
+from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
+                            LABEL)
 
 BRUT = 'brut'
 NET = 'net'
@@ -198,8 +199,8 @@ def bilan(balance_des_comptes, label="Bilan"):
     for compte in balance_des_comptes['comptes']:
         if compte['numero'][0] not in COMPTES_DE_BILAN:
             continue
-        solde_debiteur = Decimal(compte['solde_debiteur'])
-        solde_crediteur = Decimal(compte['solde_crediteur'])
+        solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
+        solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
     
         # Actif.
         if solde_debiteur:

@@ -4,6 +4,9 @@ from utils import rst_title, DATE_FMT
 
 DEBIT = u'debit'
 CREDIT = u'credit'
+SOLDE_DEBITEUR = u'solde_debiteur'
+SOLDE_CREDITEUR = u'solde_crediteur'
+
 DATE = 'date'
 DATE_DEBUT = u'date_debut'
 DATE_FIN = u'date_fin'

@@ -4,7 +4,8 @@ from decimal import Decimal
 from colbert.livre_journal import livre_journal_to_list
 from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM
+from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_DEBUT, DATE_FIN,
+                            LABEL, INTITULE, NOM)
 
 DATE_LEN = 12
 LIBELLE_LEN = 45
@@ -49,7 +50,7 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
     livre_journal = livre_journal_to_list(livre_journal_file)
     for ecriture in livre_journal:
         if date_debut <= ecriture[DATE] <= date_fin:
-            for e in ecriture["ecritures"]:
+            for e in ecriture[ECRITURES]:
                 if e[NUMERO_COMPTE_DEBIT]:
                     param, mvt = NUMERO_COMPTE_DEBIT, DEBIT
                 elif e[NUMERO_COMPTE_CREDIT]:
@@ -71,12 +72,12 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
                                             compte[ECRITURES] if e.has_key(CREDIT)],
                                         Decimal('0.00'))
 
-        compte['solde_debiteur'] = compte['total_debit'] - compte['total_credit']
-        if compte['solde_debiteur'] < 0:
-            compte['solde_crediteur'] = -compte['solde_debiteur']
-            compte['solde_debiteur'] = Decimal('0.00')
+        compte[SOLDE_DEBITEUR] = compte['total_debit'] - compte['total_credit']
+        if compte[SOLDE_DEBITEUR] < 0:
+            compte[SOLDE_CREDITEUR] = -compte[SOLDE_DEBITEUR]
+            compte[SOLDE_DEBITEUR] = Decimal('0.00')
         else:
-            compte['solde_crediteur'] = Decimal('0.00')
+            compte[SOLDE_CREDITEUR] = Decimal('0.00')
     return grand_livre 
 
 def grand_livre_to_rst(grand_livre, output_file):
@@ -86,7 +87,7 @@ def grand_livre_to_rst(grand_livre, output_file):
     from colbert.common import titre_principal_rst
 
     lines = []
-    lines += titre_principal_rst(grand_livre["label"], grand_livre["date_debut"], grand_livre["date_fin"])
+    lines += titre_principal_rst(grand_livre[LABEL], grand_livre[DATE_DEBUT], grand_livre[DATE_FIN])
     
     def row(debit, credit):
         return [
@@ -117,8 +118,8 @@ def grand_livre_to_rst(grand_livre, output_file):
         map(lambda d, c: table.append(row(d, c)), debits, credits)
 
         # Ligne du solde.
-        solde_crediteur = Decimal(compte['solde_crediteur'])
-        solde_debiteur = Decimal(compte['solde_debiteur'])
+        solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
+        solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
         libelle_debit, libelle_credit = '', ''
 
         if not solde_debiteur and not solde_crediteur:

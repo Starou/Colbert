@@ -3,7 +3,7 @@
 import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
-from colbert.common import DATE_DEBUT, DATE_FIN, LABEL
+from colbert.common import SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN, LABEL, NUMERO
 
 EXPLOITATION = u"exploitation"
 FINANCIERES = u"financières"
@@ -156,7 +156,7 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
     }
 
     def get_ligne_resultat(compte, mapping):
-        numero_compte = compte['numero']
+        numero_compte = compte[NUMERO]
 
         # Recherche de la ligne de rattachement du compte dans le bilan
         # en utilisant la notion de spécialisation des numéros de compte
@@ -169,14 +169,14 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
                 numero_compte = numero_compte[:-1]
             else:
                 return ligne_bilan
-        raise BaseException, u"Impossible de dispatcher le numero de compte %s dans le compte de resultat" % compte['numero']
+        raise BaseException, u"Impossible de dispatcher le numero de compte %s dans le compte de resultat" % compte[NUMERO]
 
     total_charges, total_produits = Decimal("0.00"), Decimal("0.00")
     for compte in balance_des_comptes['comptes']:
-        if compte['numero'][0] not in COMPTES_DE_RESULTAT:
+        if compte[NUMERO][0] not in COMPTES_DE_RESULTAT:
             continue
-        solde_debiteur = Decimal(compte['solde_debiteur'])
-        solde_crediteur = Decimal(compte['solde_crediteur'])
+        solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
+        solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
         
         path_ligne_resultat = get_ligne_resultat(compte, MAPPING_COMPTE_TO_RESULTAT) 
         cote, categorie, ligne = path_ligne_resultat
@@ -215,9 +215,9 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
     from colbert.common import titre_principal_rst
 
     lines = []
-    lines += titre_principal_rst(compte_de_resultat["label"],
-                                 compte_de_resultat["date_debut"], 
-                                 compte_de_resultat["date_fin"])
+    lines += titre_principal_rst(compte_de_resultat[LABEL],
+                                 compte_de_resultat[DATE_DEBUT], 
+                                 compte_de_resultat[DATE_FIN])
     
     table = [
         [(u"Charges", CHARGES_LEN), 
