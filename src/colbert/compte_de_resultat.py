@@ -6,13 +6,16 @@ from colbert.utils import DATE_FMT
 from colbert.common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN, 
                             LABEL, NUMERO, COMPTES)
 
+TOTAL_CHARGES = u'total_charges'
+TOTAL_PRODUITS = u'total_produits'
+RESULTAT = u'resultat'
+
 EXPLOITATION = u"exploitation"
 FINANCIERES = u"financières"
 EXCEPTIONNELLES = u"exceptionnelles"
 
 CHARGES = u"charges"
 PRODUITS = u"produits"
-
 CHARGES_EXPLOITATION = u"charges d'exploitation"
 FOURNITURES_NON_STOCKABLES = u"fournitures non stockables"
 SERVICES_EXTERIEURS = u"services extérieurs"
@@ -199,9 +202,9 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
         compte_de_resultat[cote][categorie].setdefault(ligne, Decimal("0.00"))
         compte_de_resultat[cote][categorie][ligne] += montant
         
-    compte_de_resultat['total_charges'] = total_charges
-    compte_de_resultat['total_produits'] = total_produits
-    compte_de_resultat['resultat'] = total_produits - total_charges
+    compte_de_resultat[TOTAL_CHARGES] = total_charges
+    compte_de_resultat[TOTAL_PRODUITS] = total_produits
+    compte_de_resultat[RESULTAT] = total_produits - total_charges
 
     return compte_de_resultat
 
@@ -255,11 +258,11 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
 
     # Dernières lignes.
     table.append([(u"**Sous-total charges**", CHARGES_LEN),
-                  (fmt_number(Decimal(compte_de_resultat['total_charges'])), MONTANT_LEN),
+                  (fmt_number(Decimal(compte_de_resultat[TOTAL_CHARGES])), MONTANT_LEN),
                   (u"**Sous-total produits**", PRODUITS_LEN),
-                  (fmt_number(Decimal(compte_de_resultat['total_produits'])), MONTANT_LEN)])
+                  (fmt_number(Decimal(compte_de_resultat[TOTAL_PRODUITS])), MONTANT_LEN)])
 
-    resultat = Decimal(compte_de_resultat['resultat'])
+    resultat = Decimal(compte_de_resultat[RESULTAT])
     if resultat >= 0:
         table.append([(u"**Résultat (bénéfice)**", CHARGES_LEN),
                       (fmt_number(resultat), MONTANT_LEN),
