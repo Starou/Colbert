@@ -2,6 +2,9 @@
 
 from utils import rst_title, DATE_FMT
 
+DEBIT = u'debit'
+CREDIT = u'credit'
+
 def titre_principal_rst(titre, date_debut, date_fin):
     return [
         rst_title(titre), "\n",

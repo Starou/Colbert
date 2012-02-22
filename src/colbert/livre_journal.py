@@ -4,6 +4,7 @@ import re
 import datetime
 from decimal import Decimal
 from colbert.utils import fmt_number
+from colbert.common import DEBIT, CREDIT
 
 DATE_FMT = "%d/%m/%Y"
 
@@ -269,8 +270,8 @@ def livre_journal_to_list(livre_journal_file):
                     'numero_compte_debit': m['numero_compte_debit'],
                     'numero_compte_credit': m['numero_compte_credit'],
                     'nom_compte': m['nom_compte'],
-                    'debit': Decimal(m['debit'].replace(' ', '') or '0.00'),
-                    'credit': Decimal(m['credit'].replace(' ', '') or '0.00'),
+                    DEBIT: Decimal(m[DEBIT].replace(' ', '') or '0.00'),
+                    CREDIT: Decimal(m[CREDIT].replace(' ', '') or '0.00'),
                 }
                 ecriture['ecritures'].append(sous_ecriture)
 
@@ -332,9 +333,9 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
         if (date_debut <= ecriture['date'] <= date_fin):
             for e in ecriture['ecritures']:
                 if e['numero_compte_debit'] == numero_compte:
-                    debit += e['debit']
+                    debit += e[DEBIT]
                 elif e['numero_compte_credit'] == numero_compte:
-                    credit += e['credit']
+                    credit += e[CREDIT]
         elif ecriture['date'] > date_fin:
             break
     

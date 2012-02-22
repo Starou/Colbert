@@ -4,8 +4,7 @@ import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
 
-DEBIT = u'debit'
-CREDIT = u'credit'
+from colbert.common import DEBIT, CREDIT
 
 BRUT = 'brut'
 NET = 'net'

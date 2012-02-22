@@ -5,6 +5,7 @@ from decimal import Decimal
 
 from colbert.livre_journal import livre_journal_to_list
 from colbert.utils import DATE_FMT
+from colbert.common import DEBIT, CREDIT
 
 SOLDE_TABLE_LEN = 134
 DATE_LEN = 12
@@ -62,8 +63,8 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
 
                             table.append([(ecriture['date'].strftime(DATE_FMT), DATE_LEN),
                                           (ecriture['intitule'], LIBELLE_LEN),
-                                          (e['debit'] and str(e['debit']) or '', DEBIT_LEN),
-                                          (e['credit'] and str(e['credit']) or '', CREDIT_LEN),
+                                          (e[DEBIT] and str(e[DEBIT]) or '', DEBIT_LEN),
+                                          (e[CREDIT] and str(e[CREDIT]) or '', CREDIT_LEN),
                                           (solde_debiteur and str(solde_debiteur) or '', SOLDE_DEBIT_LEN),
                                           (solde_crediteur and str(solde_crediteur) or '', SOLDE_CREDIT_LEN)])
 
