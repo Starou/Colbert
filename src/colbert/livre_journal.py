@@ -4,7 +4,8 @@ import re
 import datetime
 from decimal import Decimal
 from colbert.utils import fmt_number, DATE_FMT
-from colbert.common import DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_FIN, INTITULE, NOM, NUMERO
+from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_FIN,
+                            INTITULE, NOM, NUMERO, COMPTES)
 
 ECRITURES = u'ecritures'
 NOM_COMPTE = 'nom_compte'
@@ -56,7 +57,7 @@ def ecritures_de_cloture(balance_des_comptes):
     }
     
     # Préparation des sous-écritures à passer.
-    for compte in balance_des_comptes['comptes']:
+    for compte in balance_des_comptes[COMPTES]:
         if compte[NUMERO][0] not in COMPTES_DE_RESULTAT:
             continue
         if compte[NUMERO][0] == COMPTES_DE_PRODUITS:

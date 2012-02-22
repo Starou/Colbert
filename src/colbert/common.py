@@ -10,10 +10,13 @@ SOLDE_CREDITEUR = u'solde_crediteur'
 DATE = 'date'
 DATE_DEBUT = u'date_debut'
 DATE_FIN = u'date_fin'
+
 LABEL = u'label'
 INTITULE = 'intitule'
 NOM = u'nom'
 NUMERO = u'numero'
+
+COMPTES = u'comptes'
 
 def titre_principal_rst(titre, date_debut, date_fin):
     return [

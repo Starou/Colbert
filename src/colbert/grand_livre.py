@@ -5,7 +5,7 @@ from colbert.livre_journal import livre_journal_to_list
 from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 from colbert.utils import DATE_FMT
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_DEBUT, DATE_FIN,
-                            LABEL, INTITULE, NOM)
+                            LABEL, INTITULE, NOM, COMPTES)
 
 DATE_LEN = 12
 LIBELLE_LEN = 45
@@ -44,7 +44,7 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
         LABEL: label,
         DATE_DEBUT: date_debut,
         DATE_FIN: date_fin,
-        'comptes': comptes,
+        COMPTES: comptes,
     }
 
     livre_journal = livre_journal_to_list(livre_journal_file)
@@ -100,8 +100,8 @@ def grand_livre_to_rst(grand_livre, output_file):
         ]
 
     table = []
-    for numero_compte in sorted(grand_livre['comptes']):
-        compte = grand_livre['comptes'][numero_compte]
+    for numero_compte in sorted(grand_livre[COMPTES]):
+        compte = grand_livre[COMPTES][numero_compte]
         lines.append(rst_section(u"%s - *%s*" %(numero_compte, compte[NOM]), "'"))
         lines.append("\n")
         table.append([

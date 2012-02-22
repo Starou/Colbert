@@ -4,7 +4,7 @@ import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
-                            LABEL, NOM, NUMERO)
+                            LABEL, NOM, NUMERO, COMPTES)
 
 
 def balance_des_comptes(grand_livre, label="Balance des comptes"):
@@ -36,15 +36,15 @@ def balance_des_comptes(grand_livre, label="Balance des comptes"):
         LABEL: label,
         DATE_DEBUT: datetime.datetime.strptime(grand_livre[DATE_DEBUT], DATE_FMT).date(),
         DATE_FIN: datetime.datetime.strptime(grand_livre[DATE_FIN], DATE_FMT).date(),
-        'comptes': comptes,
+        COMPTES: comptes,
         'total_debits': Decimal('0.00'),
         'total_credits': Decimal('0.00'),
         'total_soldes_debiteurs': Decimal('0.00'),
         'total_soldes_crediteurs': Decimal('0.00'),
     }
 
-    for numero_compte in sorted(grand_livre['comptes']):
-        compte = grand_livre['comptes'][numero_compte]
+    for numero_compte in sorted(grand_livre[COMPTES]):
+        compte = grand_livre[COMPTES][numero_compte]
 
         solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
         solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
@@ -98,7 +98,7 @@ def balance_des_comptes_to_rst(balance_des_comptes, output_file):
          (u"Solde crédit", CREDIT_LEN)]
     ]
 
-    for compte in balance_des_comptes['comptes']:
+    for compte in balance_des_comptes[COMPTES]:
         total_debit = Decimal(compte['total_debit'])
         total_credit = Decimal(compte['total_credit'])
         solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])

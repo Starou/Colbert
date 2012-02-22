@@ -3,7 +3,8 @@
 import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
-from colbert.common import SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN, LABEL, NUMERO
+from colbert.common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN, 
+                            LABEL, NUMERO, COMPTES)
 
 EXPLOITATION = u"exploitation"
 FINANCIERES = u"financières"
@@ -41,7 +42,7 @@ LIGNES_RESULTAT = {
     CHARGES: {
         EXPLOITATION: {
             LABEL: CHARGES_EXPLOITATION,
-            'comptes': [
+            COMPTES: [
                 REMUNERATIONS_DU_PERSONNEL,
                 FOURNITURES_NON_STOCKABLES,
                 SERVICES_EXTERIEURS,
@@ -52,12 +53,12 @@ LIGNES_RESULTAT = {
         },
         FINANCIERES: {
             LABEL: CHARGES_FINANCIERES,
-            'comptes': [
+            COMPTES: [
             ]    
         },
         EXCEPTIONNELLES: {
             LABEL: CHARGES_EXCEPTIONNELLES,
-            'comptes': [
+            COMPTES: [
                 CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION,
             ]    
         }
@@ -65,20 +66,20 @@ LIGNES_RESULTAT = {
     PRODUITS: {
         EXPLOITATION: {
             LABEL: PRODUITS_EXPLOITATION,
-            'comptes': [
+            COMPTES: [
                 PRESTATIONS_DE_SERVICES,
                 AUTRES_PRODUITS_GESTION_COURANTE,
             ]    
         },
         FINANCIERES: {
             LABEL: PRODUITS_FINANCIERS,
-            'comptes': [
+            COMPTES: [
                 REVENUS_VALEURS_MOBILIERES_DE_PLACEMENT,
             ]    
         },
         EXCEPTIONNELLES: {
             LABEL: PRODUITS_EXCEPTIONNELS,
-            'comptes': [
+            COMPTES: [
             ]    
         }
     },
@@ -172,7 +173,7 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
         raise BaseException, u"Impossible de dispatcher le numero de compte %s dans le compte de resultat" % compte[NUMERO]
 
     total_charges, total_produits = Decimal("0.00"), Decimal("0.00")
-    for compte in balance_des_comptes['comptes']:
+    for compte in balance_des_comptes[COMPTES]:
         if compte[NUMERO][0] not in COMPTES_DE_RESULTAT:
             continue
         solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
@@ -246,8 +247,8 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
         ])
         # La structure du tableau est donnée par le mapping LIGNES_RESULTAT.
         map(lambda charge, produit: table.append(row(compte_de_resultat, categorie, charge, produit)), 
-            LIGNES_RESULTAT[CHARGES][categorie]['comptes'],
-            LIGNES_RESULTAT[PRODUITS][categorie]['comptes']) 
+            LIGNES_RESULTAT[CHARGES][categorie][COMPTES],
+            LIGNES_RESULTAT[PRODUITS][categorie][COMPTES]) 
 
         table.append([(u"", CHARGES_LEN), (u"", MONTANT_LEN), (u"", PRODUITS_LEN), (u"", MONTANT_LEN)])
 

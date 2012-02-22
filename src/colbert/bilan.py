@@ -5,7 +5,7 @@ from decimal import Decimal
 from colbert.utils import DATE_FMT
 
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
-                            LABEL)
+                            LABEL, NUMERO, COMPTES)
 
 BRUT = 'brut'
 NET = 'net'
@@ -180,7 +180,7 @@ def bilan(balance_des_comptes, label="Bilan"):
     }
 
     def get_ligne_bilan(compte, solde, mapping):
-        numero_compte = compte['numero']
+        numero_compte = compte[NUMERO]
 
         # Recherche de la ligne de rattachement du compte dans le bilan
         # en utilisant la notion de spécialisation des numéros de compte
@@ -194,10 +194,10 @@ def bilan(balance_des_comptes, label="Bilan"):
                 numero_compte = numero_compte[:-1]
             else:
                 return ligne_bilan[solde]
-        raise BaseException, "Impossible de dispatcher le numero de compte '%s' dans le bilan" % compte['numero']
+        raise BaseException, "Impossible de dispatcher le numero de compte '%s' dans le bilan" % compte[NUMERO]
 
-    for compte in balance_des_comptes['comptes']:
-        if compte['numero'][0] not in COMPTES_DE_BILAN:
+    for compte in balance_des_comptes[COMPTES]:
+        if compte[NUMERO][0] not in COMPTES_DE_BILAN:
             continue
         solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
         solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
