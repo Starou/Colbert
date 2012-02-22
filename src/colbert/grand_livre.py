@@ -4,8 +4,8 @@ from decimal import Decimal
 from colbert.livre_journal import livre_journal_to_list
 from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 from colbert.utils import DATE_FMT
-from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_DEBUT, DATE_FIN,
-                            LABEL, INTITULE, NOM, COMPTES)
+from colbert.common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
+                            DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM, COMPTES)
 
 DATE_LEN = 12
 LIBELLE_LEN = 45
@@ -63,16 +63,16 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
     
     # Calcul des soldes de chaque compte.
     for compte in comptes.values():
-        compte['total_debit'] = reduce(lambda x, y: x+y, 
+        compte[TOTAL_DEBIT] = reduce(lambda x, y: x+y, 
                                        [Decimal(e[DEBIT]) for e in \
                                             compte[ECRITURES] if e.has_key(DEBIT)],
                                        Decimal('0.00'))
-        compte['total_credit'] = reduce(lambda x, y: x+y, 
+        compte[TOTAL_CREDIT] = reduce(lambda x, y: x+y, 
                                         [Decimal(e[CREDIT]) for e in \
                                             compte[ECRITURES] if e.has_key(CREDIT)],
                                         Decimal('0.00'))
 
-        compte[SOLDE_DEBITEUR] = compte['total_debit'] - compte['total_credit']
+        compte[SOLDE_DEBITEUR] = compte[TOTAL_DEBIT] - compte[TOTAL_CREDIT]
         if compte[SOLDE_DEBITEUR] < 0:
             compte[SOLDE_CREDITEUR] = -compte[SOLDE_DEBITEUR]
             compte[SOLDE_DEBITEUR] = Decimal('0.00')
