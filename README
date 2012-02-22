@@ -273,7 +273,8 @@ The *fix_table.sed* in the TeX conversion rule is a Sed script managing the righ
     \\newcolumntype{y}[1]{% \
     >{\\raggedright\\hspace{0pt}}p{#1}}% \
     \\begin{longtable*}[c]{y{2cm}y{7.5cm}x{2cm}|y{2cm}y{7.5cm}x{2cm}}/
-    s/\\\\/\\tabularnewline/
+    s/&[[:space:]]+\\\\/\& \\tabularnewline/
+    s/[[:space:]]+\\\\$/\\tabularnewline/
 
 Here an example of the reStructuredText output::
 

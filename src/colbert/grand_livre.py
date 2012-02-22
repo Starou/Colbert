@@ -2,9 +2,8 @@
 
 from decimal import Decimal
 from livre_journal import livre_journal_to_list
+from colbert.utils import DATE_FMT
 
-GD_LIVRE_TABLE_LEN = 149
-DATE_FMT = "%d/%m/%Y"
 DATE_LEN = 12
 LIBELLE_LEN = 45
 DEBIT_LEN = 15
@@ -81,7 +80,7 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
 def grand_livre_to_rst(grand_livre, output_file):
     """Convert a `grand_livre` json load to a RestructuredText file. """
 
-    from colbert.utils import fmt_number, rst_table, truncate_words
+    from colbert.utils import fmt_number, rst_table, rst_section, truncate_words
     from colbert.common import titre_principal_rst
 
     lines = []
@@ -100,16 +99,15 @@ def grand_livre_to_rst(grand_livre, output_file):
     table = []
     for numero_compte in sorted(grand_livre['comptes']):
         compte = grand_livre['comptes'][numero_compte]
+        lines.append(rst_section(u"%s - *%s*" %(numero_compte, compte['nom']), "'"))
+        lines.append("\n")
         table.append([
-            (u"%s - *%s*" %(numero_compte, compte['nom']), GD_LIVRE_TABLE_LEN)
-        ])
-        table.append([
-            ("*Date*", DATE_LEN),
-            (u"*Libellé*", LIBELLE_LEN), 
-            (u"*Débit*", DEBIT_LEN), 
-            ("*Date*", DATE_LEN),
-            (u"*Libellé*", LIBELLE_LEN), 
-            (u"*Crédit*", CREDIT_LEN),
+            ("Date", DATE_LEN),
+            (u"Libellé", LIBELLE_LEN), 
+            (u"Débit", DEBIT_LEN), 
+            ("Date", DATE_LEN),
+            (u"Libellé", LIBELLE_LEN), 
+            (u"Crédit", CREDIT_LEN),
         ])
         debits = [(e['date'], e['intitule'], e['debit']) for e in compte['ecritures'] if e.has_key('debit')]
         credits = [(e['date'], e['intitule'], e['credit']) for e in compte['ecritures'] if e.has_key('credit')]

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from utils import rst_title
-
-DATE_FMT = "%d/%m/%Y"
+from utils import rst_title, DATE_FMT
 
 def titre_principal_rst(titre, date_debut, date_fin):
     return [

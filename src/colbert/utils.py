@@ -17,8 +17,21 @@ def fmt_number(value):
     return locale.format("%.2f", value, grouping=True)
 
 def rst_title(title, symbol="="):
+    """
+    =====
+    title
+    =====
+    """
     stroke = symbol * len(title)
     return u"\n".join([stroke, title, stroke])
+
+def rst_section(title, symbol="="):
+    """
+    title
+    =====
+    """
+    stroke = symbol * len(title)
+    return u"\n".join([title, stroke])
 
 def rst_table(table):
     header_stroke_char = '='
