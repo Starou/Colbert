@@ -213,7 +213,7 @@ PRODUITS_LEN = 50
 MONTANT_LEN = 25
 
 def compte_de_resultat_to_rst(compte_de_resultat, output_file):
-    """Convert a `compte de résultat` json load to a RestructuredText file. """
+    """Convert a `compte de résultat` json load to a reStructuredText file. """
 
     from colbert.utils import fmt_number, rst_table
     from colbert.common import titre_principal_rst

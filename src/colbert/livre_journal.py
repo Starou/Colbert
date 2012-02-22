@@ -290,7 +290,7 @@ DEBIT_LEN = 17
 CREDIT_LEN = 17
 
 def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour le Livre-journal"):
-    """Converti une liste d'écritures JSON dans le format RestructuredText du Livre-journal. """
+    """Converti une liste d'écritures JSON dans le format reStructuredText du Livre-journal. """
 
     from colbert.utils import fmt_number, rst_table
     from colbert.bilan import DEBIT, CREDIT

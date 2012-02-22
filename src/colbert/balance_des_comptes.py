@@ -81,7 +81,7 @@ DEBIT_LEN = 18
 CREDIT_LEN = 18
 
 def balance_des_comptes_to_rst(balance_des_comptes, output_file):
-    """Convert a `balance_des_comptes` json load to a RestructuredText file. """
+    """Convert a `balance_des_comptes` json load to a reStructuredText file. """
 
     from colbert.utils import fmt_number, rst_table
     from colbert.common import titre_principal_rst

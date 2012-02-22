@@ -307,7 +307,7 @@ PASSIF_LEN = 45
 MONTANT_LEN = 20
 
 def bilan_to_rst(bilan, output_file):
-    """Convert a `bilan` json load to a RestructuredText file. """
+    """Convert a `bilan` json load to a reStructuredText file. """
 
     from colbert.utils import fmt_number, rst_table
     from colbert.common import titre_principal_rst

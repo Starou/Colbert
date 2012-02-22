@@ -44,7 +44,7 @@ def main():
 
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
-                     "Livre-Journal au format RestructuredText")
+                     "Livre-Journal au format reStructuredText")
 
     else:
         import json

@@ -81,7 +81,7 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
     return grand_livre 
 
 def grand_livre_to_rst(grand_livre, output_file):
-    """Convert a `grand_livre` json load to a RestructuredText file. """
+    """Convert a `grand_livre` json load to a reStructuredText file. """
 
     from colbert.utils import fmt_number, rst_table, rst_section, truncate_words
     from colbert.common import titre_principal_rst
