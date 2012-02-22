@@ -4,7 +4,7 @@ import re
 import datetime
 from decimal import Decimal
 from colbert.utils import fmt_number
-from colbert.common import DATE_FMT
+from colbert.utils import DATE_FMT
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 
 from livre_journal import livre_journal_to_list, get_solde_compte

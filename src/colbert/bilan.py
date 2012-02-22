@@ -2,10 +2,10 @@
 
 import datetime
 from decimal import Decimal
-from common import DATE_FMT
+from colbert.utils import DATE_FMT
 
-DEBIT = 'debit'
-CREDIT = 'credit'
+DEBIT = u'debit'
+CREDIT = u'credit'
 
 BRUT = 'brut'
 NET = 'net'

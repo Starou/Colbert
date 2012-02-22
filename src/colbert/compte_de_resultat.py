@@ -2,7 +2,7 @@
 
 import datetime
 from decimal import Decimal
-from common import DATE_FMT
+from colbert.utils import DATE_FMT
 
 EXPLOITATION = u"exploitation"
 FINANCIERES = u"financières"

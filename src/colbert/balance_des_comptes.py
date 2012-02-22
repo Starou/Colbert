@@ -2,7 +2,7 @@
 
 import datetime
 from decimal import Decimal
-from common import DATE_FMT
+from colbert.utils import DATE_FMT
 
 
 def balance_des_comptes(grand_livre, label="Balance des comptes"):

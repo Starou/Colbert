@@ -3,7 +3,7 @@
 import re
 import datetime
 from decimal import Decimal
-from utils import fmt_number
+from colbert.utils import fmt_number
 
 DATE_FMT = "%d/%m/%Y"
 
