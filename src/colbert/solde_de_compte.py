@@ -61,7 +61,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
                                 solde_debiteur, solde_crediteur = Decimal("0.00"), -(solde)
 
                             table.append([(ecriture['date'].strftime(DATE_FMT), DATE_LEN),
-                                          (ecriture['intitule'][:LIBELLE_LEN-2], LIBELLE_LEN),
+                                          (ecriture['intitule'], LIBELLE_LEN),
                                           (e['debit'] and str(e['debit']) or '', DEBIT_LEN),
                                           (e['credit'] and str(e['credit']) or '', CREDIT_LEN),
                                           (solde_debiteur and str(solde_debiteur) or '', SOLDE_DEBIT_LEN),
