@@ -3,10 +3,10 @@
 import datetime
 from decimal import Decimal
 
-from livre_journal import livre_journal_to_list
+from colbert.livre_journal import livre_journal_to_list
+from colbert.utils import DATE_FMT
 
 SOLDE_TABLE_LEN = 134
-DATE_FMT = "%d/%m/%Y"
 DATE_LEN = 12
 LIBELLE_LEN = 59
 DEBIT_LEN = 12
@@ -17,10 +17,9 @@ SOLDE_CREDIT_LEN = 17
 # TODO
 # def solde_de_compte_rst(livre_journal_file, comptes, output_file):
 def solde_de_compte(livre_journal_file, output_file, comptes=None):
-    """ Calcule le solde des comptes à partir du livre-journal. 
+    """ Calcule le solde des comptes à partir du livre-journal."""
 
-    """
-    from colbert.utils import rst_title, rst_table
+    from colbert.utils import rst_title, rst_section, rst_table
     lines = []
     livre_journal = livre_journal_to_list(livre_journal_file)
     for compte in comptes:
@@ -28,8 +27,8 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
         lines.append(u"\n")
         table = []
         for journal in compte['journaux']:
+            lines.append(rst_section(journal['label'], "'"))
             # Header.
-            table.append([(u"**%s**" % journal['label'], SOLDE_TABLE_LEN)])
             table.append([("Date", DATE_LEN), (u"Libellé", LIBELLE_LEN), (u"Débit", DEBIT_LEN), (u"Crédit", CREDIT_LEN),
                           (u"Solde débiteur", SOLDE_DEBIT_LEN), (u"Solde créditeur", SOLDE_CREDIT_LEN)])
 
@@ -91,7 +90,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
             )
             lines.append(rst_table(table))
             lines.append(rst_table([[(last_row, SOLDE_TABLE_LEN)]]))
-            lines.append(u"\n")
+            lines.append("\n.. raw:: latex\n\n    \\newpage\n")
             table = []
 
     output_file.write(u"\n".join(lines))

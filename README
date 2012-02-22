@@ -652,6 +652,90 @@ Colbert come with a script to compute such entries::
 And copy/paste the body of *ecritures-de-cloture.txt* into the Livre-journal at the right place.
 
 
+Checking your account statements against the Livre-journal
+==========================================================
+
+There must be reciprocity between your account statements from your bank and the entries in your Livre-journal.
+
+Colbert is able to generate account statements for a bank account (say *512*) and to check the balance against 
+a JSON file representing the balances of each account statement received from the bank establishment. Write such 
+a file with your best text editor::
+
+    [
+        {
+            'numero_compte': "512",
+            'journaux': [
+                {
+                    'label': "Avril 2011",
+                    'date_debut': "01/04/2011",
+                    'date_fin': "02/05/2011",
+                    'debit_initial': "0.00",
+                    'credit_initial': "0.00",
+                    'debit_final': "1485.93",
+                    'credit_final': "0.00",
+                },
+                {
+                    'label': "Mai 2011",
+                    'date_debut': "03/05/2011",
+                    'date_fin': "01/06/2011",
+                    'debit_initial': "1485.93",
+                    'credit_initial': "0.00",
+                    'debit_final': "1461.94",
+                    'credit_final': "0.00",
+                },
+            ]
+        }
+    ]
+
+
+And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt solde.json* which outputs::
+
+
+    =====================
+    Compte n°512 en Euros
+    =====================
+
+
+    Avril 2011
+    ''''''''''
+    +------------+-------------------------------------------------------+--------+------------+---------------+----------------+
+    | Date       | Libellé                                               | Débit  | Crédit     | Solde débiteur| Solde créditeur|
+    +============+=======================================================+========+============+===============+================+
+    | 01/04/2011 | Report à nouveau                                      |        |            |               |                |
+    +------------+-------------------------------------------------------+--------+------------+---------------+----------------+
+    | 01/04/2011 | Résultat arrêté compte                                |        | 48.00      |               | 48.00          |
+    +------------+-------------------------------------------------------+--------+------------+---------------+----------------+
+    | 02/04/2011 | Capital initial Dépôt de 1500 € par Stanislas Guerra a| 1500.00|            | 1452.00       |                |
+    +------------+-------------------------------------------------------+--------+------------+---------------+----------------+
+    | 28/04/2011 | Cotisation Option PRO  LCL                            |        | 15.00      | 1437.00       |                |
+    +------------+-------------------------------------------------------+--------+------------+---------------+----------------+
+    | 02/05/2011 | Abonnement LCL Access                                 |        | 3.00       | 1434.00       |                |
+    +------------+-------------------------------------------------------+--------+------------+---------------+----------------+
+    +---------------------------------------------------------------------------------------------------------------------------+
+    | Solde final calculé (*1434.00*, débiteur) *différent* du solde final attendu (*1485.93*, débiteur)                        |
+    +---------------------------------------------------------------------------------------------------------------------------+
+
+    .. raw:: latex
+
+        \newpage
+
+    Mai 2011
+    ''''''''
+    +------------+-------------------------------------------------------+------+------------+----------------+-----------------+
+    | Date       | Libellé                                               | Débit| Crédit     | Solde débiteur | Solde créditeur |
+    +============+=======================================================+======+============+================+=================+
+    | 03/05/2011 | Report à nouveau                                      |      |            | 1485.93        |                 |
+    +============+=======================================================+======+============+================+=================+
+    +---------------------------------------------------------------------------------------------------------------------------+
+    | Solde final calculé (*1485.93*, débiteur) *différent* du solde final attendu (*1461.94*, débiteur)                        |
+    +---------------------------------------------------------------------------------------------------------------------------+
+
+    .. raw:: latex
+
+        \newpage
+
+
+
 Working with LaTeX
 ==================
 
