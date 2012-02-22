@@ -3,10 +3,8 @@
 import re
 import datetime
 from decimal import Decimal
-from colbert.utils import fmt_number
-from colbert.common import DEBIT, CREDIT
-
-DATE_FMT = "%d/%m/%Y"
+from colbert.utils import fmt_number, DATE_FMT
+from colbert.common import DEBIT, CREDIT, DATE, INTITULE
 
 def check_livre_journal(livre_journal_file):
     """Vérifie l'équilibre de chaque écriture du Livre-Journal. """
@@ -16,11 +14,11 @@ def check_livre_journal(livre_journal_file):
 
     for ecriture in livre_journal:
         total_debit, total_credit = Decimal("0.0"), Decimal("0.0")
-        check = [u"%s - %s" % (ecriture['date'].strftime(DATE_FMT),
-                               ecriture['intitule'])]
+        check = [u"%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
+                               ecriture[INTITULE])]
         for e in ecriture['ecritures']:
-            total_debit += e["debit"]
-            total_credit += e["credit"]
+            total_debit += e[DEBIT]
+            total_credit += e[CREDIT]
         if total_debit == total_credit:
             check.append(u"OK : débit = crédit (%s)." % fmt_number(total_credit))
         else:
@@ -92,8 +90,8 @@ def ecritures_de_cloture(balance_des_comptes):
     for compte_regroupement, nom_compte in ((COMPTE_REGROUPEMENT_PRODUITS, REGROUPEMENT_PRODUITS), 
                                             (COMPTE_REGROUPEMENT_CHARGES, REGROUPEMENT_CHARGES)):
         ecriture_finale = {
-            'date': datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
-            'intitule': u"Ecritures de clôture des comptes.",
+            DATE: datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
+            INTITULE: u"Ecritures de clôture des comptes.",
             'ecritures': ecritures[compte_regroupement],
         }
 
@@ -135,8 +133,8 @@ def ecritures_de_cloture(balance_des_comptes):
 
     # Enregistrement du résultat net de l'exercice.
     ecriture_resultat = {
-        'date': datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
-        'intitule': u"Enregistrement du résultat net de l'exercice",
+        DATE: datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
+        INTITULE: u"Enregistrement du résultat net de l'exercice",
         'ecritures': [],
     }
 
@@ -250,19 +248,19 @@ def livre_journal_to_list(livre_journal_file):
             continue
         elif line[0:2] == '||':
             # Première ligne d'écriture, doit indiquer la date et l'intitulé.
-            if not ecriture.has_key('date'):
+            if not ecriture.has_key(DATE):
                 m = RX_DATE_INTITULE.match(line)
                 if not m:
                     raise BaseException, u"La première ligne d'une écriture doit mentionner la date et l'intitulé."
                 m = m.groupdict()
-                ecriture['date'] = datetime.datetime.strptime(m['date'], "%d/%m/%Y").date()
-                ecriture['intitule'] = m['intitule'].strip()
+                ecriture[DATE] = datetime.datetime.strptime(m[DATE], "%d/%m/%Y").date()
+                ecriture[INTITULE] = m[INTITULE].strip()
                 ecriture['ecritures'] = []
             elif RX_SUITE_INTITULE.match(line):
                 if ecriture['ecritures']:
                     raise BaseException, u"Les lignes supplémentaires d'intitulé doivent apparaitre exclusivement sous la première ligne."
                 m = RX_SUITE_INTITULE.match(line).groupdict()
-                ecriture['intitule'] += u" %s" % m['intitule'].strip()
+                ecriture[INTITULE] += u" %s" % m[INTITULE].strip()
             else:
                 m = RX_ECRITURE.match(line).groupdict()
                 m = dict([(k, v.strip()) for k,v in m.items()])
@@ -296,10 +294,10 @@ def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour 
     for ecriture in ecritures:
         multiline_row = [
             [
-                (ecriture['date'], DATE_LEN),
+                (ecriture[DATE], DATE_LEN),
                 (u"", COMPTE_DEBIT_LEN),
                 (u"", COMPTE_CREDIT_LEN),
-                (ecriture['intitule'], INTITULE_LEN),
+                (ecriture[INTITULE], INTITULE_LEN),
                 (u"", DEBIT_LEN),
                 (u"", CREDIT_LEN),
             ],
@@ -330,13 +328,13 @@ def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour 
 def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
     debit, credit = Decimal("0.00"), Decimal("0.00")
     for ecriture in livre_journal:
-        if (date_debut <= ecriture['date'] <= date_fin):
+        if (date_debut <= ecriture[DATE] <= date_fin):
             for e in ecriture['ecritures']:
                 if e['numero_compte_debit'] == numero_compte:
                     debit += e[DEBIT]
                 elif e['numero_compte_credit'] == numero_compte:
                     credit += e[CREDIT]
-        elif ecriture['date'] > date_fin:
+        elif ecriture[DATE] > date_fin:
             break
     
     if debit > credit:

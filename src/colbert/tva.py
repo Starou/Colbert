@@ -5,7 +5,7 @@ import datetime
 from decimal import Decimal
 from colbert.utils import fmt_number
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT
+from colbert.common import DEBIT, CREDIT, DATE, INTITULE
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 
 from livre_journal import livre_journal_to_list, get_solde_compte
@@ -87,8 +87,8 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
 
     if ecritures:
         return {
-            'date': date_fin,
+            DATE: date_fin,
             'ecritures': ecritures,
-            'intitule': u"Solde des comptes de TVA du %s au %s" % (date_debut.strftime(DATE_FMT),
+            INTITULE: u"Solde des comptes de TVA du %s au %s" % (date_debut.strftime(DATE_FMT),
                                                                    date_fin.strftime(DATE_FMT))
         }

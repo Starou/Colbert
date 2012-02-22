@@ -5,7 +5,7 @@ from decimal import Decimal
 
 from colbert.livre_journal import livre_journal_to_list
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
+from colbert.common import DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE
 
 SOLDE_TABLE_LEN = 134
 DATE_LEN = 12
@@ -45,15 +45,15 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
             date_debut = datetime.datetime.strptime(journal[DATE_DEBUT], DATE_FMT).date()
             date_fin = datetime.datetime.strptime(journal[DATE_FIN], DATE_FMT).date()
             for ecriture in livre_journal:
-                if ecriture['date'] < date_debut:
+                if ecriture[DATE] < date_debut:
                     continue
-                elif ecriture['date'] > date_fin:
+                elif ecriture[DATE] > date_fin:
                     break
                 else:
                     for e in ecriture['ecritures']:
                         if compte['numero_compte'] in[e['numero_compte_debit'], e['numero_compte_credit']]:
-                            debit = e["debit"] and Decimal(e["debit"]) or Decimal("0.00")
-                            credit = e["credit"] and Decimal(e["credit"]) or Decimal("0.00")
+                            debit = e[DEBIT] and Decimal(e[DEBIT]) or Decimal("0.00")
+                            credit = e[CREDIT] and Decimal(e[CREDIT]) or Decimal("0.00")
 
                             solde = solde + (debit or Decimal("0.00")) - (credit or Decimal("0.00"))
                             if solde >= Decimal("0.00"):
@@ -61,8 +61,8 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
                             else:
                                 solde_debiteur, solde_crediteur = Decimal("0.00"), -(solde)
 
-                            table.append([(ecriture['date'].strftime(DATE_FMT), DATE_LEN),
-                                          (ecriture['intitule'], LIBELLE_LEN),
+                            table.append([(ecriture[DATE].strftime(DATE_FMT), DATE_LEN),
+                                          (ecriture[INTITULE], LIBELLE_LEN),
                                           (e[DEBIT] and str(e[DEBIT]) or '', DEBIT_LEN),
                                           (e[CREDIT] and str(e[CREDIT]) or '', CREDIT_LEN),
                                           (solde_debiteur and str(solde_debiteur) or '', SOLDE_DEBIT_LEN),

@@ -3,7 +3,7 @@
 from decimal import Decimal
 from livre_journal import livre_journal_to_list
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
+from colbert.common import DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE
 
 DATE_LEN = 12
 LIBELLE_LEN = 45
@@ -47,7 +47,7 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
 
     livre_journal = livre_journal_to_list(livre_journal_file)
     for ecriture in livre_journal:
-        if date_debut <= ecriture['date'] <= date_fin:
+        if date_debut <= ecriture[DATE] <= date_fin:
             for e in ecriture["ecritures"]:
                 if e['numero_compte_debit']:
                     param, mvt = 'numero_compte_debit', DEBIT
@@ -55,8 +55,8 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
                     param, mvt = 'numero_compte_credit', CREDIT
                 compte = comptes.setdefault(e[param], {'nom': e['nom_compte'],
                                                        'ecritures': []})
-                compte['ecritures'].append({'date': ecriture['date'], 
-                                            'intitule': ecriture['intitule'],
+                compte['ecritures'].append({DATE: ecriture[DATE], 
+                                            INTITULE: ecriture[INTITULE],
                                             mvt: e[mvt]})
     
     # Calcul des soldes de chaque compte.
@@ -110,8 +110,8 @@ def grand_livre_to_rst(grand_livre, output_file):
             (u"Libellé", LIBELLE_LEN), 
             (u"Crédit", CREDIT_LEN),
         ])
-        debits = [(e['date'], e['intitule'], e[DEBIT]) for e in compte['ecritures'] if e.has_key(DEBIT)]
-        credits = [(e['date'], e['intitule'], e[CREDIT]) for e in compte['ecritures'] if e.has_key(CREDIT)]
+        debits = [(e[DATE], e[INTITULE], e[DEBIT]) for e in compte['ecritures'] if e.has_key(DEBIT)]
+        credits = [(e[DATE], e[INTITULE], e[CREDIT]) for e in compte['ecritures'] if e.has_key(CREDIT)]
 
         map(lambda d, c: table.append(row(d, c)), debits, credits)
 
