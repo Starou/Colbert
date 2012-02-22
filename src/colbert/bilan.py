@@ -5,13 +5,14 @@ from decimal import Decimal
 from colbert.utils import DATE_FMT
 
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
-                            LABEL, NUMERO, COMPTES)
+                            LABEL, NUMERO, CATEGORIE, RUBRIQUES, COMPTES)
 
-BRUT = 'brut'
-NET = 'net'
-AMORTISSEMENT = 'amortissement'
+BRUT = u'brut'
+NET = u'net'
+AMORTISSEMENT = u'amortissement'
 
-ACTIF = 'actif'
+ACTIF = u'actif'
+TOTAL_ACTIF = u'total_actif'
 ACTIF_IMMOBILISE = u'actif immobilisé'
 IMMOBILISATIONS_INCORPORELLES = u'immobilisations incorporelles'
 AUTRES_IMMOBILISATIONS_INCORPORELLES = u'autres immobilisations incorporelles'
@@ -35,8 +36,8 @@ AUTRES_DETTES = u'autres dettes'
 # Mappings qui permet d'ordonner les lignes dans le bilan dans chaque catégorie.
 LIGNES_BILAN_ACTIF = [
     {
-        'categorie': ACTIF_IMMOBILISE, 
-        'rubriques': [
+        CATEGORIE: ACTIF_IMMOBILISE, 
+        RUBRIQUES: [
             (
                 IMMOBILISATIONS_INCORPORELLES, [
                     AUTRES_IMMOBILISATIONS_INCORPORELLES,
@@ -55,8 +56,8 @@ LIGNES_BILAN_ACTIF = [
         ]
     },
     {
-        'categorie': ACTIF_CIRCULANT, 
-        'rubriques': [
+        CATEGORIE: ACTIF_CIRCULANT, 
+        RUBRIQUES: [
             (
                 None, [
                     STOCK,
@@ -71,8 +72,8 @@ LIGNES_BILAN_ACTIF = [
 
 LIGNES_BILAN_PASSIF = [
     {
-        'categorie': CAPITAUX_PROPRES, 
-        'rubriques': [
+        CATEGORIE: CAPITAUX_PROPRES, 
+        RUBRIQUES: [
             (
                 None, [
                     CAPITAL,
@@ -82,8 +83,8 @@ LIGNES_BILAN_PASSIF = [
         ]
     },
     {
-        'categorie': DETTES, 
-        'rubriques': [
+        CATEGORIE: DETTES, 
+        RUBRIQUES: [
             (
                 None, [
                     AUTRES_DETTES,
@@ -240,7 +241,7 @@ def bilan(balance_des_comptes, label="Bilan"):
         
     # Résultat, totaux.
     total_actif, total_passif_avant_resultat, resultat = resultat_bilan(bilan)
-    bilan['total_actif'] = total_actif
+    bilan[TOTAL_ACTIF] = total_actif
     capitaux_propres = bilan[PASSIF].setdefault(CAPITAUX_PROPRES, {None: {}})
     capitaux_propres[None][RESULTAT] = {
         NET: resultat,
@@ -280,11 +281,11 @@ def ordered_bilan(pre_bilan):
     for cote, mapping in ((ACTIF, LIGNES_BILAN_ACTIF), (PASSIF, LIGNES_BILAN_PASSIF)):
         ordered_cote = []
         for categorie_mapping in mapping:
-            categorie = categorie_mapping['categorie']
+            categorie = categorie_mapping[CATEGORIE]
             if not pre_bilan[cote].has_key(categorie):
                 continue
             ordered_categorie = [categorie,]
-            for rubrique, lignes in categorie_mapping['rubriques']:
+            for rubrique, lignes in categorie_mapping[RUBRIQUES]:
                 if not pre_bilan[cote][categorie].has_key(rubrique):
                     continue
                 ordered_rubrique = [rubrique,]
@@ -312,7 +313,7 @@ def bilan_to_rst(bilan, output_file):
     from colbert.common import titre_principal_rst
 
     lines = []
-    lines += titre_principal_rst(bilan["label"], bilan["date_debut"], bilan["date_fin"])
+    lines += titre_principal_rst(bilan[LABEL], bilan[DATE_DEBUT], bilan[DATE_FIN])
     
     table = [
         [(u"Actif", ACTIF_LEN), 
@@ -365,11 +366,11 @@ def bilan_to_rst(bilan, output_file):
     # Dernière ligne.
     table.append([
         (u"*Total*", ACTIF_LEN), 
-        (u"*%s*" % fmt_number(Decimal(bilan['total_actif'][BRUT])), BRUT_LEN), 
-        (u"*%s*" % fmt_number(Decimal(bilan['total_actif'][AMORTISSEMENT])), AMORTISSEMENT_LEN), 
-        (u"**%s**" % fmt_number(Decimal(bilan['total_actif'][NET])), NET_LEN), 
+        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][BRUT])), BRUT_LEN), 
+        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][AMORTISSEMENT])), AMORTISSEMENT_LEN), 
+        (u"**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), NET_LEN), 
         (u"*Total*", PASSIF_LEN), 
-        (u"**%s**"% fmt_number(Decimal(bilan['total_actif'][NET])), MONTANT_LEN)
+        (u"**%s**"% fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), MONTANT_LEN)
     ])
 
     lines.append(rst_table(table))
@@ -378,4 +379,3 @@ def bilan_to_rst(bilan, output_file):
     output_file.write(u"\n\n")
 
     return output_file
-

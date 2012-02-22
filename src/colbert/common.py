@@ -18,6 +18,9 @@ INTITULE = 'intitule'
 NOM = u'nom'
 NUMERO = u'numero'
 
+CATEGORIE = u'categorie'
+RUBRIQUES = u'rubriques'
+
 COMPTES = u'comptes'
 
 def titre_principal_rst(titre, date_debut, date_fin):
