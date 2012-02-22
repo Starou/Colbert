@@ -5,7 +5,7 @@ Colbert
 
 *Colbert* is not about Stephen Colbert. It is serious matter.
 
-The name is a homage to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_, the Minister of Finance of France in the 17th century 
+The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_, the Minister of Finances of France in the 17th century 
 also known for being the father of the modern accountancy.
 
 
@@ -20,9 +20,9 @@ I don't know shit about accountancy. I am running a very small business since 20
 So I first decided to write a *Django* project to record my expenses, my incomes and automagically generate the client's invoices.
 That worked pretty well and I am still using it for the *LaTeX* invoices.
 
-But when the administrative procedures are falling you are facing the reality. You cannot do accountancy without understanding accountancy.
+But when the administrative procedures are falling you have to face the reality. You cannot do accountancy without understanding accountancy.
 
-I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to quickly adapt to the new knowledge 
+I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to adapt it quickly to the new knowledge 
 I was going to acquire during the development process. Learning accountancy is a big task and this is illusion to think that you can learn first and modelize it in a second step.
 
 And you know what ? The concepts behind the accountancy as they were thought four centuries ago are pure beauty. As beautiful as Unix' pipes.
@@ -47,7 +47,7 @@ Some stuffs are hard-coded because at a proof-of-concept stage.
 All that prose to say «don't blind-trust this software if you want to use it».
 
 
-Being french, this software is written for french accountancy in a french vocable. But the concept seems to be universal and with a little
+Being French, this software is written for French accountancy in a French vocable. But the concept seems to be universal and with a little
 effort you can fork it to match what you need in your own country.
 
 I am using the BSD implementation of your favorite tools (*sed*, *grep* etc).
@@ -58,7 +58,7 @@ The concepts
 
 
 *Colbert* is all about human-readable text files. *reStructuredText* and *JSON* files. You organize those files in a logical manner and extensively
-use *Makefiles* to generate other files and produce beautiful *LaTeX* and *PDF* outputs for the administration and youself.
+use *Makefiles* to generate other files and produce beautiful *LaTeX* and *PDF* outputs for the administration and yourself.
 
 The core of accountancy is *le livre-journal* (grow a mustache and try to pronounce it with a glass of *Bordeaux Haut-Médoc* in your right-hand).
 This is our «database» where every single operation occuring in your business is recorded. 
@@ -91,19 +91,19 @@ my organization is the following::
 
 
 *Le livre-journal* is a never-ending story, this is the reason for keeping it at the root level. In accountancy, a main concept is
-*l'indépendance des exercices comptables* which is why I have broken down my organization by year (I am opening my accounts the 1st of
-junary and closing them the 31th of december, every year).
+*l'indépendance des exercices comptables* which is why I have broken down my organization by year (I am opening my accounts on Junary the 1st
+and closing them on December, 31th, every year).
 
 In each year directory reside sub-directories named with the tasks, books or documents you have to deal with and produce all along the financial/fiscal year.
 
-Almost every sub-directory should contains a Makefile to automatically call some Colbert or LaTeX routines to update your files from the source 
+Almost every sub-directory should contain a Makefile to automatically call some Colbert or LaTeX routines to update your files from the source 
 (which may be the *livre-journal*, the *Grand-livre* or the *Balance des comptes*).
 
 
 In a nutshell, a typical usage at the end of a fiscal year is:
 
-1. Having a *Livre-journal* up-to-date and accurate ;
-2. check your *relevés bancaires* (statement of account ?) against the Livre-journal. Go back to (1) if it is not the case ;
+1. having a *Livre-journal* up-to-date and accurate ;
+2. check your *relevés bancaires* (bank statement) against the Livre-journal. Go back to (1) if it is not the case ;
 3. generate the *Grand-livre* as JSON from the Livre-journal ;
 4. generate the *Balance des comptes* from the *grand_livre.json* file ;
 5. compute the *Bilan* from  the *balance_des_comptes.json* file ;
@@ -219,7 +219,7 @@ Le Grand-livre
 
 In that book are gathered the entries of the Livre-journal by account number for a period of time (a fiscal year). One table for every single account.
 
-Every account should starts with the *report à nouveau* (the balance) of the previous fiscal year. This is not implemented yet in Colbert.
+Every account should start with the *report à nouveau* (the balance) of the previous fiscal year. This is not implemented yet in Colbert.
 
 To generate the Grand-livre, run the following::
 
@@ -627,10 +627,10 @@ Managing the transition between 2 fiscal years
 ==============================================
 
 When you have closed your fiscal year (say 2011) you have to create a new one (2012). In Colbert, you create a new directory, *2012*, 
-aside *2011*. You can simply make a *cp 2011 2012*, run the *make purge* rules in each subdirectories and replace the dates and the 
+aside *2011*. You can simply make a *cp 2011 2012*, then run the *make purge* rules in each subdirectories and replace the dates and the 
 filenames at the top of each Makefile.
 
-This may looks a bit awkward but this occurs only once a year !
+This may looks a bit awkward but this occurs only once a year!
 
 
 Les écritures de clôture
@@ -643,7 +643,7 @@ is:
 1. to reset the *comptes de résultat* (in France, it is those having a number in *6xx* and *7xx*) ;
 2. transfert the gain or the lost registred at the end of the fiscal year on the *comptes de bilan*.
 
-Colbert come with a script to compute such entries::
+Colbert comes with a script to compute such entries::
 
     $ colbert_ecritures_de_cloture.py ../balance-des-comptes/balance_des_comptes-2011.json  > ecritures-de-cloture.json
     $ colbert_ecritures_to_livre_journal.py --label="Ecriture de cloture a reporter au Livre-journal" ecritures-de-cloture.json > ecritures-de-cloture.txt
