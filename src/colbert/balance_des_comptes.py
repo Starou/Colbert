@@ -3,6 +3,7 @@
 import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
+from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
 
 
 def balance_des_comptes(grand_livre, label="Balance des comptes"):
@@ -31,9 +32,9 @@ def balance_des_comptes(grand_livre, label="Balance des comptes"):
     """
     comptes = []
     balance = {
-        'label': label,
-        'date_debut': datetime.datetime.strptime(grand_livre['date_debut'], DATE_FMT).date(),
-        'date_fin': datetime.datetime.strptime(grand_livre['date_fin'], DATE_FMT).date(),
+        LABEL: label,
+        DATE_DEBUT: datetime.datetime.strptime(grand_livre[DATE_DEBUT], DATE_FMT).date(),
+        DATE_FIN: datetime.datetime.strptime(grand_livre[DATE_FIN], DATE_FMT).date(),
         'comptes': comptes,
         'total_debits': Decimal('0.00'),
         'total_credits': Decimal('0.00'),

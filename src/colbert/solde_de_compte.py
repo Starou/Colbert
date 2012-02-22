@@ -5,7 +5,7 @@ from decimal import Decimal
 
 from colbert.livre_journal import livre_journal_to_list
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT
+from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
 
 SOLDE_TABLE_LEN = 134
 DATE_LEN = 12
@@ -28,7 +28,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
         lines.append(u"\n")
         table = []
         for journal in compte['journaux']:
-            lines.append(rst_section(journal['label'], "'"))
+            lines.append(rst_section(journal[LABEL], "'"))
             # Header.
             table.append([("Date", DATE_LEN), (u"Libellé", LIBELLE_LEN), (u"Débit", DEBIT_LEN), (u"Crédit", CREDIT_LEN),
                           (u"Solde débiteur", SOLDE_DEBIT_LEN), (u"Solde créditeur", SOLDE_CREDIT_LEN)])
@@ -38,12 +38,12 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
             solde_crediteur = Decimal(journal["credit_initial"])
             solde = solde_crediteur and -(solde_crediteur) or solde_debiteur
 
-            table.append([(journal['date_debut'], DATE_LEN), (u"Report à nouveau", LIBELLE_LEN), ('', DEBIT_LEN), ('', CREDIT_LEN), 
+            table.append([(journal[DATE_DEBUT], DATE_LEN), (u"Report à nouveau", LIBELLE_LEN), ('', DEBIT_LEN), ('', CREDIT_LEN), 
                           (solde_debiteur and str(solde_debiteur) or '', SOLDE_DEBIT_LEN), (solde_crediteur and str(solde_crediteur) or '', SOLDE_CREDIT_LEN)])
 
             # Ajout des lignes du journal.
-            date_debut = datetime.datetime.strptime(journal['date_debut'], DATE_FMT).date()
-            date_fin = datetime.datetime.strptime(journal['date_fin'], DATE_FMT).date()
+            date_debut = datetime.datetime.strptime(journal[DATE_DEBUT], DATE_FMT).date()
+            date_fin = datetime.datetime.strptime(journal[DATE_FIN], DATE_FMT).date()
             for ecriture in livre_journal:
                 if ecriture['date'] < date_debut:
                     continue

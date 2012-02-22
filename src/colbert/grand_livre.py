@@ -3,7 +3,7 @@
 from decimal import Decimal
 from livre_journal import livre_journal_to_list
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT
+from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
 
 DATE_LEN = 12
 LIBELLE_LEN = 45
@@ -39,9 +39,9 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
     
     comptes = {}
     grand_livre = {
-        'label': label,
-        'date_debut': date_debut,
-        'date_fin': date_fin,
+        LABEL: label,
+        DATE_DEBUT: date_debut,
+        DATE_FIN: date_fin,
         'comptes': comptes,
     }
 
@@ -121,11 +121,11 @@ def grand_livre_to_rst(grand_livre, output_file):
         libelle_debit, libelle_credit = '', ''
 
         if not solde_debiteur and not solde_crediteur:
-            libelle_debit = libelle_credit = u"*Compte soldé au %s.*" % grand_livre['date_fin']
+            libelle_debit = libelle_credit = u"*Compte soldé au %s.*" % grand_livre[DATE_FIN]
         elif solde_debiteur:
-            libelle_credit = u"*Solde débiteur au %s*" % grand_livre['date_fin']
+            libelle_credit = u"*Solde débiteur au %s*" % grand_livre[DATE_FIN]
         else:
-            libelle_debit = u"*Solde créditeur au %s*" % grand_livre['date_fin']
+            libelle_debit = u"*Solde créditeur au %s*" % grand_livre[DATE_FIN]
 
         table.append([
             ("", DATE_LEN),

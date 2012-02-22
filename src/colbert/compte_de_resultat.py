@@ -3,6 +3,7 @@
 import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
+from colbert.common import DATE_DEBUT, DATE_FIN, LABEL
 
 EXPLOITATION = u"exploitation"
 FINANCIERES = u"financières"
@@ -39,7 +40,7 @@ PRESTATIONS_DE_SERVICES = u"prestations de services"
 LIGNES_RESULTAT = {
     CHARGES: {
         EXPLOITATION: {
-            'label': CHARGES_EXPLOITATION,
+            LABEL: CHARGES_EXPLOITATION,
             'comptes': [
                 REMUNERATIONS_DU_PERSONNEL,
                 FOURNITURES_NON_STOCKABLES,
@@ -50,12 +51,12 @@ LIGNES_RESULTAT = {
             ]    
         },
         FINANCIERES: {
-            'label': CHARGES_FINANCIERES,
+            LABEL: CHARGES_FINANCIERES,
             'comptes': [
             ]    
         },
         EXCEPTIONNELLES: {
-            'label': CHARGES_EXCEPTIONNELLES,
+            LABEL: CHARGES_EXCEPTIONNELLES,
             'comptes': [
                 CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION,
             ]    
@@ -63,20 +64,20 @@ LIGNES_RESULTAT = {
     },
     PRODUITS: {
         EXPLOITATION: {
-            'label': PRODUITS_EXPLOITATION,
+            LABEL: PRODUITS_EXPLOITATION,
             'comptes': [
                 PRESTATIONS_DE_SERVICES,
                 AUTRES_PRODUITS_GESTION_COURANTE,
             ]    
         },
         FINANCIERES: {
-            'label': PRODUITS_FINANCIERS,
+            LABEL: PRODUITS_FINANCIERS,
             'comptes': [
                 REVENUS_VALEURS_MOBILIERES_DE_PLACEMENT,
             ]    
         },
         EXCEPTIONNELLES: {
-            'label': PRODUITS_EXCEPTIONNELS,
+            LABEL: PRODUITS_EXCEPTIONNELS,
             'comptes': [
             ]    
         }
@@ -139,9 +140,9 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
     """
 
     compte_de_resultat = {
-        'label': label,
-        'date_debut': datetime.datetime.strptime(balance_des_comptes['date_debut'], DATE_FMT).date(),
-        'date_fin': datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
+        LABEL: label,
+        DATE_DEBUT: datetime.datetime.strptime(balance_des_comptes[DATE_DEBUT], DATE_FMT).date(),
+        DATE_FIN: datetime.datetime.strptime(balance_des_comptes[DATE_FIN], DATE_FMT).date(),
         CHARGES: {
             EXPLOITATION: {},
             FINANCIERES: {},
@@ -238,9 +239,9 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
 
     for categorie in (EXPLOITATION, FINANCIERES, EXCEPTIONNELLES):
         table.append([
-            (u"*%s*" % LIGNES_RESULTAT[CHARGES][categorie]['label'].capitalize(), CHARGES_LEN), 
+            (u"*%s*" % LIGNES_RESULTAT[CHARGES][categorie][LABEL].capitalize(), CHARGES_LEN), 
             (u"", MONTANT_LEN),
-            (u"*%s*" % LIGNES_RESULTAT[PRODUITS][categorie]['label'].capitalize(), PRODUITS_LEN),
+            (u"*%s*" % LIGNES_RESULTAT[PRODUITS][categorie][LABEL].capitalize(), PRODUITS_LEN),
             (u"", MONTANT_LEN),
         ])
         # La structure du tableau est donnée par le mapping LIGNES_RESULTAT.

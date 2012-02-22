@@ -4,7 +4,7 @@ import datetime
 from decimal import Decimal
 from colbert.utils import DATE_FMT
 
-from colbert.common import DEBIT, CREDIT
+from colbert.common import DEBIT, CREDIT, DATE_DEBUT, DATE_FIN, LABEL
 
 BRUT = 'brut'
 NET = 'net'
@@ -171,9 +171,9 @@ def bilan(balance_des_comptes, label="Bilan"):
 
     actif, passif = {}, {}
     bilan = {
-        'label': label,
-        'date_debut': datetime.datetime.strptime(balance_des_comptes['date_debut'], DATE_FMT).date(),
-        'date_fin': datetime.datetime.strptime(balance_des_comptes['date_fin'], DATE_FMT).date(),
+        LABEL: label,
+        DATE_DEBUT: datetime.datetime.strptime(balance_des_comptes[DATE_DEBUT], DATE_FMT).date(),
+        DATE_FIN: datetime.datetime.strptime(balance_des_comptes[DATE_FIN], DATE_FMT).date(),
         ACTIF: actif,
         PASSIF: passif,
     }
@@ -338,12 +338,12 @@ def bilan_to_rst(bilan, output_file):
                     flattened.append([u'*%s*' % rubrique.capitalize(), '', '', ''])
                 for intitule, values in rubriques[1:]:
                     flattened.append([u'%s' % intitule.capitalize(), 
-                                      Decimal(values['brut']),
-                                      Decimal(values['amortissement']),
-                                      Decimal(values['net'])])
+                                      Decimal(values[BRUT]),
+                                      Decimal(values[AMORTISSEMENT]),
+                                      Decimal(values[NET])])
             return flattened
 
-        return flatten_cote_bilan(bilan['actif']), flatten_cote_bilan(bilan['passif'])
+        return flatten_cote_bilan(bilan[ACTIF]), flatten_cote_bilan(bilan[PASSIF])
 
     def row(ligne_actif, ligne_passif):
         return [
