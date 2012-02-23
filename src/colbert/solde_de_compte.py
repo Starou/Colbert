@@ -5,7 +5,10 @@ from decimal import Decimal
 
 from colbert.livre_journal import livre_journal_to_list
 from colbert.livre_journal import ECRITURES, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
+
+from colbert.utils import fmt_number, rst_title, rst_section, rst_table
 from colbert.utils import DATE_FMT
+
 from colbert.common import (DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN, 
                             LABEL, INTITULE, NUMERO_COMPTE)
 
@@ -17,12 +20,9 @@ CREDIT_LEN = 12
 SOLDE_DEBIT_LEN = 17
 SOLDE_CREDIT_LEN = 17
 
-# TODO
-# def solde_de_compte_rst(livre_journal_file, comptes, output_file):
 def solde_de_compte(livre_journal_file, output_file, comptes=None):
     """ Calcule le solde des comptes à partir du livre-journal."""
 
-    from colbert.utils import fmt_number, rst_title, rst_section, rst_table
     lines = []
     livre_journal = livre_journal_to_list(livre_journal_file)
     for compte in comptes:

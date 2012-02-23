@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from decimal import Decimal
+
 from colbert.livre_journal import livre_journal_to_list
 from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
+
+from colbert.utils import fmt_number, rst_table, rst_section, truncate_words
 from colbert.utils import DATE_FMT
+
+from colbert.common import titre_principal_rst
 from colbert.common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
                             DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM, COMPTES)
 
@@ -82,9 +87,6 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
 
 def grand_livre_to_rst(grand_livre, output_file):
     """Convert a `grand_livre` json load to a reStructuredText file. """
-
-    from colbert.utils import fmt_number, rst_table, rst_section, truncate_words
-    from colbert.common import titre_principal_rst
 
     lines = []
     lines += titre_principal_rst(grand_livre[LABEL], grand_livre[DATE_DEBUT], grand_livre[DATE_FIN])

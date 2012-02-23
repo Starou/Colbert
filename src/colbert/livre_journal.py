@@ -3,9 +3,15 @@
 import re
 import datetime
 from decimal import Decimal
-from colbert.utils import fmt_number, DATE_FMT
+
+from colbert.utils import fmt_number, rst_table, DATE_FMT
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_FIN,
                             INTITULE, NOM, NUMERO, COMPTES)
+
+from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
+from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
+from colbert.bilan import DEBIT, CREDIT
+
 
 ECRITURES = u'ecritures'
 NOM_COMPTE = 'nom_compte'
@@ -37,10 +43,6 @@ def check_livre_journal(livre_journal_file):
 def ecritures_de_cloture(balance_des_comptes):
     """Détermine les écritures à passer pour clôturer un exercice. """
     
-    from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
-    from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
-    from colbert.bilan import DEBIT, CREDIT
-
     ecritures = {
         PCG['regroupement-charges'][NUMERO]: [],
         PCG['regroupement-produits'][NUMERO]: [],
@@ -253,7 +255,7 @@ def livre_journal_to_list(livre_journal_file):
                 if not m:
                     raise BaseException, u"La première ligne d'une écriture doit mentionner la date et l'intitulé."
                 m = m.groupdict()
-                ecriture[DATE] = datetime.datetime.strptime(m[DATE], "%d/%m/%Y").date()
+                ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
                 ecriture[INTITULE] = m[INTITULE].strip()
                 ecriture[ECRITURES] = []
             elif RX_SUITE_INTITULE.match(line):
@@ -285,9 +287,6 @@ CREDIT_LEN = 17
 
 def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour le Livre-journal"):
     """Converti une liste d'écritures JSON dans le format reStructuredText du Livre-journal. """
-
-    from colbert.utils import fmt_number, rst_table
-    from colbert.bilan import DEBIT, CREDIT
 
     lines = []
     table = [[(label, LIVRE_JOURNAL_LEN)]]

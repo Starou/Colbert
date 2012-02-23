@@ -2,7 +2,9 @@
 
 import datetime
 from decimal import Decimal
+from colbert.utils import fmt_number, rst_table
 from colbert.utils import DATE_FMT
+from colbert.common import titre_principal_rst
 from colbert.common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
                             DATE_DEBUT, DATE_FIN, LABEL, NOM, NUMERO, COMPTES)
 
@@ -82,9 +84,6 @@ CREDIT_LEN = 18
 
 def balance_des_comptes_to_rst(balance_des_comptes, output_file):
     """Convert a `balance_des_comptes` json load to a reStructuredText file. """
-
-    from colbert.utils import fmt_number, rst_table
-    from colbert.common import titre_principal_rst
 
     lines = []
     lines += titre_principal_rst(balance_des_comptes[LABEL],

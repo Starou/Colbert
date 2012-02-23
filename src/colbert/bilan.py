@@ -2,8 +2,11 @@
 
 import datetime
 from decimal import Decimal
+
+from colbert.utils import fmt_number, rst_table
 from colbert.utils import DATE_FMT
 
+from colbert.common import titre_principal_rst
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
                             LABEL, NUMERO, CATEGORIE, RUBRIQUES, COMPTES)
 
@@ -308,9 +311,6 @@ MONTANT_LEN = 20
 
 def bilan_to_rst(bilan, output_file):
     """Convert a `bilan` json load to a reStructuredText file. """
-
-    from colbert.utils import fmt_number, rst_table
-    from colbert.common import titre_principal_rst
 
     lines = []
     lines += titre_principal_rst(bilan[LABEL], bilan[DATE_DEBUT], bilan[DATE_FIN])

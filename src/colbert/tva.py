@@ -3,6 +3,7 @@
 import re
 import datetime
 from decimal import Decimal
+
 from colbert.utils import fmt_number
 from colbert.utils import DATE_FMT
 from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
