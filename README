@@ -192,10 +192,15 @@ My Makefile in the Livre-journal directory being::
     tex:
         @rst2latex.py $(FILENAME).txt > $(FILENAME).tex
 
+    purge:	clean
+        @for ext in ".pdf" ".tex" ".txt"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
+
     clean:
-        @rm $(FILENAME).out 
-        @rm $(FILENAME).aux 
-        @rm $(FILENAME).log 
+        @for ext in ".out" ".aux" ".log" ".tex.tmp"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
 
 Computing VAT
@@ -257,14 +262,14 @@ Or in a Makefile::
         @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2011" -d $(DATE_DEBUT) -f $(DATE_FIN) > $(FILENAME).json
 
     purge:	clean
-        @rm $(FILENAME).pdf
-        @rm $(FILENAME).tex
-        @rm $(FILENAME).txt
+        @for ext in ".pdf" ".tex" ".txt"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
     clean:
-        @rm $(FILENAME).out 
-        @rm $(FILENAME).aux 
-        @rm $(FILENAME).log 
+        @for ext in ".out" ".aux" ".log" ".tex.tmp"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
 The *fix_table.sed* in the TeX conversion rule is a Sed script managing the right-alignment of the money columns::
 
@@ -360,14 +365,14 @@ And again, you should use this Makefile::
         @colbert_balance_des_comptes.py ../grand-livre/grand_livre-2011.json --label="MyBusiness - Balance des comptes 2011 en €"  > $(FILENAME).json
 
     purge:	clean
-        @rm $(FILENAME).pdf
-        @rm $(FILENAME).tex
-        @rm $(FILENAME).txt
+        @for ext in ".pdf" ".tex" ".txt"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
     clean:
-        @rm $(FILENAME).out 
-        @rm $(FILENAME).aux 
-        @rm $(FILENAME).log 
+        @for ext in ".out" ".aux" ".log" ".tex.tmp"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
 
 With the Sed fix::
@@ -476,15 +481,14 @@ A Makefile to automatically do all the work::
         @colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Bilan 2011 en €"  > $(FILENAME).json
 
     purge:	clean
-        @rm $(FILENAME).pdf
-        @rm $(FILENAME).tex
-        @rm $(FILENAME).txt
+        @for ext in ".pdf" ".tex" ".txt"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
     clean:
-        @rm $(FILENAME).out 
-        @rm $(FILENAME).aux 
-        @rm $(FILENAME).log 
-
+        @for ext in ".out" ".aux" ".log" ".tex.tmp"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
 And the Sed script::
 
@@ -552,14 +556,14 @@ In a Makefile::
         @colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Compte de résultat 2011 en €"  > $(FILENAME).json
 
     purge:	clean
-        @rm $(FILENAME).pdf
-        @rm $(FILENAME).tex
-        @rm $(FILENAME).txt
+        @for ext in ".pdf" ".tex" ".txt"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
     clean:
-        @rm $(FILENAME).out 
-        @rm $(FILENAME).aux 
-        @rm $(FILENAME).log 
+        @for ext in ".out" ".aux" ".log" ".tex.tmp"; do\
+            [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
+        done
 
 
 The Sed script::
@@ -816,4 +820,3 @@ Requirements
 - A LaTex suite if you want to render the reStructuredText in PDF. 
 - Make.
 - Sed.
-
