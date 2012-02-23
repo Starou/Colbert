@@ -33,27 +33,17 @@ def check_livre_journal(livre_journal_file):
         checks.append(check)
 
     return checks
-    
-
-COMPTE_PERTE = '129'
-COMPTE_BENEFICE = '120'
-RESULTAT_EXERCICE_PERTE = u"résultat de l'exercice (perte)"
-RESULTAT_EXERCICE_BENEFICE = u"résultat de l'exercice (bénéfice)"
-
-COMPTE_REGROUPEMENT_PRODUITS = '127'
-COMPTE_REGROUPEMENT_CHARGES = '126'
-REGROUPEMENT_PRODUITS = u"Regroupement des comptes de produits"
-REGROUPEMENT_CHARGES = u"Regroupement des comptes de charges"
 
 def ecritures_de_cloture(balance_des_comptes):
     """Détermine les écritures à passer pour clôturer un exercice. """
     
+    from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
     from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
     from colbert.bilan import DEBIT, CREDIT
 
     ecritures = {
-        COMPTE_REGROUPEMENT_CHARGES: [],
-        COMPTE_REGROUPEMENT_PRODUITS: [],
+        PCG['regroupement-charges'][NUMERO]: [],
+        PCG['regroupement-produits'][NUMERO]: [],
     }
     
     # Préparation des sous-écritures à passer.
@@ -61,9 +51,9 @@ def ecritures_de_cloture(balance_des_comptes):
         if compte[NUMERO][0] not in COMPTES_DE_RESULTAT:
             continue
         if compte[NUMERO][0] == COMPTES_DE_PRODUITS:
-            compte_cible = COMPTE_REGROUPEMENT_PRODUITS
+            compte_cible = PCG['regroupement-produits'][NUMERO]
         elif compte[NUMERO][0] == COMPTES_DE_CHARGES:
-            compte_cible = COMPTE_REGROUPEMENT_CHARGES
+            compte_cible = PCG['regroupement-charges'][NUMERO]
 
         solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
         solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
@@ -83,18 +73,20 @@ def ecritures_de_cloture(balance_des_comptes):
     # Création des écritures finales.
     ecritures_finales = []
     soldes_comptes_regroupements = {
-        COMPTE_REGROUPEMENT_PRODUITS: {
+        PCG['regroupement-produits'][NUMERO]: {
             DEBIT: Decimal("0.0"),
             CREDIT: Decimal("0.0"),
         },
-        COMPTE_REGROUPEMENT_CHARGES: {
+        PCG['regroupement-charges'][NUMERO]: {
             DEBIT: Decimal("0.0"),
             CREDIT: Decimal("0.0"),
         }
     }
 
-    for compte_regroupement, nom_compte in ((COMPTE_REGROUPEMENT_PRODUITS, REGROUPEMENT_PRODUITS), 
-                                            (COMPTE_REGROUPEMENT_CHARGES, REGROUPEMENT_CHARGES)):
+    for compte_regroupement, nom_compte in ((PCG['regroupement-produits'][NUMERO],
+                                             PCG['regroupement-produits'][NOM]), 
+                                            (PCG['regroupement-charges'][NUMERO],
+                                             PCG['regroupement-charges'][NOM])):
         ecriture_finale = {
             DATE: datetime.datetime.strptime(balance_des_comptes[DATE_FIN], DATE_FMT).date(),
             INTITULE: u"Ecritures de clôture des comptes.",
@@ -145,8 +137,10 @@ def ecritures_de_cloture(balance_des_comptes):
     }
 
     # On commence par solder les comptes de regroupement.
-    for compte_regroupement, nom_compte in ((COMPTE_REGROUPEMENT_PRODUITS, REGROUPEMENT_PRODUITS), 
-                                            (COMPTE_REGROUPEMENT_CHARGES, REGROUPEMENT_CHARGES)):
+    for compte_regroupement, nom_compte in ((PCG['regroupement-produits'][NUMERO], 
+                                             PCG['regroupement-produits'][NOM]), 
+                                            (PCG['regroupement-charges'][NUMERO],
+                                             PCG['regroupement-charges'][NOM])):
         soldes_compte_regroupement = soldes_comptes_regroupements[compte_regroupement] 
         debit = soldes_compte_regroupement[CREDIT]
         credit = soldes_compte_regroupement[DEBIT]
@@ -161,11 +155,11 @@ def ecritures_de_cloture(balance_des_comptes):
         )
 
     # Que l'on équilibre avec les comptes 120 (bénéfice) ou 129 (perte).
-    debit = soldes_comptes_regroupements[COMPTE_REGROUPEMENT_PRODUITS][DEBIT] + \
-                 soldes_comptes_regroupements[COMPTE_REGROUPEMENT_CHARGES][DEBIT]
+    debit = soldes_comptes_regroupements[PCG['regroupement-produits'][NUMERO]][DEBIT] + \
+                 soldes_comptes_regroupements[PCG['regroupement-charges'][NUMERO]][DEBIT]
 
-    credit = soldes_comptes_regroupements[COMPTE_REGROUPEMENT_PRODUITS][CREDIT] + \
-                 soldes_comptes_regroupements[COMPTE_REGROUPEMENT_CHARGES][CREDIT]
+    credit = soldes_comptes_regroupements[PCG['regroupement-produits'][NUMERO]][CREDIT] + \
+                 soldes_comptes_regroupements[PCG['regroupement-charges'][NUMERO]][CREDIT]
 
     if debit >= credit:
         debit = debit - credit
@@ -177,9 +171,9 @@ def ecritures_de_cloture(balance_des_comptes):
     ecriture_equilibre = {
         DEBIT: debit,
         CREDIT: credit,
-        NOM_COMPTE: debit and RESULTAT_EXERCICE_PERTE or RESULTAT_EXERCICE_BENEFICE,
-        NUMERO_COMPTE_DEBIT: debit and COMPTE_PERTE or u'',
-        NUMERO_COMPTE_CREDIT: credit and COMPTE_BENEFICE or u'' 
+        NOM_COMPTE: debit and PCG['perte'][NOM] or PCG['benefice'][NOM],
+        NUMERO_COMPTE_DEBIT: debit and PCG['perte'][NUMERO] or u'',
+        NUMERO_COMPTE_CREDIT: credit and PCG['benefice'][NUMERO] or u'' 
     }
     if debit:
         ecriture_resultat[ECRITURES].insert(0, ecriture_equilibre)

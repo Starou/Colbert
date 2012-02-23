@@ -3,6 +3,22 @@
 from colbert.common import NOM, NUMERO
 
 PLAN_COMPTABLE_GENERAL = {
+    'perte': {
+        NUMERO: "129",
+        NOM: u"résultat de l'exercice (perte)",
+    },
+    'benefice': {
+        NUMERO: "120",
+        NOM: u"résultat de l'exercice (bénéfice)",
+    },
+    'regroupement-produits': {
+        NUMERO: "127",
+        NOM: u"Regroupement des comptes de produits",
+    },
+    'regroupement-charges': {
+        NUMERO: "126",
+        NOM: u"Regroupement des comptes de charges",
+    },
     'tva-collectee': {
         NUMERO: "44571",
         NOM: u"TVA collecté",
