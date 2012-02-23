@@ -56,6 +56,7 @@ $ cat 512-2011.json
 import sys, locale, codecs
 from optparse import OptionParser
 
+locale.setlocale(locale.LC_ALL, '')
 sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 
