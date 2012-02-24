@@ -164,7 +164,7 @@ In Colbert, this is a reStructuredText file meeting the french administration re
 
 Each entry is a multiline row in the table. 
 
-I use *Line Blocks* to get a descent formatting in the muttiline cells. Trying to right-align the content of the two last columns was a failure.
+I use *Line Blocks* to get a descent formatting in the multiline cells. Trying to right-align the content of the two last columns was a failure.
 In fact for a reason I don't get, if those values are not left-aligned, the LaTeX conversion sucks.
 
 The optional *thousand separator* cannot be anything else than a space character at the moment. This is on the TODO list.
