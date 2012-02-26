@@ -775,6 +775,19 @@ Almost always::
 
 If the LaTeX compiler complains about utf-8 you may add the *ucs* package.
 
+You may want to precisely control the header and the footer with *fancyhdr* package::
+
+    \usepackage{fancyhdr}
+    \fancyhf{}
+    \pagestyle{fancy}
+    \lhead{\large{MyBusiness S.A.R.L.}\\
+    \normalsize my address\\
+    zipcode City}
+    \cfoot{Société à responsabilité limité au capital de XXXX Euros - YYY YYY YYY R.C.S. Paris}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+
+
 
 The Sed script
 --------------
@@ -798,6 +811,11 @@ The Sed script depends of the TeX file. Here an example::
     >{\\raggedright\\hspace{0pt}}p{#1}}% \
     \\begin{longtable*}[c]{y{2cm}y{7.5cm}x{2cm}|y{2cm}y{7.5cm}x{2cm}}/
     s/\\\\/\\tabularnewline/
+
+And to force the *pagestyle* for the first one I sometimes add::
+
+    s/\\maketitle/\\maketitle\
+    \\thispagestyle{fancy}/
 
 
 Installation
