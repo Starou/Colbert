@@ -212,8 +212,8 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
 
     return compte_de_resultat
 
-CHARGES_LEN = 50
-PRODUITS_LEN = 50
+CHARGES_LEN = 60
+PRODUITS_LEN = 60
 MONTANT_LEN = 25
 
 def compte_de_resultat_to_rst(compte_de_resultat, output_file):
