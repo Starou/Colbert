@@ -10,6 +10,7 @@ def calculer_facture(facture):
         > `montant_ht' de chaque ligne ;
         > `montant_ht` et `montant_ttc' total ;
         > `tva` totale de la facture.
+        > Diverses dates.
     """
     
     facture["montant_ht"] = Decimal("0.00")
@@ -55,9 +56,10 @@ def facture_to_tex(facture, tex_template, output_file):
 
     # Lignes de facturation.
     kwargs["lignes_facture"] = u"\n".join([
-      u"& %s &  %s jours & \\numprint{%s} & \\numprint{%s} \\\\" % (
+      u"& %s &  %s %s & \\numprint{%s} & \\numprint{%s} \\\\" % (
           l["description"],
           l["quantite"],
+          l["unite"],
           l["prix_unitaire_ht"],
           l["montant_ht"],
       ) for l in kwargs["detail"] 
@@ -88,9 +90,6 @@ def facture_to_tex(facture, tex_template, output_file):
     # Reformatage des dates.
     for d in ("date_facture", "date_reglement", "date_debut_penalites"):
         kwargs[d] = datetime.datetime.strptime(kwargs[d], DATE_FMT).date().strftime(date_fin_fmt.encode("utf-8")).decode("utf-8")
-
-    #from pprint import pprint
-    #pprint(kwargs)
 
     tex_string = tex_template.read() % kwargs
     #print tex_template
