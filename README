@@ -14,7 +14,7 @@ The big disclaimer(s)
 
 I don't know shit about accountancy. I am running a very small business since 2011 and there is two things I wanted to avoid for my fiscal and financial obligations:
 
-1. to throw 3k€/year to pay someone Porsche ;
+1. to throw 3k€/year to pay someone Porsche gas ;
 2. to learn a terrible closed source piece of accountancy software instead of understanding the roots.
 
 So I first decided to write a *Django* project to record my expenses, my incomes and automagically generate the client's invoices.
@@ -738,6 +738,113 @@ And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt sol
 
         \newpage
 
+
+Making invoices
+===============
+
+Colbert can assist you to compute your invoices, generate TeX/PDF outputs from them and the entries for the Livre-journal.
+You start with a JSON file like below and use the script *colbert_calculer_facture.py* to fill it out::
+
+
+    $ cat my_invoice.json
+    {
+        "client": {
+            "nom": "MyClient#1",
+                "adresse": "1, Infinite Loop",
+                "code_postal": "11222",
+                "ville": "Cupertino",
+                "numero_compte": "4111-CL1",
+                "reference_commande": "XXXXX"
+        },
+        "numero_facture": "YYYYYYY",
+        "date_facture": "10/05/2011",
+        "nb_jours_payable_fin_de_mois": "60",
+        "taux_penalites": "11",
+        "date_debut_execution": "10/04/2011",
+        "date_fin_execution": "30/04/2011",
+        "devise": "Euro",
+        "symbole_devise": "€",
+        "detail": [
+            {
+                "reference": "ref-A",
+                "description": "Prestation A.",
+                "prix_unitaire_ht": "100.00",
+                "unite": "jours",
+                "taux_tva": "19.6",
+                "quantite": "4"
+            },
+            {
+                "reference": "ref-B",
+                "description": "Prestation B.",
+                "prix_unitaire_ht": "450.99",
+                "unite": "jours",
+                "taux_tva": "19.6",
+                "quantite": "11"
+            }
+        ],
+        "deja_paye": "0.00"
+    }
+
+
+    $ colbert_calculer_facture.py my_invoice.json
+    
+    {
+        "date_facture": "10/05/2011", 
+        "symbole_devise": "\u20ac", 
+        "deja_paye": "0.00", 
+        "taux_penalites": "11", 
+        "montant_ht": "5360.89", 
+        "date_fin_execution": "30/04/2011", 
+        "detail": [
+            {
+                "quantite": "4", 
+                "description": "Prestation A.", 
+                "reference": "ref-A", 
+                "montant_ht": "400.00", 
+                "prix_unitaire_ht": "100.00", 
+                "unite": "jours", 
+                "taux_tva": "19.6"
+            }, 
+            {
+                "quantite": "11", 
+                "description": "Prestation B.", 
+                "reference": "ref-B", 
+                "montant_ht": "4960.89", 
+                "prix_unitaire_ht": "450.99", 
+                "unite": "jours", 
+                "taux_tva": "19.6"
+            }
+        ], 
+        "numero_facture": "YYYYYYY", 
+        "devise": "Euro", 
+        "client": {
+            "ville": "Cupertino", 
+            "code_postal": "11222", 
+            "nom": "MyClient#1", 
+            "adresse": "1, Infinite Loop", 
+            "reference_commande": "XXXXX", 
+            "numero_compte": "4111-CL1"
+        }, 
+        "montant_ttc": "6411.62", 
+        "date_debut_execution": "10/04/2011", 
+        "reste_a_payer": "6411.62", 
+        "nb_jours_payable_fin_de_mois": "60", 
+        "date_debut_penalites": "01/08/2011", 
+        "tva": {
+            "19.6": "1050.73"
+        }, 
+        "date_reglement": "31/07/2011"
+    }
+
+
+You should redirect the output of this script to a new file, say *my_invoice_ok.json* and now you can use it to generate
+LaTeX output::
+
+    $ colbert_facture_to_tex.py my_invoice_ok.json my_invoice_template.tex > my_invoice.tex
+    $ xelatex my_invoice.tex
+
+The parameter *my_invoice_template.tex* is a TeX file having placeholder for Python string formatting with keyword arguments.
+There is an example of such template in the *tests/regressiontests/* folder.
 
 
 Working with LaTeX
