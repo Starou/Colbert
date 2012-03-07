@@ -25,7 +25,7 @@ class BilanTestCase(unittest.TestCase):
         #output = codecs.open(os.path.join(CURRENT_DIR, "bilan-2011.json"), 
         #                              mode="w+", encoding="utf-8")
         #output.write(json.dumps(b, default=json_encoder, indent=4))
-        #output.close
+        #output.close()
         #pprint(b)
         self.maxDiff = None
         self.assertEqual(

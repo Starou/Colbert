@@ -83,3 +83,6 @@ def truncate_words(content, length=100, suffix='...'):
     else:
         return ' '.join(content[:length+1-len(suffix)].split(' ')[0:-1]) + suffix
 
+def d_round(value, rounding=2):
+    r = Decimal(10) ** -rounding
+    return value.quantize(r)

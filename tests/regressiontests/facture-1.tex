@@ -1,0 +1,90 @@
+\documentclass[10pt]{lettre}
+
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage{fontspec}
+\usepackage{textpos}
+\usepackage{xspace}
+
+\usepackage[french]{babel}
+\usepackage{numprint} % toujours après Babel.
+%\usepackage[autolanguage]{numprint}
+
+\newcommand{\facture}{YYYYYYY}
+\newcommand{\client}{MyClient#1\\
+    1, Infinite Loop\\
+    11222 Cupertino\\}
+
+\name{Stanislas~\bsc{Guerra}}
+\signature{Stanislas~\bsc{Guerra}}
+
+\begin{document}
+\begin{letter}{\client}
+  \makeatletter%
+  \def\fromlieu@let@vpos{100}%
+  \def\rule@vpos{-2}%
+  \makeatother%
+
+  \begin{textblock*}{210mm}(65mm,-27mm)%
+  \fontsize{36pt}{30pt}{MyBusinessLogo}
+  \end{textblock*}
+  \address{
+    \large{MyBusiness corp.}\\
+    \normalsize 1, Abbey Road\\
+    11222 London\\
+    ~\\
+    }
+
+  \telephone{+XX (X)X XX XX XX XX}
+  \nofax
+  \email{contact@mybusiness.org}
+
+  \lieu{Tombouchtou}
+  \date{Tuesday 10 May 2011}
+
+  \opening{\small Référence commande : XXXXX}
+  \vskip1cm
+  \Large
+  Facture \no \facture~du \pdate
+
+  \normalsize
+  \vskip1cm
+  \begin{tabular}{|l|p{72mm}|c|r|r|}
+    \multicolumn{4}{}{} & \textbf{En EUR}\\
+    \hline
+    Référence & Désignation & Quantité & P.U. HT & Montant HT\\
+    \hline
+    \hline
+    & Prestation A. &  4 jours & \numprint{100.00} & \numprint{400.00} \\
+& Prestation B. &  11 jours & \numprint{450.99} & \numprint{4960.89} \\
+    \hline
+    \multicolumn{5}{}{}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc Total HT} & \numprint{5360.89}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc TVA 19.6\%} & \numprint{1050.73}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc Total TTC} & \numprint{6411.62}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc Déjà payé} & \numprint{0.00}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc À payer} & \textbf{\numprint{6411.62}}\\
+    \cline{3-5}
+  \end{tabular}
+  \vskip1cm
+
+Date d'exécution de la prestation : Du Sunday 10 au Saturday 30 April 2011 \\
+Date de règlement : Sunday 31 July 2011\\
+\small
+Taux des pénalités exigibles à compter du Monday 01 August 2011 en l'absence de paiement : 11\%.\\
+Nos conditions de vente ne prévoient pas d'escompte pour paiement anticipé.\\
+\normalsize
+
+\closing{}
+
+\basdepage{\centering \small Société à responsabilité limitée au capital de \numprint{9999} Euros - XXX XXX XXX R.C.S. XXXXX
+%\\ N TVA : xxxxxxxxx
+}
+
+\end{letter}
+\end{document}

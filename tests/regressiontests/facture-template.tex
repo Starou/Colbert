@@ -1,0 +1,89 @@
+\documentclass[10pt]{lettre}
+
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage{fontspec}
+\usepackage{textpos}
+\usepackage{xspace}
+
+\usepackage[french]{babel}
+\usepackage{numprint} %% toujours après Babel.
+%%\usepackage[autolanguage]{numprint}
+
+\newcommand{\facture}{%(numero_facture)s}
+\newcommand{\client}{%(client_nom)s\\
+    %(client_adresse)s\\
+    %(client_code_postal)s %(client_ville)s\\}
+
+\name{Stanislas~\bsc{Guerra}}
+\signature{Stanislas~\bsc{Guerra}}
+
+\begin{document}
+\begin{letter}{\client}
+  \makeatletter%%
+  \def\fromlieu@let@vpos{100}%%
+  \def\rule@vpos{-2}%%
+  \makeatother%%
+
+  \begin{textblock*}{210mm}(65mm,-27mm)%%
+  \fontsize{36pt}{30pt}{MyBusinessLogo}
+  \end{textblock*}
+  \address{
+    \large{MyBusiness corp.}\\
+    \normalsize 1, Abbey Road\\
+    11222 London\\
+    ~\\
+    }
+
+  \telephone{+XX (X)X XX XX XX XX}
+  \nofax
+  \email{contact@mybusiness.org}
+
+  \lieu{Tombouchtou}
+  \date{%(date_facture)s}
+
+  \opening{\small Référence commande : %(client_reference_commande)s}
+  \vskip1cm
+  \Large
+  Facture \no \facture~du \pdate
+
+  \normalsize
+  \vskip1cm
+  \begin{tabular}{|l|p{72mm}|c|r|r|}
+    \multicolumn{4}{}{} & \textbf{En EUR}\\
+    \hline
+    Référence & Désignation & Quantité & P.U. HT & Montant HT\\
+    \hline
+    \hline
+    %(lignes_facture)s
+    \hline
+    \multicolumn{5}{}{}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc Total HT} & \numprint{%(montant_ht)s}\\
+    \cline{3-5}
+    %(lignes_tva)s
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc Total TTC} & \numprint{%(montant_ttc)s}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc Déjà payé} & \numprint{%(deja_paye)s}\\
+    \cline{3-5}
+    \multicolumn{2}{l|}{} & \multicolumn{2}{|l|}{\sc À payer} & \textbf{\numprint{%(reste_a_payer)s}}\\
+    \cline{3-5}
+  \end{tabular}
+  \vskip1cm
+
+Date d'exécution de la prestation : %(periode_execution)s \\
+Date de règlement : %(date_reglement)s\\
+\small
+Taux des pénalités exigibles à compter du %(date_debut_penalites)s en l'absence de paiement : %(taux_penalites)s\%%.\\
+Nos conditions de vente ne prévoient pas d'escompte pour paiement anticipé.\\
+\normalsize
+
+\closing{}
+
+\basdepage{\centering \small Société à responsabilité limitée au capital de \numprint{9999} Euros - XXX XXX XXX R.C.S. XXXXX
+%%\\ N TVA : xxxxxxxxx
+}
+
+\end{letter}
+\end{document}

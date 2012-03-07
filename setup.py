@@ -28,5 +28,7 @@ setup(
         'src/scripts/colbert_ecritures_de_cloture.py',
         'src/scripts/colbert_ecritures_to_livre_journal.py',
         'src/scripts/colbert_solder_tva.py',
+        'src/scripts/colbert_calculer_facture.py',
+        'src/scripts/colbert_facture_to_tex.py',
     ],
 )

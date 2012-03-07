@@ -1,0 +1,47 @@
+{
+    "date_facture": "10/05/2011", 
+    "symbole_devise": "\u20ac", 
+    "deja_paye": "0.00", 
+    "taux_penalites": "11", 
+    "montant_ht": "5360.89", 
+    "date_fin_execution": "30/04/2011", 
+    "detail": [
+        {
+            "quantite": "4", 
+            "description": "Prestation A.", 
+            "reference": "ref-A", 
+            "montant_ht": "400.00", 
+            "prix_unitaire_ht": "100.00", 
+            "unite": "jours", 
+            "taux_tva": "19.6"
+        }, 
+        {
+            "quantite": "11", 
+            "description": "Prestation B.", 
+            "reference": "ref-B", 
+            "montant_ht": "4960.89", 
+            "prix_unitaire_ht": "450.99", 
+            "unite": "jours", 
+            "taux_tva": "19.6"
+        }
+    ], 
+    "numero_facture": "YYYYYYY", 
+    "devise": "Euro", 
+    "client": {
+        "ville": "Cupertino", 
+        "code_postal": "11222", 
+        "nom": "MyClient#1", 
+        "adresse": "1, Infinite Loop", 
+        "reference_commande": "XXXXX", 
+        "numero_compte": "4111-CL1"
+    }, 
+    "montant_ttc": "6411.62", 
+    "date_debut_execution": "10/04/2011", 
+    "reste_a_payer": "6411.62", 
+    "nb_jours_payable_fin_de_mois": "60", 
+    "date_debut_penalites": "01/08/2011", 
+    "tva": {
+        "19.6": "1050.73"
+    }, 
+    "date_reglement": "31/07/2011"
+}
