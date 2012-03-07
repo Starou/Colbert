@@ -4,6 +4,10 @@ import datetime
 from decimal import Decimal
 from colbert.utils import d_round
 from colbert.common import DATE_FMT
+from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
+from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
+
+from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 
 def calculer_facture(facture):
     """ Complète la facture en calculant :
@@ -93,3 +97,38 @@ def facture_to_tex(facture, tex_template, output_file):
 
     tex_string = tex_template.read() % kwargs
     output_file.write(tex_string)
+
+def ecriture_facture(facture):
+    date_facture = datetime.datetime.strptime(facture["date_facture"], DATE_FMT).date()
+    compte_tva = PCG['tva-ca-factures-a-etablir']
+
+    ecritures = [
+        {
+            'nom_compte': facture["client"]["nom_compte"],
+            'debit': Decimal(facture["montant_ttc"]),
+            'credit': Decimal('0.00'),
+            'numero_compte_debit': facture["client"]["numero_compte"],
+            'numero_compte_credit': u'',
+        },
+        {
+            'nom_compte': facture["nom_compte"],
+            'debit': Decimal('0.00'),
+            'credit': Decimal(facture["montant_ht"]),
+            'numero_compte_debit': u'',
+            'numero_compte_credit': facture["numero_compte"],
+        },
+        {
+            'nom_compte': compte_tva[NOM],
+            'debit': Decimal('0.00'),
+            'credit': Decimal(facture["montant_ttc"]) - Decimal(facture["montant_ht"]),
+            'numero_compte_debit': u'',
+            'numero_compte_credit': compte_tva[NUMERO],
+        },
+    ]
+    
+    return {
+        DATE: date_facture,
+        ECRITURES: ecritures,
+        INTITULE: u"Facture %s %s" % (facture["numero_facture"],
+                                      facture["client"]["nom"])
+    }

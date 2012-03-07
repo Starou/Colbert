@@ -4,6 +4,7 @@
     "deja_paye": "0.00", 
     "taux_penalites": "11", 
     "montant_ht": "5360.89", 
+    "nom_compte": "Produits - prestations de services", 
     "date_fin_execution": "30/04/2011", 
     "detail": [
         {
@@ -27,10 +28,12 @@
     ], 
     "numero_facture": "YYYYYYY", 
     "devise": "Euro", 
+    "numero_compte": "706", 
     "client": {
         "ville": "Cupertino", 
         "code_postal": "11222", 
         "nom": "MyClient#1", 
+        "nom_compte": "Clients - ventes de biens ou prestations de services", 
         "adresse": "1, Infinite Loop", 
         "reference_commande": "XXXXX", 
         "numero_compte": "4111-CL1"

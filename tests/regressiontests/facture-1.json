@@ -5,6 +5,7 @@
             "code_postal": "11222",
             "ville": "Cupertino",
             "numero_compte": "4111-CL1",
+            "nom_compte": "Clients - ventes de biens ou prestations de services",
             "reference_commande": "XXXXX"
     },
     "numero_facture": "YYYYYYY",
@@ -15,6 +16,8 @@
     "date_fin_execution": "30/04/2011",
     "devise": "Euro",
     "symbole_devise": "€",
+    "numero_compte": "706",
+    "nom_compte": "Produits - prestations de services",
     "detail": [
         {
             "reference": "ref-A",

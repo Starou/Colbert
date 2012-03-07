@@ -754,6 +754,7 @@ You start with a JSON file like the one below and use the script *colbert_calcul
                 "code_postal": "11222",
                 "ville": "Cupertino",
                 "numero_compte": "4111-CL1",
+                "nom_compte": "Clients - ventes de biens ou prestations de services",
                 "reference_commande": "XXXXX"
         },
         "numero_facture": "YYYYYYY",
@@ -764,6 +765,8 @@ You start with a JSON file like the one below and use the script *colbert_calcul
         "date_fin_execution": "30/04/2011",
         "devise": "Euro",
         "symbole_devise": "€",
+        "nom_compte": "Produits - prestations de services", 
+        "numero_compte": "706", 
         "detail": [
             {
                 "reference": "ref-A",
@@ -815,12 +818,15 @@ You start with a JSON file like the one below and use the script *colbert_calcul
         ], 
         "numero_facture": "YYYYYYY", 
         "devise": "Euro", 
+        "nom_compte": "Produits - prestations de services", 
+        "numero_compte": "706", 
         "client": {
             "ville": "Cupertino", 
             "code_postal": "11222", 
             "nom": "MyClient#1", 
             "adresse": "1, Infinite Loop", 
             "reference_commande": "XXXXX", 
+            "nom_compte": "Clients - ventes de biens ou prestations de services",
             "numero_compte": "4111-CL1"
         }, 
         "montant_ttc": "6411.62", 

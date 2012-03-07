@@ -19,6 +19,10 @@ PLAN_COMPTABLE_GENERAL = {
         NUMERO: "126",
         NOM: u"Regroupement des comptes de charges",
     },
+    'tva-ca-factures-a-etablir': {
+        NUMERO: "44587",
+        NOM: u"Taxes sur le CA sur factures à établir",
+    },
     'tva-collectee': {
         NUMERO: "44571",
         NOM: u"TVA collecté",
@@ -39,5 +43,4 @@ PLAN_COMPTABLE_GENERAL = {
         NUMERO: "658",
         NOM: u"Charges diverses de gestion courante",
     },
-
 }
