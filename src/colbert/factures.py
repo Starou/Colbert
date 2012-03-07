@@ -92,5 +92,4 @@ def facture_to_tex(facture, tex_template, output_file):
         kwargs[d] = datetime.datetime.strptime(kwargs[d], DATE_FMT).date().strftime(date_fin_fmt.encode("utf-8")).decode("utf-8")
 
     tex_string = tex_template.read() % kwargs
-    #print tex_template
     output_file.write(tex_string)
