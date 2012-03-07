@@ -742,8 +742,8 @@ And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt sol
 Making invoices
 ===============
 
-Colbert can assist you to compute your invoices, generate TeX/PDF outputs from them and the entries for the Livre-journal.
-You start with a JSON file like below and use the script *colbert_calculer_facture.py* to fill it out::
+Colbert can assist you to compute invoices, generate TeX/PDF outputs and the Livre-journal entries from them.
+You start with a JSON file like the one below and use the script *colbert_calculer_facture.py* to fill it out::
 
 
     $ cat my_invoice.json
@@ -785,9 +785,7 @@ You start with a JSON file like below and use the script *colbert_calculer_factu
         "deja_paye": "0.00"
     }
 
-
     $ colbert_calculer_facture.py my_invoice.json
-    
     {
         "date_facture": "10/05/2011", 
         "symbole_devise": "\u20ac", 
@@ -837,14 +835,29 @@ You start with a JSON file like below and use the script *colbert_calculer_factu
     }
 
 
-You should redirect the output of this script to a new file, say *my_invoice_ok.json* and now you can use it to generate
-LaTeX output::
+You should redirect the output to a new file, say *my_invoice_ok.json* and use it to generate a LaTeX output::
 
     $ colbert_facture_to_tex.py my_invoice_ok.json my_invoice_template.tex > my_invoice.tex
     $ xelatex my_invoice.tex
 
 The parameter *my_invoice_template.tex* is a TeX file having placeholder for Python string formatting with keyword arguments.
 There is an example of such template in the *tests/regressiontests/* folder.
+
+My worflow is to use a directory for each invoice with the following Makefile::
+
+
+    filename = facture-2012-003
+    filename_calcule = $(filename)_calculee
+
+    pdf:	tex
+        @xelatex $(filename).tex
+
+    tex:	json
+        @export LC_ALL="fr_FR.UTF-8" ; export LC_LANG="fr_FR.UTF-8" ; \
+        colbert_facture_to_tex.py $(filename_calcule).json ../../modele_facture.tex > $(filename).tex
+
+    json:
+        @colbert_calculer_facture.py $(filename).json > $(filename_calcule).json
 
 
 Working with LaTeX
