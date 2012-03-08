@@ -849,11 +849,24 @@ You should redirect the output to a new file, say *my_invoice_ok.json* and use i
 The parameter *my_invoice_template.tex* is a TeX file having placeholder for Python string formatting with keyword arguments.
 There is an example of such template in the *tests/regressiontests/* folder.
 
-My worflow is to use a directory for each invoice with the following Makefile::
 
+Livre-journal entry
+-------------------
+
+Having an invoice filled-in you can now generate the entry for the Livre-journal::
+
+    $ colbert_ecriture_facture.py my_invoice_ok.json > my_invoice_entry.json
+    $ colbert_ecritures_to_livre_journal.py --label="Entry to report" my_invoice_entry.json > my_invoice_entry.txt
+
+
+Workflow
+--------
+
+My method is to use a directory for each invoice with the following Makefile in it::
 
     filename = facture-2012-003
     filename_calcule = $(filename)_calculee
+    filename_ecriture = $(filename)_ecriture
 
     pdf:	tex
         @xelatex $(filename).tex
@@ -864,6 +877,13 @@ My worflow is to use a directory for each invoice with the following Makefile::
 
     json:
         @colbert_calculer_facture.py $(filename).json > $(filename_calcule).json
+        @colbert_ecriture_facture.py $(filename_calcule).json > $(filename_ecriture).json
+        @colbert_ecritures_to_livre_journal.py --label="Ecriture a reporter au Livre-journal" $(filename_ecriture).json > $(filename_ecriture).txt
+
+    clean:
+        @for ext in ".out" ".aux" ".log" ".tns"; do\
+            [ -e $(filename)$${ext} ] && rm $(filename)$${ext} || [ 1 ] ;\
+        done
 
 
 Working with LaTeX
