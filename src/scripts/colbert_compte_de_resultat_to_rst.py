@@ -26,14 +26,10 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
-"""
 
 import sys, locale, codecs
 from optparse import OptionParser
 
-locale.setlocale(locale.LC_ALL, '')
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 def main():
     usage = "usage: %prog [options] compte_de_resultat.json"
@@ -48,6 +44,8 @@ def main():
     else:
         import json
         from colbert.compte_de_resultat import compte_de_resultat_to_rst
+        locale.setlocale(locale.LC_ALL, '')
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         compte_de_resultat = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         compte_de_resultat_to_rst(compte_de_resultat, sys.stdout)

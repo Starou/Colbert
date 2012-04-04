@@ -26,10 +26,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
-
-    
-"""
 
 import sys, locale, codecs
 from optparse import OptionParser
@@ -37,11 +33,9 @@ import datetime
 from decimal import Decimal
 from colbert.common import DATE_FMT
 
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
 
 def main():
-    usage = "usage: %prog [options] livre-journal.txt"
+    usage = u"usage: %prog [options] livre-journal.txt"
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
@@ -56,11 +50,11 @@ def main():
         parser.error(u"Vous devez passer en argument le chemin d'un fichier "
                      u"Livre Journal au format reStructuredText, la date de "
                      u"début et la date de fin.")
-
     else:
         import json
         from colbert.utils import json_encoder
         from colbert.tva import solde_comptes_de_tva
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
         date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()

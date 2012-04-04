@@ -26,14 +26,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
-"""
-
 import sys, locale, codecs
 from optparse import OptionParser
 
-locale.setlocale(locale.LC_ALL, '')
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 def main():
     usage = "usage: %prog [options] grand-livre.txt"
@@ -45,10 +40,11 @@ def main():
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Grand-Livre.")
-
     else:
         import json
         from colbert.grand_livre import grand_livre_to_rst
+        locale.setlocale(locale.LC_ALL, '')
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         grand_livre = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         grand_livre_to_rst(grand_livre, sys.stdout)

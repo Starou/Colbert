@@ -56,9 +56,6 @@ $ cat 512-2011.json
 import sys, locale, codecs
 from optparse import OptionParser
 
-locale.setlocale(locale.LC_ALL, '')
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
 
 def main():
     usage = "usage: %prog [options] livre-journal.txt comptes.json"
@@ -71,10 +68,11 @@ def main():
     if len(args) != 2:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Livre-Journal et celui d'un fichier json de comptes.")
-
     else:
         import json
         from colbert.solde_de_compte import solde_de_compte
+        locale.setlocale(locale.LC_ALL, '')
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
         comptes = json.loads(codecs.open(args[1], mode="r", encoding="utf-8").read())

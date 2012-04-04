@@ -26,13 +26,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
-"""
 
 import sys, locale, codecs
 from optparse import OptionParser
-
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 
 def main():
@@ -45,11 +41,11 @@ def main():
     if len(args) != 1:
         parser.error(u"Vous devez passer en argument le chemin d'un fichier "
                      u"d'une facture calculée  au format JSON.")
-
     else:
         import json
         from colbert.utils import json_encoder
         from colbert.factures import ecriture_facture
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         facture = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         ecriture = ecriture_facture(facture)

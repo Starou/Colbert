@@ -33,7 +33,6 @@ u"""
 import sys, locale, codecs
 from optparse import OptionParser
 
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 def main():
     usage = "usage: %prog [options] facture.json"
@@ -45,11 +44,11 @@ def main():
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Facture au format JSON.")
-
     else:
         import json
         from colbert.utils import json_encoder
         from colbert.factures import calculer_facture
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         facture = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         facture = calculer_facture(facture)

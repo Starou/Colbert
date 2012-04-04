@@ -35,8 +35,6 @@ from optparse import OptionParser
 import datetime
 from decimal import Decimal
 
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
 
 def main():
     usage = "usage: %prog [options] grand-livre.json"
@@ -50,11 +48,11 @@ def main():
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Grand-Livre au format JSON.")
-
     else:
         import json
         from colbert.utils import json_encoder
         from colbert.balance_des_comptes import balance_des_comptes
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         grand_livre = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         bdc = balance_des_comptes(grand_livre, options.label)

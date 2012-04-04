@@ -32,8 +32,6 @@ u"""
 import sys, locale, codecs
 from optparse import OptionParser
 
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
 
 def main():
     usage = "usage: %prog [options] livre-journal.txt"
@@ -45,10 +43,10 @@ def main():
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Livre-Journal au format reStructuredText")
-
     else:
         import json
         from colbert.livre_journal import check_livre_journal
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
         result = check_livre_journal(livre_journal)

@@ -27,16 +27,9 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-u"""
-
-    
-"""
 
 import sys, locale, codecs
 from optparse import OptionParser
-
-locale.setlocale(locale.LC_ALL, '')
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 def main():
     usage = "usage: %prog [options] balance_des_comptes.json"
@@ -48,10 +41,11 @@ def main():
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "de balance des comptes au format JSON.")
-
     else:
         import json
         from colbert.balance_des_comptes import balance_des_comptes_to_rst
+        locale.setlocale(locale.LC_ALL, '')
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         balance_des_comptes = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         balance_des_comptes_to_rst(balance_des_comptes, sys.stdout)

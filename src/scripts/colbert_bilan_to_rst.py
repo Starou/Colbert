@@ -32,8 +32,6 @@ u"""
 import sys, locale, codecs
 from optparse import OptionParser
 
-locale.setlocale(locale.LC_ALL, '')
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 def main():
     usage = "usage: %prog [options] bilan.json"
@@ -45,10 +43,11 @@ def main():
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "de bilan au format JSON.")
-
     else:
         import json
         from colbert.bilan import bilan_to_rst
+        locale.setlocale(locale.LC_ALL, '')
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         bilan = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         bilan_to_rst(bilan, sys.stdout)

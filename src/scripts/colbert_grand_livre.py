@@ -26,18 +26,12 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
-
-    
-"""
 
 import sys, locale, codecs
 from optparse import OptionParser
 import datetime
 from decimal import Decimal
 from colbert.common import DATE_FMT
-
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 
 def main():
@@ -59,10 +53,10 @@ def main():
     if len(args) != 1:
         parser.error(u"Vous devez passer en argument le chemin d'un fichier "
                      u"Livre-Journal au format reStructuredText.")
-
     else:
         import json
         from colbert.grand_livre import grand_livre
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
         grand_livre_precedent = None

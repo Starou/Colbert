@@ -26,15 +26,10 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
-
-    
-"""
 
 import sys, locale, codecs
 from optparse import OptionParser
 
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
 def main():
     usage = "usage: %prog [options] ecritures.json"
@@ -49,10 +44,10 @@ def main():
     if len(args) != 1:
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "d'écritures au format JSON.")
-
     else:
         import json
         from colbert.livre_journal import ecritures_to_livre_journal
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         ecritures = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         ecritures_to_livre_journal(ecritures, sys.stdout, options.label)
