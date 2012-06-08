@@ -86,3 +86,26 @@ def truncate_words(content, length=100, suffix='...'):
 def d_round(value, rounding=2):
     r = Decimal(10) ** -rounding
     return value.quantize(r)
+
+def decode_as_ecriture(ecriture_json):
+    out = {}
+    for k, v in ecriture_json.iteritems():
+        try:
+            v = Decimal(v)
+        except:
+            pass
+        else:
+            out[k] = v
+            continue
+
+        try:
+            v = datetime.datetime.strptime(v, DATE_FMT).date()
+        except:
+            pass
+        else:
+            out[k] = v
+            continue
+
+        out[k] = v
+
+    return out
