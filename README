@@ -74,20 +74,25 @@ my organization is the following::
                                         |                   +-- Makefile 
                                         |
                                         +-- 2011/   +-- grand-livre/
-                                                    |
-                                                    +-- releves-bancaires/  
-                                                    |
-                                                    +-- factures/           
-                                                    |
-                                                    +-- balance-des-comptes/
-                                                    |
-                                                    +-- bilan/
-                                                    |
-                                                    +-- compte-de-resultat/ 
-                                                    |
-                                                    +-- TVA/                
-                                                    |
-                                                    +-- ecritures-de-cloture/
+                                        |           |
+                                        |           +-- releves-bancaires/  
+                                        |           |
+                                        |           +-- factures/           
+                                        |           |
+                                        |           +-- balance-des-comptes/
+                                        |           |
+                                        |           +-- bilan/
+                                        |           |
+                                        |           +-- compte-de-resultat/ 
+                                        |           |
+                                        |           +-- TVA/                
+                                        |           |
+                                        |           +-- ecritures-de-cloture/
+                                        |
+                                        +-- 2012/   +-- grand-livre/
+                                        |           |
+                                        |           +-- releves-bancaires/  
+                                                    ...
 
 
 *Le livre-journal* is a never-ending story, this is the reason for keeping it at the root level. In accountancy, a main concept is
@@ -328,6 +333,22 @@ Here an example of the reStructuredText output::
     +------------+---------------------------------+----------+------------+-----------------------------------------+----------+
 
     .. raw:: latex
+
+
+N+1 years
+'''''''''
+
+When you start a new year there are two things to keep in mind for the Grand-Livre :
+
+- to start with the *Report à nouveau* of the account of the previous year ;
+- to include the entries of the previous year that have not been included in the Grand-Livre.
+
+
+*Colbert* does it for you. All you have to do is to provide the path of the previous one (as JSON)::
+
+
+    $ @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2012" -d 1/1/2012 -f 31/12/2012 -p ../../2011/grand-livre/grand-livre_2011.json > grand-livre_2012.json
+
 
 
 La balance des comptes
