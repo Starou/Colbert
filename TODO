@@ -1,2 +1,3 @@
 * Use `rst2xetex` rather than `rst2latex`.
 * Use the locale to parse the dates and the decimal values.
+* Use utils.decode_as_ecriture when possible.

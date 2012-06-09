@@ -8,6 +8,7 @@ import datetime
 from pprint import pprint
 import json
 from colbert.utils import json_encoder
+from colbert.utils import decode_as_ecriture as as_ecriture
 
 from decimal import Decimal
 
@@ -348,6 +349,142 @@ class GrandLivreTestCase(unittest.TestCase):
  'date_fin': datetime.date(2011, 12, 31),
  'label': 'Grand-Livre 2011'}
         )
+
+    def test_grand_livre_N_plus_1(self):
+        from colbert.grand_livre import grand_livre
+        livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal-N+1.txt"), 
+                                    mode="r", encoding="utf-8")
+        grand_livre_precedent = codecs.open(os.path.join(CURRENT_DIR, "grand_livre-2011.json"), 
+                                            mode="r", encoding="utf-8")
+        grand_livre_precedent = json.loads(grand_livre_precedent.read(), object_hook=as_ecriture)
+
+        gl = grand_livre(livre_journal, "Grand-Livre 2012", 
+                         date_debut=datetime.date(2012, 1, 1),
+                         date_fin=datetime.date(2012, 12, 31),
+                         grand_livre_precedent=grand_livre_precedent)
+        
+        # Uncomment to generate the JSON test file.
+       # output = codecs.open(os.path.join(CURRENT_DIR, "grand_livre-2012.json"), 
+       #                               mode="w+", encoding="utf-8")
+       # output.write(json.dumps(gl, default=json_encoder, indent=4))
+       # output.close
+        pprint(gl)
+        self.maxDiff = None
+        self.assertEqual(
+            gl,{})
+
+    def test_init_comptes_grand_livre_avec_precedent(self):
+        from colbert.grand_livre import init_comptes_grand_livre_avec_precedent
+        grand_livre_precedent = codecs.open(os.path.join(CURRENT_DIR, "grand_livre-2011.json"), 
+                                            mode="r", encoding="utf-8")
+        comptes = init_comptes_grand_livre_avec_precedent(json.loads(grand_livre_precedent.read()),
+                                                         datetime.date(2012, 1, 1)) 
+        self.maxDiff = None
+        self.assertEqual(
+            comptes, {
+                u'100': {u'ecritures': [{u'credit': Decimal('1500.00'),
+                                         'date': datetime.date(2012, 1, 1),
+                                         'intitule': u'Report \xe0 nouveau'}],
+                         u'nom': u"Capital et compte de l'exploitant"},
+                u'4111-CL1': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                              u'debit': Decimal('0.00'),
+                                              'intitule': u'Report \xe0 nouveau'}],
+                              u'nom': u'Clients - ventes de biens ou prestations de services'},
+                u'4111-CL2': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                              u'debit': Decimal('0.00'),
+                                              'intitule': u'Report \xe0 nouveau'}],
+                              u'nom': u'Clients - ventes de biens ou prestations de services'},
+                u'4111-CL3': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                              u'debit': Decimal('8372.00'),
+                                              'intitule': u'Report \xe0 nouveau'}],
+                              u'nom': u'Clients - ventes de biens ou prestations de services'},
+                u'4181': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                          u'debit': Decimal('13156.00'),
+                                          'intitule': u'Report \xe0 nouveau'}],
+                          u'nom': u'Clients - Factures \xe0 \xe9tablir'},
+                u'44551': {u'ecritures': [{u'credit': Decimal('3038.00'),
+                                           'date': datetime.date(2012, 1, 1),
+                                           'intitule': u'Report \xe0 nouveau'}],
+                           u'nom': u'TVA \xe0 d\xe9caisser'},
+                u'44566': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                           u'debit': Decimal('0.00'),
+                                           'intitule': u'Report \xe0 nouveau'}],
+                           u'nom': u'T.V.A. d\xe9ductible sur autres biens et services'},
+                u'44571': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                           u'debit': Decimal('0.00'),
+                                           'intitule': u'Report \xe0 nouveau'}],
+                           u'nom': u'T.V.A. Collect\xe9e'},
+                u'44587': {u'ecritures': [{u'credit': Decimal('3528.00'),
+                                           'date': datetime.date(2012, 1, 1),
+                                           'intitule': u'Report \xe0 nouveau'}],
+                           u'nom': u'Taxes sur le CA sur factures \xe0 \xe9tablir'},
+                u'455': {u'ecritures': [{u'credit': Decimal('189.45'),
+                                         'date': datetime.date(2012, 1, 1),
+                                         'intitule': u'Report \xe0 nouveau'}],
+                         u'nom': u'Associ\xe9s - Comptes courants'},
+                u'512': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                         u'debit': Decimal('22679.35'),
+                                         'intitule': u'Report \xe0 nouveau'}],
+                         u'nom': u'Banques'},
+                u'60225': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                           u'debit': Decimal('21.44'),
+                                           'intitule': u'Report \xe0 nouveau'}],
+                           u'nom': u'Achats - Fournitures de bureau'},
+                u'6227': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                          u'debit': Decimal('160.00'),
+                                          'intitule': u'Report \xe0 nouveau'}],
+                          u'nom': u"Achats - Frais d'actes et de contentieux"},
+        u'6278-LCL': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                      u'debit': Decimal('72.00'),
+                                      'intitule': u'Report \xe0 nouveau'}],
+                      u'nom': u'Autres frais de commission sur prestations de services'},
+        u'6411': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                  u'debit': Decimal('3000.00'),
+                                  'intitule': u'Report \xe0 nouveau'}],
+                  u'nom': u'Charges - Salaires et appointements'},
+        u'6411-RSI': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                      u'debit': Decimal('393.00'),
+                                      'intitule': u'Report \xe0 nouveau'}],
+                      u'nom': u'Charges - cotisations RSI'},
+        u'6411-URSF1': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                        u'debit': Decimal('161.80'),
+                                        'intitule': u'Report \xe0 nouveau'}],
+                        u'nom': u'Charges - cotisations URSSAF - Allocations familliales'},
+        u'6411-URSF2': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                        u'debit': Decimal('153.31'),
+                                        'intitule': u'Report \xe0 nouveau'}],
+                        u'nom': u'Charges - cotisations URSSAF - CSG/RDS d\xe9ductible'},
+        u'6411-URSF3': {u'ecritures': [{'date': datetime.date(2012, 1, 1),
+                                        u'debit': Decimal('86.89'),
+                                        'intitule': u'Report \xe0 nouveau'}],
+                        u'nom': u'Charges - cotisations URSSAF - CSG/RDS non-d\xe9ductible'},
+        u'706': {u'ecritures': [{u'credit': Decimal('40000.00'),
+                                 'date': datetime.date(2012, 1, 1),
+                                 'intitule': u'Report \xe0 nouveau'}],
+                 u'nom': u'Produits - prestations de services'},
+        u'758': {u'ecritures': [{u'credit': Decimal('0.34'),
+                                 'date': datetime.date(2012, 1, 1),
+                                 'intitule': u'Report \xe0 nouveau'}],
+                 u'nom': u'Produits divers de gestion courante'}
+        })
+
+    def test_ecriture_journal_in_grand_livre(self):
+        from colbert.grand_livre import ecriture_journal_in_grand_livre
+        grand_livre = codecs.open(os.path.join(CURRENT_DIR, "grand_livre-2011.json"), 
+                                  mode="r", encoding="utf-8")
+        grand_livre = json.loads(grand_livre.read(), object_hook=as_ecriture)
+
+        ecriture = {'credit': Decimal('11000'),
+                    'debit': Decimal('0.00'),
+                    'nom_compte': u'Produits - prestations de services',
+                    'numero_compte_credit': u'706',
+                    'numero_compte_debit': u''}
+        intitule = u'Facture 2012-03 MyClient2 Prestation février 2012'
+        date = datetime.date(2012, 3, 20)
+        self.assertTrue(ecriture_journal_in_grand_livre(ecriture, date, intitule, grand_livre))
+
+        ecriture['credit'] = Decimal('9000')
+        self.assertFalse(ecriture_journal_in_grand_livre(ecriture, date, intitule, grand_livre))
 
     def test_grand_livre_to_rst(self):
         from colbert.grand_livre import grand_livre_to_rst

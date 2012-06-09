@@ -45,6 +45,9 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
     """
     
     comptes = {}
+    if grand_livre_precedent:
+        comptes = init_comptes_grand_livre_avec_precedent(grand_livre_precedent,
+                                                          date_debut)
     grand_livre = {
         LABEL: label,
         DATE_DEBUT: date_debut,
@@ -54,17 +57,15 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
 
     livre_journal = livre_journal_to_list(livre_journal_file)
     for ecriture in livre_journal:
+        if grand_livre_precedent and (grand_livre_precedent[DATE_DEBUT] <= ecriture[DATE] <= grand_livre_precedent[DATE_FIN]):
+            # Certaines écritures sont passées en fin d'exercice N-1 lors de l'exercice N et
+            # n'apparaissent donc pas dans le grand_livre N-1.
+            for e in ecriture[ECRITURES]:
+                if not ecriture_journal_in_grand_livre(e, ecriture[DATE], ecriture[INTITULE], grand_livre_precedent):
+                    ajouter_ecriture_to_comptes(e, ecriture[DATE], ecriture[INTITULE], comptes)
         if date_debut <= ecriture[DATE] <= date_fin:
             for e in ecriture[ECRITURES]:
-                if e[NUMERO_COMPTE_DEBIT]:
-                    param, mvt = NUMERO_COMPTE_DEBIT, DEBIT
-                elif e[NUMERO_COMPTE_CREDIT]:
-                    param, mvt = NUMERO_COMPTE_CREDIT, CREDIT
-                compte = comptes.setdefault(e[param], {NOM: e[NOM_COMPTE],
-                                                       ECRITURES: []})
-                compte[ECRITURES].append({DATE: ecriture[DATE], 
-                                            INTITULE: ecriture[INTITULE],
-                                            mvt: e[mvt]})
+                ajouter_ecriture_to_comptes(e, ecriture[DATE], ecriture[INTITULE], comptes)
     
     # Calcul des soldes de chaque compte.
     for compte in comptes.values():
@@ -84,6 +85,66 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
         else:
             compte[SOLDE_CREDITEUR] = Decimal('0.00')
     return grand_livre 
+
+def ajouter_ecriture_to_comptes(ecriture_lj, date, intitule, comptes):
+    ecriture_gdlivre, numero_compte = ecriture_ljournal_to_gdlivre(ecriture_lj, date, intitule)
+    compte = comptes.setdefault(numero_compte, {
+        NOM: ecriture_lj[NOM_COMPTE],
+        ECRITURES: [],
+    })
+    compte[ECRITURES].append(ecriture_gdlivre)
+
+def ecriture_ljournal_to_gdlivre(ecriture_lj, date, intitule):
+    ecriture_gdlivre = {
+    }
+    if ecriture_lj[NUMERO_COMPTE_DEBIT]:
+        numero_compte_key, mvt = NUMERO_COMPTE_DEBIT, DEBIT
+    elif ecriture_lj[NUMERO_COMPTE_CREDIT]:
+        numero_compte_key, mvt = NUMERO_COMPTE_CREDIT, CREDIT
+
+    return ({
+        DATE: date, 
+        INTITULE: intitule,
+        mvt: ecriture_lj[mvt],
+    }, ecriture_lj[numero_compte_key])
+
+def init_comptes_grand_livre_avec_precedent(grand_livre_precedent, date_report_a_nouveau):
+    comptes = {}
+
+    for numero_compte, compte_precedent in grand_livre_precedent["comptes"].iteritems():
+        solde_debiteur = Decimal(compte_precedent[SOLDE_DEBITEUR])
+        solde_crediteur = Decimal(compte_precedent[SOLDE_CREDITEUR])
+        value = Decimal("0.00")
+        mvt = DEBIT
+        if solde_debiteur != Decimal("0.00"):
+            mvt = DEBIT
+            value = solde_debiteur
+        elif solde_crediteur != Decimal("0.00"):
+            mvt = CREDIT
+            value = solde_crediteur
+
+        comptes[numero_compte] = {
+            NOM: compte_precedent[NOM],
+            ECRITURES: [
+                {
+                    DATE: date_report_a_nouveau,
+                    INTITULE: u"Report à nouveau",
+                    mvt: value,
+                }
+            ],
+        }
+
+    return comptes
+
+def ecriture_journal_in_grand_livre(ecriture, date, intitule, grand_livre):
+    ecriture_gdlivre, numero_compte = ecriture_ljournal_to_gdlivre(ecriture, date, intitule)
+    compte = grand_livre[COMPTES].get(numero_compte)
+    if not compte:
+        return False
+    for e in compte[ECRITURES]:
+        if e == ecriture_gdlivre:
+            return True
+    return False
 
 def grand_livre_to_rst(grand_livre, output_file):
     """Convert a `grand_livre` json load to a reStructuredText file. """

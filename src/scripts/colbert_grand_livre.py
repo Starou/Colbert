@@ -30,8 +30,9 @@
 import sys, locale, codecs
 from optparse import OptionParser
 import datetime
-from decimal import Decimal
 from colbert.common import DATE_FMT
+from colbert.utils import json_encoder
+from colbert.utils import decode_as_ecriture as as_ecriture
 
 
 def main():
@@ -62,21 +63,13 @@ def main():
         grand_livre_precedent = None
         if options.grand_livre_precedent:
             grand_livre_precedent = json.loads(codecs.open(options.grand_livre_precedent, mode="r",
-                                                           encoding="utf-8").read())
+                                                           encoding="utf-8").read(), object_hook=as_ecriture)
         date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()
         date_fin = datetime.datetime.strptime(options.date_fin, DATE_FMT).date()
 
         gl = grand_livre(livre_journal, options.label, date_debut, date_fin, grand_livre_precedent)
         
-        # FIXME : utiliser utils.
-        def date_encoder(obj):
-            if isinstance(obj, datetime.date):
-                return obj.strftime(DATE_FMT)
-            elif isinstance(obj, Decimal):
-                return str(obj)
-            raise TypeError
-        
-        json.dump(gl, sys.stdout, default=date_encoder, indent=4)
+        json.dump(gl, sys.stdout, default=json_encoder, indent=4)
 
 if __name__ == "__main__":
     main()
