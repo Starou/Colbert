@@ -17,7 +17,7 @@ the financial operations) up-to-date. That's it.
 
 
 From that file it produce the annual reports (*Bilan*, *Compte de résultat* etc). There are also some utilities to check your Livre-journal against 
-the bank reports, to generate invoices, activity report from \emph{iCalendar} etc.
+the bank reports, to generate invoices, activity report from *iCalendar* etc.
 
 
 The big disclaimer(s)
@@ -1081,6 +1081,6 @@ Requirements
 - pytz ;
 - Python Icalendar (https://github.com/collective/icalendar) ;
 - Docutils (SVN) ;
-- a \emph{LaTex} suite if you want to render the reStructuredText in PDF ;
+- a *LaTex* suite if you want to render the reStructuredText in PDF ;
 - Make ;
 - Sed.
