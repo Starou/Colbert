@@ -9,10 +9,22 @@ The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Je
 also known for being the father of the modern accountancy.
 
 
+Functionalities
+===============
+
+Colbert helps you to manage your accountancy with a unique constraint : get your *Livre Journal* (the book where you are supposed to daily register
+the financial operations) up-to-date. That's it.
+
+
+From that file it produce the annual reports (*Bilan*, *Compte de résultat* etc). There are also some utilities to check your Livre-journal against 
+the bank reports, to generate invoices, activity report from \emph{iCalendar} etc.
+
+
 The big disclaimer(s)
 =====================
 
-I don't know shit about accountancy. I am running a very small business since 2011 and there is two things I wanted to avoid for my fiscal and financial obligations:
+I don't know shit about accountancy (hopefully, this is less and less true). I am running a very small business since 2011 and there is two things 
+I wanted to avoid for my fiscal and financial obligations:
 
 1. to throw 3k€/year to pay someone Porsche gas ;
 2. to learn a terrible closed source piece of accountancy software instead of understanding the roots.
@@ -890,7 +902,9 @@ My method is to use a directory for each invoice with the following Makefile in 
     filename_ecriture = $(filename)_ecriture
 
     pdf:	tex
-        @xelatex $(filename).tex
+        @xelatex --papersize=a4 $(filename).tex
+        @xelatex --papersize=a4 $(filename).tex
+        @xelatex --papersize=a4 $(filename).tex
 
     tex:	json
         @export LC_ALL="fr_FR.UTF-8" ; export LC_LANG="fr_FR.UTF-8" ; \
@@ -906,6 +920,69 @@ My method is to use a directory for each invoice with the following Makefile in 
             [ -e $(filename)$${ext} ] && rm $(filename)$${ext} || [ 1 ] ;\
         done
 
+
+Activity report from iCal
+-------------------------
+
+There is a template of LaTeX class in the *tex* directory. Again, I use a Makefile (the same to generate the invoice associated with)::
+
+    month = Juin
+    month_index = 007
+    year = 2012
+    date_debut = 01/06/2012 
+    date_fin = 30/06/2012 
+
+    ref_facture = $(year)-$(month_index)
+
+    filename = facture-$(ref_facture)
+    filename_calcule = $(filename)_calculee
+    filename_ecriture = $(filename)_ecriture
+
+    rac_template = "rapport_activite-template.tex"
+    rac_filename = rac-$(ref_facture)
+    rac_label = "Rapport d'activité - $(month) $(year)"
+    calendar = MyCalendar.ics
+
+    all:	rac_pdf	facture_pdf
+
+    facture_pdf:	facture_tex
+        @xelatex --papersize=a4 $(filename).tex
+        @xelatex --papersize=a4 $(filename).tex
+        @xelatex --papersize=a4 $(filename).tex
+
+    facture_tex:	facture_json
+        @export LC_ALL="fr_FR.UTF-8" ; export LC_LANG="fr_FR.UTF-8" ; colbert_facture_to_tex.py $(filename_calcule).json ../../modele_facture.tex > $(filename).tex
+
+    facture_json:
+        @colbert_calculer_facture.py $(filename).json > $(filename_calcule).json
+        @colbert_ecriture_facture.py $(filename_calcule).json > $(filename_ecriture).json
+        @colbert_ecritures_to_livre_journal.py --label="Ecriture a reporter au Livre-journal" $(filename_ecriture).json > $(filename_ecriture).txt
+
+    rac_pdf:	rac_tex
+        @xelatex --papersize=a4 $(rac_filename).tex
+        @xelatex --papersize=a4 $(rac_filename).tex
+        @xelatex --papersize=a4 $(rac_filename).tex
+
+    rac_tex:	rac_json
+        @colbert_rapport_activite_to_tex.py $(rac_filename).json $(rac_template) > $(rac_filename).tex
+
+    rac_json:
+        @colbert_rapport_activite.py $(calendar) -d $(date_debut) -f $(date_fin) -l $(rac_label) -r "$(ref_facture)" > $(rac_filename).json
+
+    purge:	clean
+        @for ext in ".tex" ".pdf" ; do\
+            [ -e $(filename)$${ext} ] && rm $(filename)$${ext} || [ 1 ] ;\
+            [ -e $(rac_filename)$${ext} ] && rm $(rac_filename)$${ext} || [ 1 ] ;\
+        done
+
+    clean:
+        @for ext in ".out" ".aux" ".log" ".tns"; do\
+            [ -e $(filename)$${ext} ] && rm $(filename)$${ext} || [ 1 ] ;\
+            [ -e $(rac_filename)$${ext} ] && rm $(rac_filename)$${ext} || [ 1 ] ;\
+        done
+
+
+You should take a look in the *tests/regressiontests* directory to grab the LaTeX template.
 
 Working with LaTeX
 ==================
@@ -1000,8 +1077,10 @@ There are some regression tests in the *test* directory.
 Requirements
 ============
 
-- Python 2.6+.
-- Docutils, the SVN version is better.
-- A LaTex suite if you want to render the reStructuredText in PDF. 
-- Make.
+- Python 2.6+ ;
+- pytz ;
+- Python Icalendar (https://github.com/collective/icalendar) ;
+- Docutils (SVN) ;
+- a \emph{LaTex} suite if you want to render the reStructuredText in PDF ;
+- Make ;
 - Sed.
