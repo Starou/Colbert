@@ -30,7 +30,7 @@
 import sys, locale, codecs
 from optparse import OptionParser
 import datetime
-from colbert.common import DATE_FMT
+from colbert.utils import DATE_FMT
 from colbert.utils import json_encoder
 from colbert.utils import decode_as_ecriture as as_ecriture
 

@@ -26,19 +26,30 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+u"""
+Génère un fichier d'activité au format JSON à partir d'un calendrier iCal.
+
+"""
 
 import sys, locale, codecs
 from optparse import OptionParser
 import datetime
-from decimal import Decimal
+import json
+
 from colbert.utils import DATE_FMT
+from colbert.utils import json_encoder
+from colbert.utils import decode_as_ecriture as as_ecriture
 
 
 def main():
-    usage = u"usage: %prog [options] livre-journal.txt"
+    usage = "usage: %prog [options] calendar.ics"
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
+    parser.add_option("-l", "--label", dest="label", default=u"Rapport d\'activite", 
+                      help=u"Titre à faire apparaitre sur le rapport")
+    parser.add_option("-r", "--ref-facture", dest="ref_facture", default=u"Référence facture", 
+                      help=u"Titre à faire apparaitre sur le rapport")
     parser.add_option("-d", "--date-debut", dest="date_debut", 
                       help=u"date de début de la période au format jj/mm/aaaa.")
     parser.add_option("-f", "--date-fin", dest="date_fin", 
@@ -47,21 +58,25 @@ def main():
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
-        parser.error(u"Vous devez passer en argument le chemin d'un fichier "
-                     u"Livre Journal au format reStructuredText, la date de "
-                     u"début et la date de fin.")
+        parser.error(u"Vous devez passer en argument le chemin d'un calendrier "
+                     u"iCal.")
     else:
-        import json
-        from colbert.utils import json_encoder
-        from colbert.tva import solde_comptes_de_tva
+        from colbert.rapports import rapport_activite
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
         livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
+        grand_livre_precedent = None
         date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()
         date_fin = datetime.datetime.strptime(options.date_fin, DATE_FMT).date()
 
-        ecriture = solde_comptes_de_tva(livre_journal, date_debut, date_fin)
-        json.dump([ecriture], sys.stdout, default=json_encoder, indent=4)
+        calendrier = open(args[0], mode="r")
+        rapport = rapport_activite(calendrier, 
+                                   date_debut,
+                                   date_fin,
+                                   options.label,
+                                   options.ref_facture)
+
+        json.dump(rapport, sys.stdout, default=json_encoder, indent=4)
 
 if __name__ == "__main__":
     main()

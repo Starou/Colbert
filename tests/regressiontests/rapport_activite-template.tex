@@ -1,0 +1,21 @@
+\documentclass{mybusinessrac}
+
+\begin{document}
+
+\title{%(titre)s}
+\author{Stanislas~\bsc{Guerra}}
+
+\lieu{San-Sebastian}
+\reffacture{%(ref_facture)s}
+\nbjours{%(nb_jours)s}
+
+\maketitle
+\makerefs
+
+\begin{tabular}{ r p{14cm} }
+\textbf{Jour}              & \textbf{Détail} \\
+\hline\noalign{\smallskip}
+%(lignes_activites)s
+\end{tabular}
+
+\end{document}

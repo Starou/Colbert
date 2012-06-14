@@ -3,7 +3,7 @@
 import datetime
 from decimal import Decimal
 from colbert.utils import d_round
-from colbert.common import DATE_FMT
+from colbert.utils import DATE_FMT
 from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 from colbert.livre_journal import ECRITURES

@@ -31,5 +31,7 @@ setup(
         'src/scripts/colbert_calculer_facture.py',
         'src/scripts/colbert_facture_to_tex.py',
         'src/scripts/colbert_ecriture_facture.py',
+        'src/scripts/colbert_rapport_activite.py',
+        'src/scripts/colbert_rapport_activite_to_tex.py',
     ],
 )

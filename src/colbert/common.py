@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from utils import rst_title, DATE_FMT
+from utils import rst_title
 
 DEBIT = u'debit'
 CREDIT = u'credit'

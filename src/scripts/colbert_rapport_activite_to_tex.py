@@ -29,39 +29,29 @@
 
 import sys, locale, codecs
 from optparse import OptionParser
-import datetime
-from decimal import Decimal
-from colbert.utils import DATE_FMT
+import json
 
+from colbert.utils import json_encoder
+from colbert.rapports import rapport_activite_to_tex
 
 def main():
-    usage = u"usage: %prog [options] livre-journal.txt"
+    usage = "usage: %prog [options] rapport_activite.json modele-rapport.tex"
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-d", "--date-debut", dest="date_debut", 
-                      help=u"date de début de la période au format jj/mm/aaaa.")
-    parser.add_option("-f", "--date-fin", dest="date_fin", 
-                      help=u"date de fin de la période au format jj/mm/aaaa.")
-
     (options, args) = parser.parse_args()
 
-    if len(args) != 1:
+    if len(args) != 2:
         parser.error(u"Vous devez passer en argument le chemin d'un fichier "
-                     u"Livre Journal au format reStructuredText, la date de "
-                     u"début et la date de fin.")
+                     u"`rapport d\'activité' au format JSON et un modèle de "
+                     u"rapport au format LaTeX.")
     else:
-        import json
-        from colbert.utils import json_encoder
-        from colbert.tva import solde_comptes_de_tva
+        locale.setlocale(locale.LC_ALL, '')
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
-        livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
-        date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()
-        date_fin = datetime.datetime.strptime(options.date_fin, DATE_FMT).date()
-
-        ecriture = solde_comptes_de_tva(livre_journal, date_debut, date_fin)
-        json.dump([ecriture], sys.stdout, default=json_encoder, indent=4)
+        activite = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
+        template = codecs.open(args[1], mode="r", encoding="utf-8")
+        rapport_activite_to_tex(activite, template, sys.stdout)
 
 if __name__ == "__main__":
     main()

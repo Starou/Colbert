@@ -1,0 +1,47 @@
+{
+    "titre": "Mon rapport d'activité - Mars 2012",
+        "ref_facture": "2012-003",
+        "nb_jours": 3,
+        "detail": [
+            ["09/03/2012", [
+                {
+                    "intitule":"A long task, during 3 days!"
+                }, 
+                {
+                    "from": "19.00",
+                    "to": "19.30",
+                    "intitule":"Go somewhere, done something."
+                }
+            ]],
+            ["10/03/2012", [
+                {
+                    "intitule":"A long task, during 3 days!"
+                }
+            ]],
+            ["11/03/2012", [
+                {
+                    "intitule":"A long task, during 3 days!"
+                }, 
+                {
+                    "from": "9.00",
+                    "to": "9.30",
+                    "intitule":"Fix the printer."
+                }, 
+                {
+                    "from": "10.00",
+                    "to": "10.30",
+                    "intitule": "Change some CSS stuffs."
+                }, 
+                {
+                    "from": "14.00",
+                    "to": "15.30",
+                    "intitule": "Make some coffee."
+                }, 
+                {
+                    "from": "16.15",
+                    "to": "17.45",
+                    "intitule": "Was there at a stupid brainstorming with marketing guys."
+                }
+            ]]
+        ]
+}
