@@ -156,6 +156,17 @@ u"""+--------+---------+--------------+
             u'label': u'Grand-Livre 2012'
         })                         
 
+    def test_latex_escape(self):
+        from colbert.utils import latex_escape
+        self.assertEqual(latex_escape("Bonnie & Clyde"), "Bonnie \\& Clyde")
+        self.assertEqual(latex_escape("Johnny Ca$h"), "Johnny Ca\\$h")
+        self.assertEqual(latex_escape("#9"), "\\#9")
+        self.assertEqual(latex_escape("100%"), "100\\%")
+        self.assertEqual(latex_escape("_lame_"), "\\_lame\\_")
+        self.assertEqual(latex_escape("{TeX}"), "\\{TeX\\}")
+        self.assertEqual(latex_escape("~almost"), "\\~almost")
+        self.assertEqual(latex_escape("^-^"), "\\^-\\^")
+
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(UtilsTestCase)
     return suite

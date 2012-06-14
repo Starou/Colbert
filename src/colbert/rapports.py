@@ -6,6 +6,7 @@ from icalendar import Calendar
 
 from colbert import daterange
 from colbert.utils import DATE_FMT
+from colbert.utils import latex_escape
 
 DATE_RAPPORT_FMT = "%A %d"
 HOUR_MIN_FMT = "%H.%M"
@@ -133,4 +134,4 @@ def intitule_activite_to_tex(activite_jour):
     if not activite_jour.get("to"):
         tex_fmt = "%s"
 
-    return tex_fmt % activite_jour["intitule"]
+    return tex_fmt % latex_escape(activite_jour["intitule"])

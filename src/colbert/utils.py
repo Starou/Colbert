@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-from decimal import Decimal
 import locale
+import re
+from decimal import Decimal
 
 DATE_FMT = "%d/%m/%Y"
 
@@ -109,3 +110,6 @@ def decode_as_ecriture(ecriture_json):
         out[k] = v
 
     return out
+
+def latex_escape(string):
+    return re.sub(r"([&%$#_{}~^\\])", r"\\\1", string)
