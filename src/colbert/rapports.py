@@ -28,6 +28,10 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
         if component.name == "VEVENT":
             date_debut_event = component["DTSTART"].dt
             date_fin_event = component["DTEND"].dt
+            # La date de fin des Events de type journée complète n'est pas inclusive.
+            # http://www.bedework.org/trac/bedework/wiki/Bedework/DevDocs/DtstartEndNotes
+            if not hasattr(date_fin_event, "date"):
+                date_fin_event = date_fin_event - datetime.timedelta(1)
 
             date_debut_event_date, date_fin_event_date = [(lambda d: (hasattr(d, "date") and d.date() or d))(day)
                                                             for day in (date_debut_event, date_fin_event)]

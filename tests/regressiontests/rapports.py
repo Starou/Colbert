@@ -26,8 +26,9 @@ class RapportsTestCase(unittest.TestCase):
                                    datetime.date(2012, 6, 30),
                                    u"Rapport d'activité - Juin 2012",
                                    "2012-013")
+        self.maxDiff = None
         self.assertEqual(rapport, {
-            'nb_jours': 8,
+            'nb_jours': 6,
             'ref_facture': '2012-013',
             'titre': u"Rapport d'activit\xe9 - Juin 2012",
             'detail': [[datetime.date(2012, 6, 1),
@@ -62,15 +63,7 @@ class RapportsTestCase(unittest.TestCase):
                         [{'from': None,
                           'intitule': u'A very long task, 3 days long.',
                           'to': None}]],
-                       [datetime.date(2012, 6, 8),
-                        [{'from': None,
-                          'intitule': u'A very long task, 3 days long.',
-                          'to': None}]],
                        [datetime.date(2012, 6, 13),
-                        [{'from': None,
-                          'intitule': u'Dreaming all day long...',
-                          'to': None}]],
-                       [datetime.date(2012, 6, 14),
                         [{'from': None,
                           'intitule': u'Dreaming all day long...',
                           'to': None}]]],
