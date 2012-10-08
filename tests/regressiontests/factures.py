@@ -73,6 +73,9 @@ class FacturesTestCase(unittest.TestCase):
     def test_date_reglement_facture(self):
         from colbert.factures import date_reglement_facture
         self.assertEqual(date_reglement_facture("1/1/2011", 45), datetime.date(2011, 2, 28))
+        self.assertEqual(date_reglement_facture("1/10/2012", 45), datetime.date(2012, 11, 30))
+        self.assertEqual(date_reglement_facture("9/10/2012", 60), datetime.date(2012, 12, 31))
+        self.assertEqual(date_reglement_facture("9/10/2012", 90), datetime.date(2013, 1, 31))
 
     def test_facture_to_tex(self):
         from colbert.factures import facture_to_tex
