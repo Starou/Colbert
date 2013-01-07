@@ -32,6 +32,8 @@ DISPONIBILITES = u'disponibilités'
 PASSIF = 'passif'
 CAPITAUX_PROPRES = u'capitaux propres'
 CAPITAL = u'capital'
+RESERVES = u'réserves'
+REPORT_A_NOUVEAU = u'report à nouveau'
 RESULTAT = u'résultat'
 DETTES = u'dettes'
 AUTRES_DETTES = u'autres dettes'
@@ -80,6 +82,8 @@ LIGNES_BILAN_PASSIF = [
             (
                 None, [
                     CAPITAL,
+                    RESERVES,
+                    REPORT_A_NOUVEAU,
                     RESULTAT,
                 ] 
             ),
@@ -100,6 +104,12 @@ LIGNES_BILAN_PASSIF = [
 MAPPING_COMPTE_TO_BILAN = {
     '100': {
         CREDIT: (PASSIF, CAPITAUX_PROPRES, None, CAPITAL, BRUT),
+    },
+    '106': {
+        CREDIT: (PASSIF, CAPITAUX_PROPRES, None, RESERVES, BRUT),
+    },
+    '11': {
+        CREDIT: (PASSIF, CAPITAUX_PROPRES, None, REPORT_A_NOUVEAU, BRUT),
     },
     '20': {
         DEBIT: (ACTIF, ACTIF_IMMOBILISE, IMMOBILISATIONS_INCORPORELLES, AUTRES_IMMOBILISATIONS_INCORPORELLES, BRUT),

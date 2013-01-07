@@ -33,6 +33,8 @@ CHARGES_FINANCIERES = u"charges financières"
 CHARGES_EXCEPTIONNELLES = u"charges exceptionnelles"
 CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION = u"Charges exceptionnelles sur opérations de gestion"
 
+CHARGES_IMPOT_SOCIETES = u"impôt sur les sociétés"
+
 # 
 
 PRODUITS_EXPLOITATION = u"produits d'exploitation"
@@ -68,6 +70,12 @@ LIGNES_RESULTAT = {
             COMPTES: [
                 CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION,
             ]    
+        },
+        CHARGES_IMPOT_SOCIETES: {
+            LABEL: CHARGES_IMPOT_SOCIETES,
+            COMPTES: [
+                CHARGES_IMPOT_SOCIETES,
+            ]    
         }
     },
     PRODUITS: {
@@ -96,11 +104,15 @@ MAPPING_COMPTE_TO_RESULTAT = {
     '61': (CHARGES, EXPLOITATION, SERVICES_EXTERIEURS),
     '62': (CHARGES, EXPLOITATION, AUTRES_SERVICES_EXTERIEURS),
     '602': (CHARGES, EXPLOITATION, FOURNITURES_NON_STOCKABLES),
+    '6063': (CHARGES, EXPLOITATION, FOURNITURES_NON_STOCKABLES),
+    '6064': (CHARGES, EXPLOITATION, FOURNITURES_NON_STOCKABLES),
     '635': (CHARGES, EXPLOITATION, AUTRES_IMPOTS),
     '641': (CHARGES, EXPLOITATION, REMUNERATIONS_DU_PERSONNEL),
     '65': (CHARGES, EXPLOITATION, AUTRES_CHARGES_GESTION_COURANTE),
 
     '671': (CHARGES, EXCEPTIONNELLES, CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION),
+
+    '695': (CHARGES, CHARGES_IMPOT_SOCIETES, CHARGES_IMPOT_SOCIETES),
 
     '706': (PRODUITS, EXPLOITATION, PRESTATIONS_DE_SERVICES),
     '75': (PRODUITS, EXPLOITATION, AUTRES_PRODUITS_GESTION_COURANTE),
@@ -155,6 +167,7 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
             EXPLOITATION: {},
             FINANCIERES: {},
             EXCEPTIONNELLES: {},
+            CHARGES_IMPOT_SOCIETES: {}
         },
         PRODUITS: {
             EXPLOITATION: {},
@@ -256,6 +269,14 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
 
         table.append([(u"", CHARGES_LEN), (u"", MONTANT_LEN), (u"", PRODUITS_LEN), (u"", MONTANT_LEN)])
 
+    # Ligne de l'impôt sur les sociétés.
+    table.append([
+        (u"*Impôt sur les sociétés*", CHARGES_LEN),
+        (u"%s" % fmt_number(Decimal(compte_de_resultat[CHARGES][CHARGES_IMPOT_SOCIETES][CHARGES_IMPOT_SOCIETES])), MONTANT_LEN),
+        (u"", PRODUITS_LEN),
+        (u"", MONTANT_LEN),
+    ])
+    table.append([(u"", CHARGES_LEN), (u"", MONTANT_LEN), (u"", PRODUITS_LEN), (u"", MONTANT_LEN)])
 
     # Dernières lignes.
     table.append([(u"**Sous-total charges**", CHARGES_LEN),

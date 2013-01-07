@@ -241,7 +241,7 @@ Le Grand-livre
 
 In that book are gathered the entries of the Livre-journal by account number for a period of time (a fiscal year). One table for every single account.
 
-Every account should start with the *report à nouveau* (the balance) of the previous fiscal year. This is not implemented yet in Colbert.
+Every account should start with the *report à nouveau* (the balance) of the previous fiscal year.
 
 To generate the Grand-livre, run the following::
 
