@@ -2,14 +2,16 @@ from distutils.core import setup
 import os
 import sys
 
+README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 
 setup(
     name="Colbert",
     version="0.1",
+    license='BSD Licence',
     author='Stanislas Guerra',
     author_email='stanislas.guerra@gmail.com',
-    description='',
-    long_description = '',
+    description='Accountancy utilities for your small (french) business',
+    long_description = README,
     package_dir={'': 'src'},
     packages=['colbert', 
     ],
@@ -33,5 +35,15 @@ setup(
         'src/scripts/colbert_ecriture_facture.py',
         'src/scripts/colbert_rapport_activite.py',
         'src/scripts/colbert_rapport_activite_to_tex.py',
+    ],
+    classifiers=[
+        'Environment :: Console',
+        'Intended Audience :: End Users/Desktop',
+        'Topic :: Office/Business :: Financial :: Accounting',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
     ],
 )
