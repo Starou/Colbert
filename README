@@ -1067,6 +1067,8 @@ Installation
 
 Hey, this is a Python package, so just run *python setup.py install* and you're done.
 
+(or ``pip install Colbert``)
+
 
 Tests
 =====
