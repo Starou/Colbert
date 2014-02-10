@@ -3,82 +3,67 @@ Colbert
 =======
 
 
-*Colbert* is not about Stephen Colbert. It is serious matter.
+*Colbert* is not about `Stephen Colbert <http://www.colbertnation.com/the-colbert-report-videos/430767/november-21-2013/intro---11-21-13>`_. It is serious matter.
 
-The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_, the Minister of Finances of France in the 17th century 
-also known for being the father of the modern accountancy.
+The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_, the Minister of Finances
+of France in the 17th century also known for being the father of the modern accountancy.
 
 
 Functionalities
 ===============
 
-Colbert helps you to manage your accountancy with a unique constraint : get your *Livre Journal* (the book where you are supposed to daily register
-the financial operations) up-to-date. That's it.
+Colbert helps you to manage your accountancy with a unique constraint: get your *Livre Journal* (the book where you are supposed
+to daily register the financial operations) up-to-date. That's it.
+
+From that file it produce the annual reports (*Bilan*, *Compte de résultat* etc). There are also some utilities to check
+your Livre-journal against the bank reports, to generate invoices, activity report from *iCalendar* etc.
 
 
-From that file it produce the annual reports (*Bilan*, *Compte de résultat* etc). There are also some utilities to check your Livre-journal against 
-the bank reports, to generate invoices, activity report from *iCalendar* etc.
+Disclaimer(s)
+=============
 
-
-The big disclaimer(s)
-=====================
-
-I don't know shit about accountancy (hopefully, this is less and less true). I am running a very small business since 2011 and there is two things 
-I wanted to avoid for my fiscal and financial obligations:
-
-1. to throw 3k€/year to pay someone Porsche gas ;
-2. to learn a terrible closed source piece of accountancy software instead of understanding the roots.
-
-So I first decided to write a *Django* project to record my expenses, my incomes and automagically generate the client's invoices.
-That worked pretty well and I am still using it for the *LaTeX* invoices.
-
-But when the administrative procedures are falling you have to face the reality. You cannot do accountancy without understanding accountancy.
-
-I decided to restart from scratch with a very light architecture while learning the *discipline* allowing me to adapt it quickly to the new knowledge 
-I was going to acquire during the development process. Learning accountancy is a big task and this is illusion to think that you can learn first and modelize it in a second step.
-
-And you know what ? The concepts behind the accountancy as they were thought four centuries ago are pure beauty. As beautiful as Unix' pipes.
-Simple, universal and powerful. 
-
-It is all about *inputs* and *outputs*. Every single input must be balanced by an output of the same amount and *vice-versa*.
-
-The idea behind the *Plan Comptable Général* (Chart of accounts) is of the same blood.
-In Unix, everything is a file. In accountancy, everything is an account.
-
-You can see accounts like a filesystem. You can create as much leafs and forks as you need.
-
-|
-
-This is a work in progress and the product is at his very early stage. A lot of refactoring in the code will happen but for now I keep it as much simple as I can.
-This is not yet an object-oriented program with metaclasses and other fancy concepts. 
-I need to keep the codebase easy to move as long as I have not validate my knowledge which may take a couple of years.
-
-Some stuffs are hard-coded because at a proof-of-concept stage.
-
-
-All that prose to say «don't blind-trust this software if you want to use it».
-
-
-Being French, this software is written for French accountancy in a French vocable. But the concept seems to be universal and with a little
-effort you can fork it to match what you need in your own country.
-
-I am using the BSD implementation of your favorite tools (*sed*, *grep* etc).
+This software has **not** been written by and /or with the help of an accountant (and no accountant has been hurt during the process).
 
 
 The concepts
 ============
 
+Background
+----------
 
-*Colbert* is all about human-readable text files. *reStructuredText* and *JSON* files. You organize those files in a logical manner and extensively
-use *Makefiles* to generate other files and produce beautiful *LaTeX* and *PDF* outputs for the administration and yourself.
+I am running a small business since 2011 and from the start I decided to not outsource the accountancy nor to use a commercial software.
 
-The core of accountancy is *le livre-journal* (grow a mustache and try to pronounce it with a glass of *Bordeaux Haut-Médoc* in your right-hand).
-This is our «database» where every single operation occuring in your business is recorded. 
+Maybe I should have given `Gnucash <http://www.gnucash.org/>`_ but I decided to be cheap on the technology side and to build a collection
+of utilities on the fly as I was facing formalities.
 
-This book is usualy splitted in several ones to regroup together operations by type. I don't need that, so I don't do that.
+*Colbert* is that very collection of tools working over organized and formated text files (*reStructuredText* and *JSON*).
+These tools produce other text files. Combined with LaTex (inside Makefile for automation) you can produce beautiful documents.
+
+::
 
 
-my organization is the following::
+                   colbert-scripts
+    file-A.txt, ----------------->  file-C.txt
+    file-B.json                        -
+         -                             |
+         |                             |
+         | LaTex, etc.                 | LaTeX, etc.
+         |                             |
+         v                             v 
+    file-A.tex                       file-C.tex
+    file-A.pdf
+    file-A.ps
+    
+
+
+
+
+The core of accountancy is *le livre-journal*. This is our database where every single operation occuring in your business
+is recorded. Each operation must be balanced: the sum of the entries must be balanced by one or more output of the same amount.
+
+In large compagnies, this book is usualy splitted in several ones to regroup operations by type.
+
+The scaffold I use is the following::
 
 
     + MyBusiness/   +-- accountancy/    +-- livre-journal/  +-- livre-journal.txt 
@@ -189,13 +174,16 @@ The optional *thousand separator* cannot be anything else than a space character
 Checking the Livre-journal
 ''''''''''''''''''''''''''
 
-A first script allows you to check the entries balance of the book::
+A first script allows you to check the entries balance of the book:
+
+.. code-block:: bash
 
     $ colbert_check_livre_journal.py my_livre_journal.txt
 
 
-My Makefile in the Livre-journal directory being::
+My Makefile in the Livre-journal directory being:
 
+.. code-block:: make
     
     FILENAME="livre-journal"
 
@@ -1086,3 +1074,6 @@ Requirements
 - a *LaTex* suite if you want to render the reStructuredText in PDF ;
 - Make ;
 - Sed.
+
+
+.. _Gnucash:
