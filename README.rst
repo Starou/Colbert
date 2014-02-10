@@ -123,8 +123,9 @@ Le Livre-journal
 The Livre-journal is a diary or a book where every flow of money is logged. There is a tight legislation concerning those books in general and
 you must refer yourself to the legislation of your country or juridiction.
 
-In Colbert, this is a reStructuredText file meeting the french administration requirements (the columns' width had been reduced to fit properly in this document)::
+In Colbert, this is a reStructuredText file meeting the french administration requirements (the columns' width had been reduced to fit properly in this document):
 
+.. code-block:: rst
 
     ==================
     MyBusiness S.A.R.L
@@ -218,7 +219,9 @@ utility.
 
 This is something you have to do every month or every quarter in France.
 
-In the *TVA* directory::
+In the *TVA* directory:
+
+.. code-block:: bash
 
     $ colbert_solder_tva ../../livre-journal/livre-journal.txt -d 01/03/2011 -f 30/9/2011 > solde-tva-sept-2011.json
     $ colbert_ecritures_to_livre_journal solde-tva-sept-2011.json > solde-tva-sept-2011.txt
@@ -231,17 +234,22 @@ In that book are gathered the entries of the Livre-journal by account number for
 
 Every account should start with the *report à nouveau* (the balance) of the previous fiscal year.
 
-To generate the Grand-livre, run the following::
+To generate the Grand-livre, run the following:
+
+.. code-block:: bash
 
     $ @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2011" -d 1/1/2011 -f 31/12/2011 > grand-livre_2011.json
 
-And then in reStructuredText::
+And then in reStructuredText:
+
+.. code-block:: bash
 
     $ colbert_grand_livre_to_rst.py grand-livre_2011.json > grand-livre_2011.txt
 
 
+Or in a Makefile:
 
-Or in a Makefile::
+.. code-block:: make
 
     FILENAME="grand_livre-2011"
     DATE_DEBUT="18/03/2011"
@@ -286,7 +294,9 @@ The *fix_table.sed* in the TeX conversion rule is a Sed script managing the righ
     s/&[[:space:]]+\\\\/\& \\tabularnewline/
     s/[[:space:]]+\\\\$/\\tabularnewline/
 
-Here an example of the reStructuredText output::
+Here an example of the reStructuredText output:
+
+.. code-block:: rst
 
     ================
     Grand-Livre 2011
@@ -338,31 +348,38 @@ Here an example of the reStructuredText output::
 N+1 years
 '''''''''
 
-When you start a new year there are two things to keep in mind for the Grand-Livre :
+When you start a new year there are two things to keep in mind for the Grand-Livre:
 
 - to start with the *Report à nouveau* of the account of the previous year ;
 - to include the entries of the previous year that have not been included in the Grand-Livre.
 
 
-*Colbert* does it for you. All you have to do is to provide the path of the previous one (as JSON)::
+*Colbert* does it for you. All you have to do is to provide the path of the previous one (as JSON):
 
+.. code-block:: bash
 
-    $ @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2012" -d 1/1/2012 -f 31/12/2012 -p ../../2011/grand-livre/grand-livre_2011.json > grand-livre_2012.json
-
+    $ @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2012" \
+        -d 1/1/2012 -f 31/12/2012 -p ../../2011/grand-livre/grand-livre_2011.json > grand-livre_2012.json
 
 
 La balance des comptes
 ----------------------
 
-The next financial piece is a single table regrouping the balance of the accounts. It is computed from the Grand-livre for the sake of simplicity. 
+The next financial piece is a single table regrouping the balance of the accounts. It is computed from the Grand-livre for
+the sake of simplicity. 
 
-Again, you first generate a JSON file and then a reStructuredText file::
+Again, you first generate a JSON file and then a reStructuredText file:
 
-    $ colbert_balance_des_comptes.py ../grand-livre/grand_livre-2011.json --label="MyBusiness - Balance des comptes 2011 en €"  > $balance-des-comptes.json
+.. code-block:: bash
+
+    $ colbert_balance_des_comptes.py ../grand-livre/grand_livre-2011.json \
+        --label="MyBusiness - Balance des comptes 2011 en €"  > $balance-des-comptes.json
     $ colbert_balance_des_comptes_to_rst.py balance-des-comptes.json > balance-des-comptes.txt
 
 
-And again, you should use this Makefile::
+And again, you should use this Makefile:
+
+.. code-block:: make
 
     FILENAME="balance_des_comptes-2011"
 
@@ -408,7 +425,9 @@ With the Sed fix::
     s/[[:space:]]+\\\\$/\\tabularnewline/
 
 
-And here a example of the reStructuredText output (again, the table width had been reduced here to fit well)::
+And here a example of the reStructuredText output (again, the table width had been reduced here to fit well):
+
+.. code-block:: rst
 
     =====================================
     Balance des comptes 2011 - MyBusiness
@@ -472,13 +491,18 @@ And here a example of the reStructuredText output (again, the table width had be
 Le Bilan
 --------
 
-This document is a *résumé* or a «picture» of your business. It is generated from the *Balance des comptes*::
+This document is a *résumé* or a «picture» of your business. It is generated from the *Balance des comptes*:
 
-    $ colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Bilan 2011 en €"  > bilan.json
+.. code-block:: bash
+
+    $ colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json \
+        --label="MyBusiness - Bilan 2011 en €" > bilan.json
     $ colbert_bilan_to_rst.py bilan.json > bilan.txt
 
 
-A Makefile to automatically do all the work::
+A Makefile to automatically do all the work:
+
+.. code-block:: make
 
     FILENAME="bilan-2011"
 
@@ -499,7 +523,8 @@ A Makefile to automatically do all the work::
 
     json:
         @echo "calcul de la bilan..."
-        @colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Bilan 2011 en €"  > $(FILENAME).json
+        @colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json \
+            --label="MyBusiness - Bilan 2011 en €"  > $(FILENAME).json
 
     purge:	clean
         @for ext in ".pdf" ".tex" ".txt"; do\
@@ -517,7 +542,9 @@ And the Sed script::
     s/\\begin{longtable\*}.*/\\begin{longtable*}[c]{lrrr|lr}/
     
 
-The reStructuredText output::
+The reStructuredText output:
+
+.. code-block:: rst
 
     =======================
     Bilan 2011 - MyBusiness
@@ -547,13 +574,18 @@ The reStructuredText output::
 Le compte de résultat
 ---------------------
 
-The purpose of this last document is to give an idea of your activity during the fiscal year::
+The purpose of this last document is to give an idea of your activity during the fiscal year:
 
-    $ colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Compte de résultat 2011 en €"  > compte-de-resultat.json
+.. code-block:: bash
+
+    $ colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json \
+        --label="MyBusiness - Compte de résultat 2011 en €"  > compte-de-resultat.json
     $ colbert_compte_de_resultat_to_rst.py compte-de-resultat.json > compte-de-resultat.txt
 
 
-In a Makefile::
+In a Makefile:
+
+.. code-block:: make
 
     FILENAME="compte_de_resultat-2011"
 
@@ -565,7 +597,7 @@ In a Makefile::
         @pdflatex $(FILENAME).tex
 
     tex:	rst
-        @rst2latex.py --table-style=booktabs --output-encoding=utf-8 $(FILENAME).txt >  $(FILENAME).tex.tmp
+        @rst2latex.py --table-style=booktabs --output-encoding=utf-8 $(FILENAME).txt > $(FILENAME).tex.tmp
         @sed -E -f fix_table.sed < $(FILENAME).tex.tmp > $(FILENAME).tex
 
     rst:	json
@@ -574,7 +606,8 @@ In a Makefile::
 
     json:
         @echo "calcul du compte de résultat..."
-        @colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json --label="MyBusiness - Compte de résultat 2011 en €"  > $(FILENAME).json
+        @colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json \
+            --label="MyBusiness - Compte de résultat 2011 en €"  > $(FILENAME).json
 
     purge:	clean
         @for ext in ".pdf" ".tex" ".txt"; do\
@@ -599,7 +632,9 @@ The Sed script::
     s/[[:space:]]+\\\\$/\\tabularnewline/
 
 
-The reStructuredText output::
+The reStructuredText output:
+
+.. code-block:: rst
 
     ====================================
     Compte de résultat 2011 - MyBusiness
@@ -651,9 +686,9 @@ The reStructuredText output::
 Managing the transition between 2 fiscal years
 ==============================================
 
-When you have closed your fiscal year (say 2011) you have to create a new one (2012). In Colbert, you create a new directory, *2012*, 
-aside *2011*. You can simply make a *cp 2011 2012*, then run the *make purge* rules in each subdirectories and replace the dates and the 
-filenames at the top of each Makefile.
+When you have closed your fiscal year (say 2011) you have to create a new one (2012). In Colbert, you create a new directory,
+*2012*, aside *2011*. You can simply make a *cp 2011 2012*, then run the *make purge* rules in each subdirectories and 
+replace the dates and the filenames at the top of each Makefile.
 
 This may looks a bit awkward but this occurs only once a year!
 
@@ -661,17 +696,20 @@ This may looks a bit awkward but this occurs only once a year!
 Les écritures de clôture
 ------------------------
 
-When a fiscal year is closed and when your documents and books are up-to-date (*Grand-livre*, *Balance des comptes*, *Bilan* and *Compte
-de résultat*) you have to insert in the Livre-journal the *écritures de clôture* (accounts closing entries). The purpose of these entries
-is:
+When a fiscal year is closed and when your documents and books are up-to-date (*Grand-livre*, *Balance des comptes*,
+*Bilan* and *Compte de résultat*) you have to insert in the Livre-journal the *écritures de clôture* (accounts closing entries).
+The purpose of these entries is:
 
 1. to reset the *comptes de résultat* (in France, it is those having a number in *6xx* and *7xx*) ;
 2. transfert the gain or the lost registred at the end of the fiscal year on the *comptes de bilan*.
 
-Colbert comes with a script to compute such entries::
+Colbert comes with a script to compute such entries:
 
-    $ colbert_ecritures_de_cloture.py ../balance-des-comptes/balance_des_comptes-2011.json  > ecritures-de-cloture.json
-    $ colbert_ecritures_to_livre_journal.py --label="Ecriture de cloture a reporter au Livre-journal" ecritures-de-cloture.json > ecritures-de-cloture.txt
+.. code-block:: bash
+
+    $ colbert_ecritures_de_cloture.py ../balance-des-comptes/balance_des_comptes-2011.json > ecritures-de-cloture.json
+    $ colbert_ecritures_to_livre_journal.py --label="Ecriture de cloture a reporter au Livre-journal" \
+        ecritures-de-cloture.json > ecritures-de-cloture.txt
 
 
 And copy/paste the body of *ecritures-de-cloture.txt* into the Livre-journal at the right place.
@@ -684,7 +722,9 @@ There must be reciprocity between your account statements from your bank and the
 
 Colbert is able to generate account statements for a bank account (say *512*) and to check the balance against 
 a JSON file representing the balances of each account statement received from the bank establishment. Write such 
-a file with your best text editor::
+a file with your text editor:
+
+.. code-block:: json
 
     [
         {
@@ -713,8 +753,9 @@ a file with your best text editor::
     ]
 
 
-And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt solde.json* which outputs::
+And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt solde.json* which outputs:
 
+.. code-block:: rst
 
     =====================
     Compte n°512 en Euros
@@ -764,10 +805,10 @@ Making invoices
 ===============
 
 Colbert can assist you to compute invoices, generate TeX/PDF outputs and the Livre-journal entries from them.
-You start with a JSON file like the one below and use the script *colbert_calculer_facture.py* to fill it out::
+You start with a JSON file like the one below and use the script *colbert_calculer_facture.py* to fill it out:
 
+.. code-block:: json
 
-    $ cat my_invoice.json
     {
         "client": {
             "nom": "MyClient#1",
@@ -809,7 +850,14 @@ You start with a JSON file like the one below and use the script *colbert_calcul
         "deja_paye": "0.00"
     }
 
+.. code-block:: bash
+
     $ colbert_calculer_facture.py my_invoice.json
+
+Produce the following:
+
+.. code-block:: json
+
     {
         "date_facture": "10/05/2011", 
         "symbole_devise": "\u20ac", 
@@ -862,7 +910,9 @@ You start with a JSON file like the one below and use the script *colbert_calcul
     }
 
 
-You should redirect the output to a new file, say *my_invoice_ok.json* and use it to generate a LaTeX output::
+You should redirect the output to a new file, say *my_invoice_ok.json* and use it to generate a LaTeX output:
+
+.. code-block:: bash
 
     $ colbert_facture_to_tex.py my_invoice_ok.json my_invoice_template.tex > my_invoice.tex
     $ xelatex my_invoice.tex
@@ -874,7 +924,9 @@ There is an example of such template in the *tests/regressiontests/* folder.
 Livre-journal entry
 -------------------
 
-Having an invoice filled-in you can now generate the entry for the Livre-journal::
+Having an invoice filled-in you can now generate the entry for the Livre-journal:
+
+.. code-block:: bash
 
     $ colbert_ecriture_facture.py my_invoice_ok.json > my_invoice_entry.json
     $ colbert_ecritures_to_livre_journal.py --label="Entry to report" my_invoice_entry.json > my_invoice_entry.txt
@@ -883,7 +935,9 @@ Having an invoice filled-in you can now generate the entry for the Livre-journal
 Workflow
 --------
 
-My method is to use a directory for each invoice with the following Makefile in it::
+My method is to use a directory for each invoice with the following Makefile in it:
+
+.. code-block:: make
 
     filename = facture-2012-003
     filename_calcule = $(filename)_calculee
@@ -901,7 +955,8 @@ My method is to use a directory for each invoice with the following Makefile in 
     json:
         @colbert_calculer_facture.py $(filename).json > $(filename_calcule).json
         @colbert_ecriture_facture.py $(filename_calcule).json > $(filename_ecriture).json
-        @colbert_ecritures_to_livre_journal.py --label="Ecriture a reporter au Livre-journal" $(filename_ecriture).json > $(filename_ecriture).txt
+        @colbert_ecritures_to_livre_journal.py --label="Ecriture a reporter au Livre-journal" \
+            $(filename_ecriture).json > $(filename_ecriture).txt
 
     clean:
         @for ext in ".out" ".aux" ".log" ".tns"; do\
@@ -912,7 +967,10 @@ My method is to use a directory for each invoice with the following Makefile in 
 Activity report from iCal
 -------------------------
 
-There is a template of LaTeX class in the *tex* directory. Again, I use a Makefile (the same to generate the invoice associated with)::
+There is a template of LaTeX class in the *tex* directory. Again, I use a Makefile (the same to generate
+the invoice associated with):
+
+.. code-block:: make
 
     month = Juin
     month_index = 007
@@ -939,12 +997,14 @@ There is a template of LaTeX class in the *tex* directory. Again, I use a Makefi
         @xelatex --papersize=a4 $(filename).tex
 
     facture_tex:	facture_json
-        @export LC_ALL="fr_FR.UTF-8" ; export LC_LANG="fr_FR.UTF-8" ; colbert_facture_to_tex.py $(filename_calcule).json ../../modele_facture.tex > $(filename).tex
+        @export LC_ALL="fr_FR.UTF-8" ; export LC_LANG="fr_FR.UTF-8" ; \
+            colbert_facture_to_tex.py $(filename_calcule).json ../../modele_facture.tex > $(filename).tex
 
     facture_json:
         @colbert_calculer_facture.py $(filename).json > $(filename_calcule).json
         @colbert_ecriture_facture.py $(filename_calcule).json > $(filename_ecriture).json
-        @colbert_ecritures_to_livre_journal.py --label="Ecriture a reporter au Livre-journal" $(filename_ecriture).json > $(filename_ecriture).txt
+        @colbert_ecritures_to_livre_journal.py --label="Ecriture a reporter au Livre-journal" \
+            $(filename_ecriture).json > $(filename_ecriture).txt
 
     rac_pdf:	rac_tex
         @xelatex --papersize=a4 $(rac_filename).tex
@@ -955,7 +1015,8 @@ There is a template of LaTeX class in the *tex* directory. Again, I use a Makefi
         @colbert_rapport_activite_to_tex.py $(rac_filename).json $(rac_template) > $(rac_filename).tex
 
     rac_json:
-        @colbert_rapport_activite.py $(calendar) -d $(date_debut) -f $(date_fin) -l $(rac_label) -r "$(ref_facture)" > $(rac_filename).json
+        @colbert_rapport_activite.py $(calendar) -d $(date_debut) -f $(date_fin) \
+            -l $(rac_label) -r "$(ref_facture)" > $(rac_filename).json
 
     purge:	clean
         @for ext in ".tex" ".pdf" ; do\
@@ -1027,7 +1088,9 @@ The Sed script
 The idea is to change the table(s) declaration(s) to get columns with managed width and alignment.
 
 
-In the Makefile it looks like that::
+In the Makefile it looks like that:
+
+.. code-block:: make
 
     tex:	rst
     	@rst2latex.py --table-style=booktabs $(FILENAME).txt >  $(FILENAME).tex.tmp
@@ -1053,9 +1116,10 @@ And to force the *pagestyle* for the first one I sometimes add::
 Installation
 ============
 
-Hey, this is a Python package, so just run *python setup.py install* and you're done.
 
-(or ``pip install Colbert``)
+.. code-block:: bash
+
+    pip install Colbert
 
 
 Tests
@@ -1074,6 +1138,3 @@ Requirements
 - a *LaTex* suite if you want to render the reStructuredText in PDF ;
 - Make ;
 - Sed.
-
-
-.. _Gnucash:
