@@ -42,12 +42,12 @@ def check_livre_journal(livre_journal_file):
 
 def ecritures_de_cloture(balance_des_comptes):
     """Détermine les écritures à passer pour clôturer un exercice. """
-    
+
     ecritures = {
         PCG['regroupement-charges'][NUMERO]: [],
         PCG['regroupement-produits'][NUMERO]: [],
     }
-    
+
     # Préparation des sous-écritures à passer.
     for compte in balance_des_comptes[COMPTES]:
         if compte[NUMERO][0] not in COMPTES_DE_RESULTAT:
@@ -69,9 +69,9 @@ def ecritures_de_cloture(balance_des_comptes):
             CREDIT: solde_debiteur,
             NOM_COMPTE: compte[NOM],
             NUMERO_COMPTE_DEBIT: solde_crediteur and compte[NUMERO] or u'',
-            NUMERO_COMPTE_CREDIT: solde_debiteur and compte[NUMERO] or u'' 
+            NUMERO_COMPTE_CREDIT: solde_debiteur and compte[NUMERO] or u''
         })
-    
+
     # Création des écritures finales.
     ecritures_finales = []
     soldes_comptes_regroupements = {
@@ -86,7 +86,7 @@ def ecritures_de_cloture(balance_des_comptes):
     }
 
     for compte_regroupement, nom_compte in ((PCG['regroupement-produits'][NUMERO],
-                                             PCG['regroupement-produits'][NOM]), 
+                                             PCG['regroupement-produits'][NOM]),
                                             (PCG['regroupement-charges'][NUMERO],
                                              PCG['regroupement-charges'][NOM])):
         ecriture_finale = {
@@ -115,7 +115,7 @@ def ecritures_de_cloture(balance_des_comptes):
             CREDIT: credit,
             NOM_COMPTE: nom_compte,
             NUMERO_COMPTE_DEBIT: debit and compte_regroupement or u'',
-            NUMERO_COMPTE_CREDIT: credit and compte_regroupement or u'' 
+            NUMERO_COMPTE_CREDIT: credit and compte_regroupement or u''
         }
 
         # On respecte la règle du débit en premier dans une écriture.
@@ -139,11 +139,11 @@ def ecritures_de_cloture(balance_des_comptes):
     }
 
     # On commence par solder les comptes de regroupement.
-    for compte_regroupement, nom_compte in ((PCG['regroupement-produits'][NUMERO], 
-                                             PCG['regroupement-produits'][NOM]), 
+    for compte_regroupement, nom_compte in ((PCG['regroupement-produits'][NUMERO],
+                                             PCG['regroupement-produits'][NOM]),
                                             (PCG['regroupement-charges'][NUMERO],
                                              PCG['regroupement-charges'][NOM])):
-        soldes_compte_regroupement = soldes_comptes_regroupements[compte_regroupement] 
+        soldes_compte_regroupement = soldes_comptes_regroupements[compte_regroupement]
         debit = soldes_compte_regroupement[CREDIT]
         credit = soldes_compte_regroupement[DEBIT]
         ecriture_resultat[ECRITURES].append(
@@ -152,7 +152,7 @@ def ecritures_de_cloture(balance_des_comptes):
                 CREDIT: credit,
                 NOM_COMPTE: nom_compte,
                 NUMERO_COMPTE_DEBIT: debit and compte_regroupement or u'',
-                NUMERO_COMPTE_CREDIT: credit and compte_regroupement or u'' 
+                NUMERO_COMPTE_CREDIT: credit and compte_regroupement or u''
             }
         )
 
@@ -175,7 +175,7 @@ def ecritures_de_cloture(balance_des_comptes):
         CREDIT: credit,
         NOM_COMPTE: debit and PCG['perte'][NOM] or PCG['benefice'][NOM],
         NUMERO_COMPTE_DEBIT: debit and PCG['perte'][NUMERO] or u'',
-        NUMERO_COMPTE_CREDIT: credit and PCG['benefice'][NUMERO] or u'' 
+        NUMERO_COMPTE_CREDIT: credit and PCG['benefice'][NUMERO] or u''
     }
     if debit:
         ecriture_resultat[ECRITURES].insert(0, ecriture_equilibre)
@@ -212,7 +212,7 @@ RX_ECRITURE       = re.compile(ur"""^\|\|
                                (?P<credit>[\d\s.]+)\|\s*$""", flags=(re.X | re.U))
 
 def livre_journal_to_list(livre_journal_file):
-    """ 
+    """
     return : [
       {'date': datetime.date(2011, 3, 31),
        'ecritures': [{'credit': Decimal('0.00'),
@@ -236,7 +236,7 @@ def livre_journal_to_list(livre_journal_file):
     """
 
     livre_journal = []
-    ecriture = {} 
+    ecriture = {}
     for line in livre_journal_file:
         if line[0] == '+':
             # Fin d'écriture.
@@ -253,7 +253,8 @@ def livre_journal_to_list(livre_journal_file):
             if not ecriture.has_key(DATE):
                 m = RX_DATE_INTITULE.match(line)
                 if not m:
-                    raise BaseException, u"La première ligne d'une écriture doit mentionner la date et l'intitulé."
+                    print line
+                    raise BaseException(u"La première ligne d'une écriture doit mentionner la date et l'intitulé.")
                 m = m.groupdict()
                 ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
                 ecriture[INTITULE] = m[INTITULE].strip()
@@ -318,7 +319,7 @@ def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour 
         table.append(multiline_row)
 
     lines.append(rst_table(table))
-    
+
     output_file.write(u"\n".join(lines))
     output_file.write(u"\n\n")
 
@@ -335,7 +336,7 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
                     credit += e[CREDIT]
         elif ecriture[DATE] > date_fin:
             break
-    
+
     if debit > credit:
         debit = debit - credit
         credit = Decimal("0.00")
