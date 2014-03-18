@@ -124,6 +124,7 @@ COMPTES_DE_CHARGES = '6'
 COMPTES_DE_PRODUITS = '7'
 COMPTES_DE_RESULTAT = (COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS)
 
+
 def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
     """Elaboration du compte de résultat à partir de la balance des comptes.
 
@@ -191,7 +192,8 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
                 numero_compte = numero_compte[:-1]
             else:
                 return ligne_bilan
-        raise BaseException, u"Impossible de dispatcher le numero de compte %s dans le compte de resultat" % compte[NUMERO]
+        raise BaseException(u"Impossible de dispatcher le numero de compte %s dans le compte de resultat"
+                            % compte[NUMERO])
 
     total_charges, total_produits = Decimal("0.00"), Decimal("0.00")
     for compte in balance_des_comptes[COMPTES]:
@@ -226,9 +228,11 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
 
     return compte_de_resultat
 
+
 CHARGES_LEN = 60
 PRODUITS_LEN = 60
 MONTANT_LEN = 25
+
 
 def compte_de_resultat_to_rst(compte_de_resultat, output_file):
     """Convert a `compte de résultat` json load to a reStructuredText file. """

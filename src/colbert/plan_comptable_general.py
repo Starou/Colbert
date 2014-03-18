@@ -2,6 +2,7 @@
 
 from colbert.common import NOM, NUMERO
 
+
 PLAN_COMPTABLE_GENERAL = {
     'perte': {
         NUMERO: "129",

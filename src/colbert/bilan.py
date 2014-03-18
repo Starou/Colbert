@@ -41,12 +41,12 @@ AUTRES_DETTES = u'autres dettes'
 # Mappings qui permet d'ordonner les lignes dans le bilan dans chaque catégorie.
 LIGNES_BILAN_ACTIF = [
     {
-        CATEGORIE: ACTIF_IMMOBILISE, 
+        CATEGORIE: ACTIF_IMMOBILISE,
         RUBRIQUES: [
             (
                 IMMOBILISATIONS_INCORPORELLES, [
                     AUTRES_IMMOBILISATIONS_INCORPORELLES,
-                ] 
+                ]
             ),
             (
                 IMMOBILISATIONS_CORPORELLES, [
@@ -61,7 +61,7 @@ LIGNES_BILAN_ACTIF = [
         ]
     },
     {
-        CATEGORIE: ACTIF_CIRCULANT, 
+        CATEGORIE: ACTIF_CIRCULANT,
         RUBRIQUES: [
             (
                 None, [
@@ -77,7 +77,7 @@ LIGNES_BILAN_ACTIF = [
 
 LIGNES_BILAN_PASSIF = [
     {
-        CATEGORIE: CAPITAUX_PROPRES, 
+        CATEGORIE: CAPITAUX_PROPRES,
         RUBRIQUES: [
             (
                 None, [
@@ -85,12 +85,12 @@ LIGNES_BILAN_PASSIF = [
                     RESERVES,
                     REPORT_A_NOUVEAU,
                     RESULTAT,
-                ] 
+                ]
             ),
         ]
     },
     {
-        CATEGORIE: DETTES, 
+        CATEGORIE: DETTES,
         RUBRIQUES: [
             (
                 None, [
@@ -132,19 +132,20 @@ MAPPING_COMPTE_TO_BILAN = {
         CREDIT: (PASSIF, DETTES, None, AUTRES_DETTES, BRUT),
     },
     '455': {
-        CREDIT: (PASSIF, DETTES, None, AUTRES_DETTES, BRUT), #FIXME : vérifier que c'est bien là.
+        CREDIT: (PASSIF, DETTES, None, AUTRES_DETTES, BRUT),  # FIXME : vérifier que c'est bien là.
     },
     '51': {
         DEBIT: (ACTIF, ACTIF_CIRCULANT, None, DISPONIBILITES, BRUT),
-        CREDIT: (PASSIF, DETTES, None, AUTRES_DETTES, BRUT), # TODO
+        CREDIT: (PASSIF, DETTES, None, AUTRES_DETTES, BRUT),  # TODO
     },
 }
 
 COMPTES_DE_BILAN = ['1', '2', '3', '4', '5']
 
+
 def bilan(balance_des_comptes, label="Bilan"):
-    """Elaboration du bilan à partir de la balance des comptes. 
-    
+    """Elaboration du bilan à partir de la balance des comptes.
+
     return = {
         'label': "",
         'date_debut': Datetime(),
@@ -160,7 +161,7 @@ def bilan(balance_des_comptes, label="Bilan"):
                     ('happens', {'brut': Decimal("1500.00"),
                                  'immobilisation': Decimal("500.00"),
                                  'net': Decimal("1000.00")}),
-                ],       
+                ],
                 ['immobilisations_corporelles',
                     ('terrains', {'brut': Decimal("1500.00"),
                                   'immobilisation': Decimal("500.00"),
@@ -168,12 +169,12 @@ def bilan(balance_des_comptes, label="Bilan"):
                     ('constructions', {'brut': Decimal("1500.00"),
                                        'immobilisation': Decimal("500.00"),
                                        'net': Decimal("1000.00")}),
-                ],       
+                ],
             ],
             ['actif_circulant', [...]]
         ],
         'passif': [
-            ['capitaux_propres', 
+            ['capitaux_propres',
                 [None,
                     ('capital', {'brut': Decimal("1500.00"),
                                  'immobilisation': Decimal("500.00"),
@@ -181,11 +182,11 @@ def bilan(balance_des_comptes, label="Bilan"):
                     ('resultat_exercice', {'brut': Decimal("1500.00"),
                                            'immobilisation': Decimal("500.00"),
                                            'net': Decimal("1000.00")}),
-                ]       
+                ]
             ],
         ]
     }
-    
+
     """
 
     actif, passif = {}, {}
@@ -212,14 +213,15 @@ def bilan(balance_des_comptes, label="Bilan"):
                 numero_compte = numero_compte[:-1]
             else:
                 return ligne_bilan[solde]
-        raise BaseException, "Impossible de dispatcher le numero de compte '%s' dans le bilan" % compte[NUMERO]
+        raise BaseException("Impossible de dispatcher le numero de compte '%s' dans le bilan" %
+                            compte[NUMERO])
 
     for compte in balance_des_comptes[COMPTES]:
         if compte[NUMERO][0] not in COMPTES_DE_BILAN:
             continue
         solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
         solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
-    
+
         # Actif.
         if solde_debiteur:
             solde = DEBIT
@@ -232,20 +234,20 @@ def bilan(balance_des_comptes, label="Bilan"):
 
         else:
             continue
-        
-        path_ligne_bilan = get_ligne_bilan(compte, solde, MAPPING_COMPTE_TO_BILAN) 
+
+        path_ligne_bilan = get_ligne_bilan(compte, solde, MAPPING_COMPTE_TO_BILAN)
         cote, categorie, rubrique, ligne, colonne = path_ligne_bilan
 
-        # Structure intermediaire ou les lignes sont dans un mapping plutôt que dans une 
+        # Structure intermediaire ou les lignes sont dans un mapping plutôt que dans une
         # liste car enrichissement itératif.
         #   'actif': {
         #       'actif_immobilise': {
         #           'immobilisations_corporelles': {
         #               'terrains': {'brut':x, 'immobilisation':y, 'net':z},
         #           ...
-        #           } 
-        #       } 
-        #   } 
+        #           }
+        #       }
+        #   }
 
         categorie = bilan[cote].setdefault(categorie, {})
         rubrique = categorie.setdefault(rubrique, {})
@@ -255,7 +257,7 @@ def bilan(balance_des_comptes, label="Bilan"):
         # màj du brut ou de l'amortissement.
         ligne[colonne] += montant
         ligne[NET] = ligne[BRUT] - ligne[AMORTISSEMENT]
-        
+
     # Résultat, totaux.
     total_actif, total_passif_avant_resultat, resultat = resultat_bilan(bilan)
     bilan[TOTAL_ACTIF] = total_actif
@@ -268,6 +270,7 @@ def bilan(balance_des_comptes, label="Bilan"):
 
     bilan = ordered_bilan(bilan)
     return bilan
+
 
 def resultat_bilan(pre_bilan):
     """Calcul le résultat de l'exercice. """
@@ -288,7 +291,8 @@ def resultat_bilan(pre_bilan):
     total_passif_avant_resultat = calcul_total(PASSIF)
     resultat = total_actif[NET] - total_passif_avant_resultat[NET]
 
-    return total_actif, total_passif_avant_resultat, resultat 
+    return total_actif, total_passif_avant_resultat, resultat
+
 
 def ordered_bilan(pre_bilan):
     """Finalise le bilan en transfomant les mappings ACTIF et PASSIF en listes ordonnées
@@ -299,15 +303,15 @@ def ordered_bilan(pre_bilan):
         ordered_cote = []
         for categorie_mapping in mapping:
             categorie = categorie_mapping[CATEGORIE]
-            if not pre_bilan[cote].has_key(categorie):
+            if categorie not in pre_bilan[cote]:
                 continue
-            ordered_categorie = [categorie,]
+            ordered_categorie = [categorie]
             for rubrique, lignes in categorie_mapping[RUBRIQUES]:
-                if not pre_bilan[cote][categorie].has_key(rubrique):
+                if rubrique not in pre_bilan[cote][categorie]:
                     continue
-                ordered_rubrique = [rubrique,]
-                lignes = [(ligne, pre_bilan[cote][categorie][rubrique][ligne]) \
-                          for ligne in lignes if pre_bilan[cote][categorie][rubrique].has_key(ligne)]
+                ordered_rubrique = [rubrique]
+                lignes = [(ligne, pre_bilan[cote][categorie][rubrique][ligne])
+                          for ligne in lignes if ligne in pre_bilan[cote][categorie][rubrique]]
                 ordered_rubrique += lignes
                 ordered_categorie.append(ordered_rubrique)
 
@@ -316,6 +320,7 @@ def ordered_bilan(pre_bilan):
 
     return pre_bilan
 
+
 ACTIF_LEN = 45
 BRUT_LEN = 20
 AMORTISSEMENT_LEN = 20
@@ -323,23 +328,24 @@ NET_LEN = 20
 PASSIF_LEN = 45
 MONTANT_LEN = 20
 
+
 def bilan_to_rst(bilan, output_file):
     """Convert a `bilan` json load to a reStructuredText file. """
 
     lines = []
     lines += titre_principal_rst(bilan[LABEL], bilan[DATE_DEBUT], bilan[DATE_FIN])
-    
+
     table = [
-        [(u"Actif", ACTIF_LEN), 
-         (u"Brut", BRUT_LEN), 
-         (u"Amortissement", AMORTISSEMENT_LEN), 
-         (u"Net", NET_LEN), 
-         (u"Passif", PASSIF_LEN), 
+        [(u"Actif", ACTIF_LEN),
+         (u"Brut", BRUT_LEN),
+         (u"Amortissement", AMORTISSEMENT_LEN),
+         (u"Net", NET_LEN),
+         (u"Passif", PASSIF_LEN),
          (u"Montant", MONTANT_LEN)]
     ]
 
     def flatten_bilan(bilan):
-        """ 
+        """
         return (
             [ lignes_actifs ],
             [ lignes_passifs ]
@@ -353,7 +359,7 @@ def bilan_to_rst(bilan, output_file):
                 if rubrique:
                     flattened.append([u'*%s*' % rubrique.capitalize(), '', '', ''])
                 for intitule, values in rubriques[1:]:
-                    flattened.append([u'%s' % intitule.capitalize(), 
+                    flattened.append([u'%s' % intitule.capitalize(),
                                       Decimal(values[BRUT]),
                                       Decimal(values[AMORTISSEMENT]),
                                       Decimal(values[NET])])
@@ -363,28 +369,28 @@ def bilan_to_rst(bilan, output_file):
 
     def row(ligne_actif, ligne_passif):
         return [
-            (ligne_actif and ligne_actif[0] or '', ACTIF_LEN), 
-            ((ligne_actif and ligne_actif[1]) and \
-              fmt_number(ligne_actif[1]) or '', BRUT_LEN), 
-            ((ligne_actif and ligne_actif[2]) and \
-              fmt_number(ligne_actif[2]) or '', AMORTISSEMENT_LEN), 
-            ((ligne_actif and ligne_actif[3]) and \
-              fmt_number(ligne_actif[3]) or '', NET_LEN), 
-            (ligne_passif and ligne_passif[0] or '', PASSIF_LEN), 
-            ((ligne_passif and ligne_passif[1]) and \
-              fmt_number(ligne_passif[1]) or '', MONTANT_LEN) 
+            (ligne_actif and ligne_actif[0] or '', ACTIF_LEN),
+            ((ligne_actif and ligne_actif[1]) and
+             fmt_number(ligne_actif[1]) or '', BRUT_LEN),
+            ((ligne_actif and ligne_actif[2]) and
+             fmt_number(ligne_actif[2]) or '', AMORTISSEMENT_LEN),
+            ((ligne_actif and ligne_actif[3]) and
+             fmt_number(ligne_actif[3]) or '', NET_LEN),
+            (ligne_passif and ligne_passif[0] or '', PASSIF_LEN),
+            ((ligne_passif and ligne_passif[1]) and
+             fmt_number(ligne_passif[1]) or '', MONTANT_LEN)
         ]
 
-    map(lambda actif, passif: table.append(row(actif, passif)), *flatten_bilan(bilan)) 
+    map(lambda actif, passif: table.append(row(actif, passif)), *flatten_bilan(bilan))
 
     # Dernière ligne.
     table.append([
-        (u"*Total*", ACTIF_LEN), 
-        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][BRUT])), BRUT_LEN), 
-        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][AMORTISSEMENT])), AMORTISSEMENT_LEN), 
-        (u"**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), NET_LEN), 
-        (u"*Total*", PASSIF_LEN), 
-        (u"**%s**"% fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), MONTANT_LEN)
+        (u"*Total*", ACTIF_LEN),
+        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][BRUT])), BRUT_LEN),
+        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][AMORTISSEMENT])), AMORTISSEMENT_LEN),
+        (u"**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), NET_LEN),
+        (u"*Total*", PASSIF_LEN),
+        (u"**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), MONTANT_LEN)
     ])
 
     lines.append(rst_table(table))

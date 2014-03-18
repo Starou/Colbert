@@ -4,9 +4,10 @@ import datetime
 from decimal import Decimal
 from colbert.utils import d_round
 from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
+from colbert.common import DATE, INTITULE, NOM, NUMERO
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 from colbert.livre_journal import ECRITURES
+
 
 def calculer_facture(facture):
     """ Complète la facture en calculant :
@@ -15,7 +16,7 @@ def calculer_facture(facture):
         > `tva` totale de la facture.
         > Diverses dates.
     """
-    
+
     facture["montant_ht"] = Decimal("0.00")
     facture["montant_ttc"] = Decimal("0.00")
     facture["tva"] = {}
@@ -32,15 +33,16 @@ def calculer_facture(facture):
 
     # Date de réglement.
     facture["date_reglement"] = date_reglement_facture(facture["date_facture"],
-                                                      int(facture["nb_jours_payable_fin_de_mois"]))
+                                                       int(facture["nb_jours_payable_fin_de_mois"]))
     facture["date_debut_penalites"] = facture["date_reglement"] + datetime.timedelta(1)
 
     return facture
 
+
 def date_reglement_facture(date_facture, nb_jours_payable_fin_de_mois):
     """Calcul de la date butoir de réglement d'une facture sur le principe de `n jours fin de mois'. """
     date_reglement = datetime.datetime.strptime(date_facture, DATE_FMT).date() + \
-                     datetime.timedelta(nb_jours_payable_fin_de_mois)
+        datetime.timedelta(nb_jours_payable_fin_de_mois)
 
     # Premier du mois suivant moins 1 jour pour avoir le dernier jour du mois.
     year = date_reglement.year + (date_reglement.month / 12)
@@ -51,6 +53,7 @@ def date_reglement_facture(date_facture, nb_jours_payable_fin_de_mois):
 
     return date_reglement
 
+
 def facture_to_tex(facture, tex_template, output_file):
     """Produce a TeX file from a template and a json facture. """
 
@@ -58,25 +61,25 @@ def facture_to_tex(facture, tex_template, output_file):
 
     # Flatten the facture dict.
     for k, v in kwargs["client"].items():
-        kwargs["client_%s"%k] = v
+        kwargs["client_%s" % k] = v
 
     # Lignes de facturation.
     kwargs["lignes_facture"] = u"\n".join([
-      u"& %s &  %s %s & \\numprint{%s} & \\numprint{%s} \\\\" % (
-          l["description"],
-          l["quantite"],
-          l["unite"],
-          l["prix_unitaire_ht"],
-          l["montant_ht"],
-      ) for l in kwargs["detail"] 
+        u"& %s &  %s %s & \\numprint{%s} & \\numprint{%s} \\\\" % (
+            l["description"],
+            l["quantite"],
+            l["unite"],
+            l["prix_unitaire_ht"],
+            l["montant_ht"],
+        ) for l in kwargs["detail"]
     ])
 
     # Lignes de TVA.
     kwargs["lignes_tva"] = u"\\cline{3-5}".join([
         u"\\multicolumn{2}{l|}{} & \\multicolumn{2}{|l|}{\sc TVA %s\\%%} & \\numprint{%s}\\\\" % (
-            taux_tva, 
+            taux_tva,
             tva
-      ) for taux_tva, tva in kwargs["tva"].items() 
+        ) for taux_tva, tva in kwargs["tva"].items()
     ])
 
     # Période d'exécution de la prestation.
@@ -92,13 +95,14 @@ def facture_to_tex(facture, tex_template, output_file):
         date_debut_fmt += u" %Y"
     kwargs["periode_execution"] = u"Du %s au %s" % (date_debut.strftime(date_debut_fmt.encode("utf-8")).decode("utf-8"),
                                                     date_fin.strftime(date_fin_fmt.encode("utf-8")).decode("utf-8"))
-    
+
     # Reformatage des dates.
     for d in ("date_facture", "date_reglement", "date_debut_penalites"):
         kwargs[d] = datetime.datetime.strptime(kwargs[d], DATE_FMT).date().strftime(date_fin_fmt.encode("utf-8")).decode("utf-8")
 
     tex_string = tex_template.read() % kwargs
     output_file.write(tex_string)
+
 
 def ecriture_facture(facture):
     date_facture = datetime.datetime.strptime(facture["date_facture"], DATE_FMT).date()
@@ -127,7 +131,7 @@ def ecriture_facture(facture):
             'numero_compte_credit': compte_tva[NUMERO],
         },
     ]
-    
+
     return {
         DATE: date_facture,
         ECRITURES: ecritures,

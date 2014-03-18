@@ -5,13 +5,14 @@ from decimal import Decimal
 from colbert.utils import fmt_number, rst_table
 from colbert.utils import DATE_FMT
 from colbert.common import titre_principal_rst
-from colbert.common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
+from colbert.common import (TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
                             DATE_DEBUT, DATE_FIN, LABEL, NOM, NUMERO, COMPTES)
 
 TOTAL_DEBITS = u'total_debits'
 TOTAL_CREDITS = u'total_credits'
 TOTAL_SOLDES_DEBITEURS = u'total_soldes_debiteurs'
 TOTAL_SOLDES_CREDITEURS = u'total_soldes_crediteurs'
+
 
 def balance_des_comptes(grand_livre, label="Balance des comptes"):
     """ Calcule la balance des comptes à partir du Grand-Livre.
@@ -73,6 +74,7 @@ def balance_des_comptes(grand_livre, label="Balance des comptes"):
 
     return balance
 
+
 TABLE_LEN = 153
 COMPTES_LEN = 79
 TOTAUX_LEN = 33
@@ -82,19 +84,20 @@ LIBELLE_COMPTE_LEN = 67
 DEBIT_LEN = 18
 CREDIT_LEN = 18
 
+
 def balance_des_comptes_to_rst(balance_des_comptes, output_file):
     """Convert a `balance_des_comptes` json load to a reStructuredText file. """
 
     lines = []
     lines += titre_principal_rst(balance_des_comptes[LABEL],
-                                 balance_des_comptes[DATE_DEBUT], 
+                                 balance_des_comptes[DATE_DEBUT],
                                  balance_des_comptes[DATE_FIN])
-    
+
     table = [
         # BUG dans la largeur du tableau pour conversion en PDF
         # [(u"**Comptes**", COMPTES_LEN), (u"**Totaux**", TOTAUX_LEN), (u"**Soldes**", SOLDES_LEN)],
         [(u"N°", NUMERO_COMPTE_LEN),
-         (u"Libellé", LIBELLE_COMPTE_LEN), 
+         (u"Libellé", LIBELLE_COMPTE_LEN),
          (u"Total débit", DEBIT_LEN),
          (u"Total crédit", CREDIT_LEN),
          (u"Solde débit", DEBIT_LEN),
@@ -108,8 +111,8 @@ def balance_des_comptes_to_rst(balance_des_comptes, output_file):
         solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
 
         table.append([
-            (compte[NUMERO], NUMERO_COMPTE_LEN), 
-            (compte[NOM], LIBELLE_COMPTE_LEN), 
+            (compte[NUMERO], NUMERO_COMPTE_LEN),
+            (compte[NOM], LIBELLE_COMPTE_LEN),
             (total_debit and fmt_number(total_debit) or '', DEBIT_LEN),
             (total_credit and fmt_number(total_credit) or '', CREDIT_LEN),
             (solde_debiteur and fmt_number(solde_debiteur) or '', DEBIT_LEN),
@@ -123,8 +126,8 @@ def balance_des_comptes_to_rst(balance_des_comptes, output_file):
     total_soldes_crediteurs = Decimal(balance_des_comptes[TOTAL_SOLDES_CREDITEURS])
 
     table.append([
-        ('', NUMERO_COMPTE_LEN), 
-        (u"**Totaux**", LIBELLE_COMPTE_LEN), 
+        ('', NUMERO_COMPTE_LEN),
+        (u"**Totaux**", LIBELLE_COMPTE_LEN),
         (total_debits and u"**%s**" % fmt_number(total_debits) or '', DEBIT_LEN),
         (total_credits and u"**%s**" % fmt_number(total_credits) or '', CREDIT_LEN),
         (total_soldes_debiteurs and u"**%s**" % fmt_number(total_soldes_debiteurs) or '', DEBIT_LEN),

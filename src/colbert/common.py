@@ -24,8 +24,9 @@ RUBRIQUES = u'rubriques'
 
 COMPTES = u'comptes'
 
+
 def titre_principal_rst(titre, date_debut, date_fin):
     return [
         rst_title(titre), "\n",
-        rst_title(u"Période du %s au %s" % (date_debut,date_fin), '-'), "\n",
+        rst_title(u"Période du %s au %s" % (date_debut, date_fin), '-'), "\n",
     ]

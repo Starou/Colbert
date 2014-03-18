@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import datetime, pytz
-import copy
+import datetime
+import pytz
 from icalendar import Calendar
 
 from colbert import daterange
@@ -11,9 +11,10 @@ from colbert.utils import latex_escape
 DATE_RAPPORT_FMT = "%A %d"
 HOUR_MIN_FMT = "%H.%M"
 
+
 def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
     """Extract activity data from an iCal-endar for a period. """
-    
+
     rapport = {
         "titre": titre,
         "ref_facture": ref_facture,
@@ -34,7 +35,7 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
                 date_fin_event = date_fin_event - datetime.timedelta(1)
 
             date_debut_event_date, date_fin_event_date = [(lambda d: (hasattr(d, "date") and d.date() or d))(day)
-                                                            for day in (date_debut_event, date_fin_event)]
+                                                          for day in (date_debut_event, date_fin_event)]
             if (date_debut <= date_debut_event_date <= date_fin):
                 for day in daterange.daterange(date_debut_event_date, date_fin_event_date):
                     events = events_by_date.setdefault(day, [])
@@ -42,8 +43,8 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
 
     # Then, events are sorted by date_debut in the same day but we must cast date in datetime to compare.
     def sort_date_and_datetime(x, y):
-        x, y = [(lambda d: (not hasattr(d, "date") and \
-                            datetime.datetime(d.year, d.month, d.day, tzinfo=pytz.utc) or \
+        x, y = [(lambda d: (not hasattr(d, "date") and
+                            datetime.datetime(d.year, d.month, d.day, tzinfo=pytz.utc) or
                             d))(d) for d in (x, y)]
         return cmp(x, y)
 
@@ -65,9 +66,10 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
     rapport["nb_jours"] = len(rapport["detail"])
     return rapport
 
+
 def rapport_activite_to_tex(activite, tex_template, output_file):
     """Produce a TeX file from a template and a json activity file.
-    
+
     >>> activite = {
     ...     "titre": "Mon rapport d'activité - Mars 2012",
     ...     "ref_facture": "2012-003",
@@ -76,7 +78,7 @@ def rapport_activite_to_tex(activite, tex_template, output_file):
     ...         ["datetime.date(2012, 3, 9)", [
     ...             {
     ...                 "intitule": "A long task, during 3 days!"
-    ...             }, 
+    ...             },
     ...             {
     ...                 "from": "19.00",
     ...                 "to": "19.30",
@@ -91,22 +93,22 @@ def rapport_activite_to_tex(activite, tex_template, output_file):
     ...         ["datetime.date(2012, 3, 11)", [
     ...             {
     ...                 "intitule": "A long task, during 3 days!"
-    ...             }, 
+    ...             },
     ...             {
     ...                 "from": "9.00",
     ...                 "to": "9.30",
     ...                 "intitule":"Fix the printer."
-    ...             }, 
+    ...             },
     ...             {
     ...                 "from": "10.00",
     ...                 "to": "10.30",
     ...                 "intitule": "Change some CSS stuffs.",
-    ...             }, 
+    ...             },
     ...             {
     ...                 "from": "14.00",
     ...                 "to": "15.30",
     ...                 "intitule": "Make some coffee.",
-    ...             }, 
+    ...             },
     ...             {
     ...                 "from": "16.15",
     ...                 "to": "17.45",
@@ -132,6 +134,7 @@ def rapport_activite_to_tex(activite, tex_template, output_file):
     kwargs["lignes_activites"] = "\n".join(lignes_activites)
     tex_string = tex_template.read() % kwargs
     output_file.write(tex_string)
+
 
 def intitule_activite_to_tex(activite_jour):
     tex_fmt = "\\emph{%s}"

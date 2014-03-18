@@ -4,10 +4,7 @@ from decimal import Decimal
 
 from colbert.livre_journal import livre_journal_to_list
 from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
-
-from colbert.utils import fmt_number, rst_table, rst_section, truncate_words
-from colbert.utils import DATE_FMT
-
+from colbert.utils import fmt_number, rst_table, rst_section
 from colbert.common import titre_principal_rst
 from colbert.common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
                             DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM, COMPTES)
@@ -18,9 +15,8 @@ DEBIT_LEN = 15
 CREDIT_LEN = 15
 
 
-def grand_livre(livre_journal_file, label, date_debut, date_fin,
-                 grand_livre_precedent):
-    """ 
+def grand_livre(livre_journal_file, label, date_debut, date_fin, grand_livre_precedent):
+    """
     return = {
         'label': 'Grand-Livre 2011',
         'date_debut': datetime.date(2011, 4, 1),
@@ -43,7 +39,7 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
         }
     }
     """
-    
+
     comptes = {}
     if grand_livre_precedent:
         comptes = init_comptes_grand_livre_avec_precedent(grand_livre_precedent,
@@ -66,17 +62,17 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
         if date_debut <= ecriture[DATE] <= date_fin:
             for e in ecriture[ECRITURES]:
                 ajouter_ecriture_to_comptes(e, ecriture[DATE], ecriture[INTITULE], comptes)
-    
+
     # Calcul des soldes de chaque compte.
     for compte in comptes.values():
-        compte[TOTAL_DEBIT] = reduce(lambda x, y: x+y, 
-                                       [Decimal(e[DEBIT]) for e in \
-                                            compte[ECRITURES] if e.has_key(DEBIT)],
-                                       Decimal('0.00'))
-        compte[TOTAL_CREDIT] = reduce(lambda x, y: x+y, 
-                                        [Decimal(e[CREDIT]) for e in \
-                                            compte[ECRITURES] if e.has_key(CREDIT)],
-                                        Decimal('0.00'))
+        compte[TOTAL_DEBIT] = reduce(lambda x, y: x + y,
+                                     [Decimal(e[DEBIT]) for e in
+                                      compte[ECRITURES] if DEBIT in e],
+                                     Decimal('0.00'))
+        compte[TOTAL_CREDIT] = reduce(lambda x, y: x + y,
+                                      [Decimal(e[CREDIT]) for e in
+                                       compte[ECRITURES] if CREDIT in e],
+                                      Decimal('0.00'))
 
         compte[SOLDE_DEBITEUR] = compte[TOTAL_DEBIT] - compte[TOTAL_CREDIT]
         if compte[SOLDE_DEBITEUR] < 0:
@@ -84,7 +80,8 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin,
             compte[SOLDE_DEBITEUR] = Decimal('0.00')
         else:
             compte[SOLDE_CREDITEUR] = Decimal('0.00')
-    return grand_livre 
+    return grand_livre
+
 
 def ajouter_ecriture_to_comptes(ecriture_lj, date, intitule, comptes):
     ecriture_gdlivre, numero_compte = ecriture_ljournal_to_gdlivre(ecriture_lj, date, intitule)
@@ -94,19 +91,19 @@ def ajouter_ecriture_to_comptes(ecriture_lj, date, intitule, comptes):
     })
     compte[ECRITURES].append(ecriture_gdlivre)
 
+
 def ecriture_ljournal_to_gdlivre(ecriture_lj, date, intitule):
-    ecriture_gdlivre = {
-    }
     if ecriture_lj[NUMERO_COMPTE_DEBIT]:
         numero_compte_key, mvt = NUMERO_COMPTE_DEBIT, DEBIT
     elif ecriture_lj[NUMERO_COMPTE_CREDIT]:
         numero_compte_key, mvt = NUMERO_COMPTE_CREDIT, CREDIT
 
     return ({
-        DATE: date, 
+        DATE: date,
         INTITULE: intitule,
         mvt: ecriture_lj[mvt],
     }, ecriture_lj[numero_compte_key])
+
 
 def init_comptes_grand_livre_avec_precedent(grand_livre_precedent, date_report_a_nouveau):
     comptes = {}
@@ -136,6 +133,7 @@ def init_comptes_grand_livre_avec_precedent(grand_livre_precedent, date_report_a
 
     return comptes
 
+
 def ecriture_journal_in_grand_livre(ecriture, date, intitule, grand_livre):
     ecriture_gdlivre, numero_compte = ecriture_ljournal_to_gdlivre(ecriture, date, intitule)
     compte = grand_livre[COMPTES].get(numero_compte)
@@ -146,37 +144,38 @@ def ecriture_journal_in_grand_livre(ecriture, date, intitule, grand_livre):
             return True
     return False
 
+
 def grand_livre_to_rst(grand_livre, output_file):
     """Convert a `grand_livre` json load to a reStructuredText file. """
 
     lines = []
     lines += titre_principal_rst(grand_livre[LABEL], grand_livre[DATE_DEBUT], grand_livre[DATE_FIN])
-    
+
     def row(debit, credit):
         return [
             (debit and debit[0] or '', DATE_LEN),
-            (debit and debit[1] or '', LIBELLE_LEN), 
-            (debit and fmt_number(Decimal(debit[2])) or '', DEBIT_LEN), 
+            (debit and debit[1] or '', LIBELLE_LEN),
+            (debit and fmt_number(Decimal(debit[2])) or '', DEBIT_LEN),
             (credit and credit[0] or '', DATE_LEN),
-            (credit and credit[1] or '', LIBELLE_LEN), 
+            (credit and credit[1] or '', LIBELLE_LEN),
             (credit and fmt_number(Decimal(credit[2])) or '', CREDIT_LEN),
         ]
 
     table = []
     for numero_compte in sorted(grand_livre[COMPTES]):
         compte = grand_livre[COMPTES][numero_compte]
-        lines.append(rst_section(u"%s - *%s*" %(numero_compte, compte[NOM]), "'"))
+        lines.append(rst_section(u"%s - *%s*" % (numero_compte, compte[NOM]), "'"))
         lines.append("\n")
         table.append([
             ("Date", DATE_LEN),
-            (u"Libellé", LIBELLE_LEN), 
-            (u"Débit", DEBIT_LEN), 
+            (u"Libellé", LIBELLE_LEN),
+            (u"Débit", DEBIT_LEN),
             ("Date", DATE_LEN),
-            (u"Libellé", LIBELLE_LEN), 
+            (u"Libellé", LIBELLE_LEN),
             (u"Crédit", CREDIT_LEN),
         ])
-        debits = [(e[DATE], e[INTITULE], e[DEBIT]) for e in compte[ECRITURES] if e.has_key(DEBIT)]
-        credits = [(e[DATE], e[INTITULE], e[CREDIT]) for e in compte[ECRITURES] if e.has_key(CREDIT)]
+        debits = [(e[DATE], e[INTITULE], e[DEBIT]) for e in compte[ECRITURES] if DEBIT in e]
+        credits = [(e[DATE], e[INTITULE], e[CREDIT]) for e in compte[ECRITURES] if CREDIT in e]
 
         map(lambda d, c: table.append(row(d, c)), debits, credits)
 
@@ -194,10 +193,10 @@ def grand_livre_to_rst(grand_livre, output_file):
 
         table.append([
             ("", DATE_LEN),
-            (libelle_debit, LIBELLE_LEN), 
-            (solde_crediteur and '**%s**' % fmt_number(solde_crediteur) or '', DEBIT_LEN), 
+            (libelle_debit, LIBELLE_LEN),
+            (solde_crediteur and '**%s**' % fmt_number(solde_crediteur) or '', DEBIT_LEN),
             ("", DATE_LEN),
-            (libelle_credit, LIBELLE_LEN), 
+            (libelle_credit, LIBELLE_LEN),
             (solde_debiteur and '**%s**' % fmt_number(solde_debiteur) or '', CREDIT_LEN),
         ])
 

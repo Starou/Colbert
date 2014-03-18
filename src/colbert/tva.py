@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import re
-import datetime
 from decimal import Decimal
 
-from colbert.utils import fmt_number
 from colbert.utils import DATE_FMT
 from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 
 from colbert.livre_journal import livre_journal_to_list, get_solde_compte
 from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
+
 
 def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
     """Calcule l'écriture nécessaire au solde des comptes de TVA sur une période. """
@@ -21,7 +19,7 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
     debit_tva_collectee, credit_tva_collectee = get_solde_compte(livre_journal,
                                                                  PCG['tva-collectee'][NUMERO],
                                                                  date_debut, date_fin)
-    
+
     debit_tva_deductible, credit_tva_deductible = get_solde_compte(livre_journal,
                                                                    PCG['tva-deductible'][NUMERO],
                                                                    date_debut, date_fin)
@@ -82,15 +80,14 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
                 NUMERO_COMPTE_DEBIT: u'',
             })
 
-
     # On a une créance sur l'état.
     elif credit_tva_deductible > debit_tva_collectee:
-        pass # TODO
+        pass  # TODO
 
     if ecritures:
         return {
             DATE: date_fin,
             ECRITURES: ecritures,
             INTITULE: u"Solde des comptes de TVA du %s au %s" % (date_debut.strftime(DATE_FMT),
-                                                                   date_fin.strftime(DATE_FMT))
+                                                                 date_fin.strftime(DATE_FMT))
         }
