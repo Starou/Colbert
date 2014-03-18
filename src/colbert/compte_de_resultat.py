@@ -7,7 +7,7 @@ from colbert.utils import fmt_number, rst_table
 from colbert.utils import DATE_FMT
 
 from colbert.common import titre_principal_rst
-from colbert.common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN, 
+from colbert.common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
                             LABEL, NUMERO, COMPTES)
 
 TOTAL_CHARGES = u'total_charges'
@@ -35,7 +35,7 @@ CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION = u"Charges exceptionnelles sur opér
 
 CHARGES_IMPOT_SOCIETES = u"impôt sur les sociétés"
 
-# 
+#
 
 PRODUITS_EXPLOITATION = u"produits d'exploitation"
 AUTRES_PRODUITS_GESTION_COURANTE = u"Autres produits de gestion courante"
@@ -58,24 +58,24 @@ LIGNES_RESULTAT = {
                 AUTRES_SERVICES_EXTERIEURS,
                 AUTRES_IMPOTS,
                 AUTRES_CHARGES_GESTION_COURANTE,
-            ]    
+            ]
         },
         FINANCIERES: {
             LABEL: CHARGES_FINANCIERES,
             COMPTES: [
-            ]    
+            ]
         },
         EXCEPTIONNELLES: {
             LABEL: CHARGES_EXCEPTIONNELLES,
             COMPTES: [
                 CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION,
-            ]    
+            ]
         },
         CHARGES_IMPOT_SOCIETES: {
             LABEL: CHARGES_IMPOT_SOCIETES,
             COMPTES: [
                 CHARGES_IMPOT_SOCIETES,
-            ]    
+            ]
         }
     },
     PRODUITS: {
@@ -84,18 +84,18 @@ LIGNES_RESULTAT = {
             COMPTES: [
                 PRESTATIONS_DE_SERVICES,
                 AUTRES_PRODUITS_GESTION_COURANTE,
-            ]    
+            ]
         },
         FINANCIERES: {
             LABEL: PRODUITS_FINANCIERS,
             COMPTES: [
                 REVENUS_VALEURS_MOBILIERES_DE_PLACEMENT,
-            ]    
+            ]
         },
         EXCEPTIONNELLES: {
             LABEL: PRODUITS_EXCEPTIONNELS,
             COMPTES: [
-            ]    
+            ]
         }
     },
 }
@@ -124,8 +124,8 @@ COMPTES_DE_PRODUITS = '7'
 COMPTES_DE_RESULTAT = (COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS)
 
 def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
-    """Elaboration du compte de résultat à partir de la balance des comptes. 
-    
+    """Elaboration du compte de résultat à partir de la balance des comptes.
+
     return = {
         'label': "",
         'date_debut': Datetime(),
@@ -142,8 +142,8 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
             'financieres': [
             ],
             'exceptionnelles': [
-            ] 
-        },    
+            ]
+        },
         produits: {
             'exploitation': [
                 ('libellé des comptes de produits', "2222.00"),
@@ -153,10 +153,10 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
             'financieres': [
             ],
             'exceptionnelles': [
-            ] 
-        }    
+            ]
+        }
     }
-    
+
     """
 
     compte_de_resultat = {
@@ -198,8 +198,8 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
             continue
         solde_debiteur = Decimal(compte[SOLDE_DEBITEUR])
         solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
-        
-        path_ligne_resultat = get_ligne_resultat(compte, MAPPING_COMPTE_TO_RESULTAT) 
+
+        path_ligne_resultat = get_ligne_resultat(compte, MAPPING_COMPTE_TO_RESULTAT)
         cote, categorie, ligne = path_ligne_resultat
 
         montant = Decimal("0.00")
@@ -218,7 +218,7 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
 
         compte_de_resultat[cote][categorie].setdefault(ligne, Decimal("0.00"))
         compte_de_resultat[cote][categorie][ligne] += montant
-        
+
     compte_de_resultat[TOTAL_CHARGES] = total_charges
     compte_de_resultat[TOTAL_PRODUITS] = total_produits
     compte_de_resultat[RESULTAT] = total_produits - total_charges
@@ -234,11 +234,11 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
 
     lines = []
     lines += titre_principal_rst(compte_de_resultat[LABEL],
-                                 compte_de_resultat[DATE_DEBUT], 
+                                 compte_de_resultat[DATE_DEBUT],
                                  compte_de_resultat[DATE_FIN])
-    
+
     table = [
-        [(u"Charges", CHARGES_LEN), 
+        [(u"Charges", CHARGES_LEN),
          (u"Montant", MONTANT_LEN),
          (u"Produits", PRODUITS_LEN),
          (u"Montant", MONTANT_LEN)],
@@ -247,32 +247,33 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
     def row(compte_de_resultat, categorie, ligne_charges, ligne_produits):
         charges = compte_de_resultat[CHARGES][categorie].get(ligne_charges)
         produits = compte_de_resultat[PRODUITS][categorie].get(ligne_produits)
-        
+
         return [
-            ((ligne_charges and charges) and ligne_charges.capitalize() or '', CHARGES_LEN), 
-            (charges and fmt_number(Decimal(charges)) or '', MONTANT_LEN), 
-            ((ligne_produits and produits) and ligne_produits.capitalize() or '', CHARGES_LEN), 
-            (produits and fmt_number(Decimal(produits)) or '', MONTANT_LEN), 
+            ((ligne_charges and charges) and ligne_charges.capitalize() or '', CHARGES_LEN),
+            (charges and fmt_number(Decimal(charges)) or '', MONTANT_LEN),
+            ((ligne_produits and produits) and ligne_produits.capitalize() or '', CHARGES_LEN),
+            (produits and fmt_number(Decimal(produits)) or '', MONTANT_LEN),
         ]
 
     for categorie in (EXPLOITATION, FINANCIERES, EXCEPTIONNELLES):
         table.append([
-            (u"*%s*" % LIGNES_RESULTAT[CHARGES][categorie][LABEL].capitalize(), CHARGES_LEN), 
+            (u"*%s*" % LIGNES_RESULTAT[CHARGES][categorie][LABEL].capitalize(), CHARGES_LEN),
             (u"", MONTANT_LEN),
             (u"*%s*" % LIGNES_RESULTAT[PRODUITS][categorie][LABEL].capitalize(), PRODUITS_LEN),
             (u"", MONTANT_LEN),
         ])
         # La structure du tableau est donnée par le mapping LIGNES_RESULTAT.
-        map(lambda charge, produit: table.append(row(compte_de_resultat, categorie, charge, produit)), 
+        map(lambda charge, produit: table.append(row(compte_de_resultat, categorie, charge, produit)),
             LIGNES_RESULTAT[CHARGES][categorie][COMPTES],
-            LIGNES_RESULTAT[PRODUITS][categorie][COMPTES]) 
+            LIGNES_RESULTAT[PRODUITS][categorie][COMPTES])
 
         table.append([(u"", CHARGES_LEN), (u"", MONTANT_LEN), (u"", PRODUITS_LEN), (u"", MONTANT_LEN)])
 
     # Ligne de l'impôt sur les sociétés.
+    montant_is = Decimal(compte_de_resultat[CHARGES][CHARGES_IMPOT_SOCIETES].get(CHARGES_IMPOT_SOCIETES, "0.00"))
     table.append([
         (u"*Impôt sur les sociétés*", CHARGES_LEN),
-        (u"%s" % fmt_number(Decimal(compte_de_resultat[CHARGES][CHARGES_IMPOT_SOCIETES][CHARGES_IMPOT_SOCIETES])), MONTANT_LEN),
+        (u"%s" % fmt_number(montant_is), MONTANT_LEN),
         (u"", PRODUITS_LEN),
         (u"", MONTANT_LEN),
     ])
