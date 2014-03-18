@@ -2,7 +2,7 @@ from distutils.core import setup
 import os
 import sys
 
-README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
+README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 setup(
     name="Colbert",
@@ -13,7 +13,7 @@ setup(
     description='Accountancy utilities for your small (french) business',
     long_description = README,
     package_dir={'': 'src'},
-    packages=['colbert', 
+    packages=['colbert',
     ],
     data_files=[],
     scripts = [
