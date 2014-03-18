@@ -10,13 +10,13 @@ from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE
 
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
-from colbert.bilan import DEBIT, CREDIT
 
 
 ECRITURES = u'ecritures'
 NOM_COMPTE = 'nom_compte'
 NUMERO_COMPTE_DEBIT = 'numero_compte_debit'
 NUMERO_COMPTE_CREDIT = 'numero_compte_credit'
+
 
 def check_livre_journal(livre_journal_file):
     """Vérifie l'équilibre de chaque écriture du Livre-Journal. """
@@ -35,10 +35,11 @@ def check_livre_journal(livre_journal_file):
             check.append(u"OK : débit = crédit (%s)." % fmt_number(total_credit))
         else:
             check.append(u"ERREUR : débit (%s) != crédit (%s)." % (fmt_number(total_debit),
-                                                                   fmt_number(total_credit)))
+                                                                     fmt_number(total_credit)))
         checks.append(check)
 
     return checks
+
 
 def ecritures_de_cloture(balance_des_comptes):
     """Détermine les écritures à passer pour clôturer un exercice. """
@@ -158,10 +159,10 @@ def ecritures_de_cloture(balance_des_comptes):
 
     # Que l'on équilibre avec les comptes 120 (bénéfice) ou 129 (perte).
     debit = soldes_comptes_regroupements[PCG['regroupement-produits'][NUMERO]][DEBIT] + \
-                 soldes_comptes_regroupements[PCG['regroupement-charges'][NUMERO]][DEBIT]
+        soldes_comptes_regroupements[PCG['regroupement-charges'][NUMERO]][DEBIT]
 
     credit = soldes_comptes_regroupements[PCG['regroupement-produits'][NUMERO]][CREDIT] + \
-                 soldes_comptes_regroupements[PCG['regroupement-charges'][NUMERO]][CREDIT]
+        soldes_comptes_regroupements[PCG['regroupement-charges'][NUMERO]][CREDIT]
 
     if debit >= credit:
         debit = debit - credit
@@ -187,13 +188,13 @@ def ecritures_de_cloture(balance_des_comptes):
     return ecritures_finales
 
 
-RX_DATE_INTITULE  = re.compile(ur"""^\|\|\s
-                               (?P<date>\d\d/\d\d/\d\d\d\d)\s+\|\|
-                               (?P<numero_compte_debit>\s+)\|\|
-                               (?P<numero_compte_credit>\s+)\|\|
-                               \s(?P<intitule>.+)\|\|
-                               (?P<debit>\s+)\|\|
-                               (?P<credit>\s+)\|\s*$""", flags=(re.X | re.U))
+RX_DATE_INTITULE = re.compile(ur"""^\|\|\s
+                              (?P<date>\d\d/\d\d/\d\d\d\d)\s+\|\|
+                              (?P<numero_compte_debit>\s+)\|\|
+                              (?P<numero_compte_credit>\s+)\|\|
+                              \s(?P<intitule>.+)\|\|
+                              (?P<debit>\s+)\|\|
+                              (?P<credit>\s+)\|\s*$""", flags=(re.X | re.U))
 
 RX_SUITE_INTITULE = re.compile(ur"""^\|\|
                                (?P<date>\s+)\|\|
@@ -203,13 +204,14 @@ RX_SUITE_INTITULE = re.compile(ur"""^\|\|
                                (?P<debit>\s+)\|\|
                                (?P<credit>\s+)\|\s*$""", flags=(re.X | re.U))
 
-RX_ECRITURE       = re.compile(ur"""^\|\|
-                               (?P<date>\s+)\|\|
-                               (?P<numero_compte_debit>[\s\w-]+)\|\|
-                               (?P<numero_compte_credit>[\s\w-]+)\|\|
-                               \s+(?P<nom_compte>.+)\|\|
-                               (?P<debit>[\d\s.]+)\|\|
-                               (?P<credit>[\d\s.]+)\|\s*$""", flags=(re.X | re.U))
+RX_ECRITURE = re.compile(ur"""^\|\|
+                         (?P<date>\s+)\|\|
+                         (?P<numero_compte_debit>[\s\w-]+)\|\|
+                         (?P<numero_compte_credit>[\s\w-]+)\|\|
+                         \s+(?P<nom_compte>.+)\|\|
+                         (?P<debit>[\d\s.]+)\|\|
+                         (?P<credit>[\d\s.]+)\|\s*$""", flags=(re.X | re.U))
+
 
 def livre_journal_to_list(livre_journal_file):
     """
@@ -241,7 +243,7 @@ def livre_journal_to_list(livre_journal_file):
         if line[0] == '+':
             # Fin d'écriture.
             if ecriture:
-                livre_journal.append(ecriture.copy()) # .copy()
+                livre_journal.append(ecriture.copy())  # .copy()
                 ecriture = {}
             # Début d'écriture.
             continue
@@ -250,7 +252,7 @@ def livre_journal_to_list(livre_journal_file):
             continue
         elif line[0:2] == '||':
             # Première ligne d'écriture, doit indiquer la date et l'intitulé.
-            if not ecriture.has_key(DATE):
+            if DATE not in ecriture:
                 m = RX_DATE_INTITULE.match(line)
                 if not m:
                     print line
@@ -261,12 +263,12 @@ def livre_journal_to_list(livre_journal_file):
                 ecriture[ECRITURES] = []
             elif RX_SUITE_INTITULE.match(line):
                 if ecriture[ECRITURES]:
-                    raise BaseException, u"Les lignes supplémentaires d'intitulé doivent apparaitre exclusivement sous la première ligne."
+                    raise BaseException(u"Les lignes supplémentaires d'intitulé doivent apparaitre exclusivement sous la première ligne.")
                 m = RX_SUITE_INTITULE.match(line).groupdict()
                 ecriture[INTITULE] += u" %s" % m[INTITULE].strip()
             else:
                 m = RX_ECRITURE.match(line).groupdict()
-                m = dict([(k, v.strip()) for k,v in m.items()])
+                m = dict([(k, v.strip()) for k, v in m.items()])
                 sous_ecriture = {
                     NUMERO_COMPTE_DEBIT: m[NUMERO_COMPTE_DEBIT],
                     NUMERO_COMPTE_CREDIT: m[NUMERO_COMPTE_CREDIT],
@@ -278,6 +280,7 @@ def livre_journal_to_list(livre_journal_file):
 
     return livre_journal
 
+
 LIVRE_JOURNAL_LEN = 148
 DATE_LEN = 13
 COMPTE_DEBIT_LEN = 17
@@ -285,6 +288,7 @@ COMPTE_CREDIT_LEN = 17
 INTITULE_LEN = 62
 DEBIT_LEN = 17
 CREDIT_LEN = 17
+
 
 def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour le Livre-journal"):
     """Converti une liste d'écritures JSON dans le format reStructuredText du Livre-journal. """
@@ -324,6 +328,7 @@ def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour 
     output_file.write(u"\n\n")
 
     return output_file
+
 
 def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
     debit, credit = Decimal("0.00"), Decimal("0.00")
