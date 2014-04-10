@@ -6,7 +6,7 @@ REGRESSION_TEST_DIR = os.path.join(os.path.dirname(__file__), REGRESSION_TEST_DI
 
 sys.path.insert(0,'../src/')
 
-    
+
 def load_suite_tests(only=None):
     only_module, only_test_case = None, None
     if only:
