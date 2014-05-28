@@ -3,6 +3,14 @@ Colbert
 =======
 
 
+.. image:: https://coveralls.io/repos/Starou/Colbert/badge.png
+  :target: https://coveralls.io/r/Starou/Colbert
+
+
+.. image:: https://pypip.in/v/Colbert/badge.png
+  :target: https://pypi.python.org/pypi/Colbert
+
+
 *Colbert* is not about `Stephen Colbert <http://www.colbertnation.com/the-colbert-report-videos/430767/november-21-2013/intro---11-21-13>`_. It is serious matter.
 
 The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_, the Minister of Finances
