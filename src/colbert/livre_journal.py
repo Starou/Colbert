@@ -213,7 +213,7 @@ RX_ECRITURE = re.compile(ur"""^\|\|
                          (?P<credit>[\d\s.]+)\|\s*$""", flags=(re.X | re.U))
 
 
-def livre_journal_to_list(livre_journal_file):
+def livre_journal_to_list(livre_journal_file, string_only=False):
     """
     return : [
       {'date': datetime.date(2011, 3, 31),
@@ -258,7 +258,10 @@ def livre_journal_to_list(livre_journal_file):
                     print line
                     raise BaseException(u"La première ligne d'une écriture doit mentionner la date et l'intitulé.")
                 m = m.groupdict()
-                ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
+                if string_only:
+                    ecriture[DATE] = m[DATE]
+                else:
+                    ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
                 ecriture[INTITULE] = m[INTITULE].strip()
                 ecriture[ECRITURES] = []
             elif RX_SUITE_INTITULE.match(line):
@@ -267,14 +270,19 @@ def livre_journal_to_list(livre_journal_file):
                 m = RX_SUITE_INTITULE.match(line).groupdict()
                 ecriture[INTITULE] += u" %s" % m[INTITULE].strip()
             else:
-                m = RX_ECRITURE.match(line).groupdict()
+                try:
+                    m = RX_ECRITURE.match(line).groupdict()
+                except BaseException, e:
+                    import sys
+                    sys.stderr.write(u"La ligne suivante n'est pas valide:\n%s" % line)
+                    raise e
                 m = dict([(k, v.strip()) for k, v in m.items()])
                 sous_ecriture = {
                     NUMERO_COMPTE_DEBIT: m[NUMERO_COMPTE_DEBIT],
                     NUMERO_COMPTE_CREDIT: m[NUMERO_COMPTE_CREDIT],
                     NOM_COMPTE: m[NOM_COMPTE],
-                    DEBIT: Decimal(m[DEBIT].replace(' ', '') or '0.00'),
-                    CREDIT: Decimal(m[CREDIT].replace(' ', '') or '0.00'),
+                    DEBIT: string_only and m[DEBIT] or (Decimal(m[DEBIT].replace(' ', '') or '0.00')),
+                    CREDIT: string_only and m[CREDIT] or (Decimal(m[CREDIT].replace(' ', '') or '0.00')),
                 }
                 ecriture[ECRITURES].append(sous_ecriture)
 
