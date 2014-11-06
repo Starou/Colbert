@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -36,7 +36,7 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-l", "--label", dest="label", default=u"Ecritures pour le Livre-Journal", 
+    parser.add_option("-l", "--label", dest="label", default=u"Ecritures pour le Livre-Journal",
                       help=u"Titre à faire apparaitre sur le tableau")
 
     (options, args) = parser.parse_args()
@@ -47,7 +47,7 @@ def main():
     else:
         import json
         from colbert.livre_journal import ecritures_to_livre_journal
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
+        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
         ecritures = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
         ecritures_to_livre_journal(ecritures, sys.stdout, options.label)
