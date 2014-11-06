@@ -304,42 +304,45 @@ CREDIT_LEN = 17
 def ecritures_to_livre_journal(ecritures, output_file=None, label=u"Ecritures pour le Livre-journal"):
     """Converti une liste d'écritures JSON dans le format reStructuredText du Livre-journal. """
 
-    lines = []
     table = [[(label, LIVRE_JOURNAL_LEN)]]
     for ecriture in ecritures:
-        multiline_row = [
-            [
-                (ecriture[DATE], DATE_LEN),
-                (u"", COMPTE_DEBIT_LEN),
-                (u"", COMPTE_CREDIT_LEN),
-                (ecriture[INTITULE], INTITULE_LEN),
-                (u"", DEBIT_LEN),
-                (u"", CREDIT_LEN),
-            ],
-        ]
-        for e in ecriture[ECRITURES]:
-            debit = Decimal(e[DEBIT])
-            credit = Decimal(e[CREDIT])
+        table.append(ecriture_to_livre_journal(ecriture))
 
-            multiline_row.append(
-                [
-                    (u"", DATE_LEN),
-                    (debit and e[NUMERO_COMPTE_DEBIT] or u"", COMPTE_DEBIT_LEN),
-                    (credit and e[NUMERO_COMPTE_CREDIT] or u"", COMPTE_CREDIT_LEN),
-                    (u"%s%s" % (credit and u"    " or u"", e[NOM_COMPTE]), INTITULE_LEN),
-                    (debit and fmt_number(debit) or u"", DEBIT_LEN),
-                    (credit and fmt_number(credit) or u"", CREDIT_LEN),
-                ]
-            )
-        table.append(multiline_row)
-
-    lines.append(rst_table(table))
+    lines = rst_table(table)
 
     if not output_file:
         return lines
-    output_file.write(u"\n".join(lines))
+    output_file.write(lines)
     output_file.write(u"\n\n")
     return output_file
+
+
+def ecriture_to_livre_journal(ecriture):
+    multiline_row = [
+        [
+            (ecriture[DATE], DATE_LEN),
+            (u"", COMPTE_DEBIT_LEN),
+            (u"", COMPTE_CREDIT_LEN),
+            (ecriture[INTITULE], INTITULE_LEN),
+            (u"", DEBIT_LEN),
+            (u"", CREDIT_LEN),
+        ],
+    ]
+    for e in ecriture[ECRITURES]:
+        debit = Decimal(e[DEBIT])
+        credit = Decimal(e[CREDIT])
+
+        multiline_row.append(
+            [
+                (u"", DATE_LEN),
+                (debit and e[NUMERO_COMPTE_DEBIT] or u"", COMPTE_DEBIT_LEN),
+                (credit and e[NUMERO_COMPTE_CREDIT] or u"", COMPTE_CREDIT_LEN),
+                (u"%s%s" % (credit and u"    " or u"", e[NOM_COMPTE]), INTITULE_LEN),
+                (debit and fmt_number(debit) or u"", DEBIT_LEN),
+                (credit and fmt_number(credit) or u"", CREDIT_LEN),
+            ]
+        )
+    return multiline_row
 
 
 def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
