@@ -298,7 +298,7 @@ DEBIT_LEN = 17
 CREDIT_LEN = 17
 
 
-def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour le Livre-journal"):
+def ecritures_to_livre_journal(ecritures, output_file=None, label=u"Ecritures pour le Livre-journal"):
     """Converti une liste d'écritures JSON dans le format reStructuredText du Livre-journal. """
 
     lines = []
@@ -332,9 +332,10 @@ def ecritures_to_livre_journal(ecritures, output_file, label=u"Ecriture(s) pour 
 
     lines.append(rst_table(table))
 
+    if not output_file:
+        return lines
     output_file.write(u"\n".join(lines))
     output_file.write(u"\n\n")
-
     return output_file
 
 
