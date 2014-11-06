@@ -72,12 +72,12 @@ class LivreJournalTestCase(unittest.TestCase):
              [u'03/01/2012 - Facture 2012-01 MyClient1 Prestation d\xe9cembre 2011',
               u'OK : d\xe9bit = cr\xe9dit (13156.00).'],
              [u"01/02/2012 - Restaurant La Tour d'argent D\xe9jeuner d'affaire avec Steve Jobs 0.88\u20ac TVA 19.6% ; 2.90\u20ac TVA 7.0%",
-              u'OK : d\xe9bit = cr\xe9dit (49.80).']] 
+              u'OK : d\xe9bit = cr\xe9dit (49.80).']]
         )
 
     def test_ecritures_de_cloture(self):
         from colbert.livre_journal import ecritures_de_cloture
-        balance_des_comptes = codecs.open(os.path.join(CURRENT_DIR, "balance_des_comptes-2011.json"), 
+        balance_des_comptes = codecs.open(os.path.join(CURRENT_DIR, "balance_des_comptes-2011.json"),
                                           mode="r", encoding="utf-8")
 
         edc = ecritures_de_cloture(json.loads(balance_des_comptes.read()))
@@ -85,7 +85,7 @@ class LivreJournalTestCase(unittest.TestCase):
         # print json.dumps(edc, default=json_encoder, indent=4)
         self.maxDiff = None
         self.assertEqual(
-            edc, 
+            edc,
             [{'date': datetime.date(2011, 12, 31),
               'ecritures': [{'credit': Decimal('0.00'),
                              'debit': Decimal('40000.00'),
@@ -171,13 +171,14 @@ class LivreJournalTestCase(unittest.TestCase):
 
     def test_ecritures_to_livre_journal(self):
         from colbert.livre_journal import ecritures_to_livre_journal
-        ecritures = codecs.open(os.path.join(CURRENT_DIR, "ecritures_de_cloture-2011.json"), 
+        ecritures = codecs.open(os.path.join(CURRENT_DIR, "ecritures_de_cloture-2011.json"),
                                 mode="r", encoding="utf-8")
         output = StringIO.StringIO()
         ecritures_to_livre_journal(json.loads(ecritures.read()), output)
+        self.maxDiff = None
         self.assertEqual(output.getvalue(),
 u"""+----------------------------------------------------------------------------------------------------------------------------------------------------+
-| Ecriture(s) pour le Livre-journal                                                                                                                  |
+| Ecritures pour le Livre-journal                                                                                                                    |
 +=============+=================+=================+==============================================================+=================+=================+
 || 31/12/2011 ||                ||                || Ecritures de clôture des comptes.                           ||                ||                |
 ||            || 706            ||                || Produits - prestations de services                          || 40000.00       ||                |
@@ -210,7 +211,7 @@ u"""+---------------------------------------------------------------------------
         livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"),
                                     mode="r", encoding="utf-8")
         livre_journal_list = livre_journal_to_list(livre_journal)
-        
+
         date_debut = datetime.date(2011, 1, 1)
         date_fin = datetime.date(2011, 12, 31)
 
@@ -229,11 +230,11 @@ u"""+---------------------------------------------------------------------------
         if VERSION_INFO >= (2, 7):
             self.assertRegexpMatches(s, RX_DATE_INTITULE)
         m = RX_DATE_INTITULE.match(s)
-        self.assertEqual(m.groupdict(), {'intitule': u'Facture 2011-01 AdenClassifieds      ', 
-                                             'credit': u'           ', 
-                                             'debit': u'          ', 
+        self.assertEqual(m.groupdict(), {'intitule': u'Facture 2011-01 AdenClassifieds      ',
+                                             'credit': u'           ',
+                                             'debit': u'          ',
                                              'date': u'31/03/2011',
-                                             'numero_compte_credit': u'                ', 
+                                             'numero_compte_credit': u'                ',
                                              'numero_compte_debit': u'                '})
 
         # Ligne supplementaire d'intitulé.
@@ -250,16 +251,16 @@ u"""+---------------------------------------------------------------------------
         self.assertEqual(m.groupdict(), {'nom_compte': u'Clients - ventes de biens ou prestations de services  ',
                                              'credit': u'         ',
                                              'debit': u'    8 372   ',
-                                             'date': u'   ', 
+                                             'date': u'   ',
                                              'numero_compte_credit': u'        ',
                                              'numero_compte_debit': u'    4111-clie   '})
-        
+
         # Conversion du livre journal.
         livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"),
                                     mode="r", encoding="utf-8")
         livre_journal_list = livre_journal_to_list(livre_journal)
         self.assertEqual(
-            livre_journal_list, 
+            livre_journal_list,
             [{'date': datetime.date(2011, 3, 18),
               'ecritures': [{'credit': Decimal('0.00'),
                              'debit': Decimal('80.00'),
