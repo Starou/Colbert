@@ -6,7 +6,8 @@ from decimal import Decimal
 
 from colbert.utils import fmt_number, rst_table, DATE_FMT
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_FIN,
-                            INTITULE, NOM, NUMERO, COMPTES)
+                            INTITULE, NOM, NUMERO, COMPTES, NUMERO_LIGNE_ECRITURE_DEBUT,
+                            NUMERO_LIGNE_ECRITURE_FIN)
 
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
@@ -239,11 +240,12 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
 
     livre_journal = []
     ecriture = {}
-    for line in livre_journal_file:
+    for line_index, line in enumerate(livre_journal_file):
         if line[0] == '+':
             # Fin d'écriture.
             if ecriture:
-                livre_journal.append(ecriture.copy())  # .copy()
+                ecriture[NUMERO_LIGNE_ECRITURE_FIN] = line_index
+                livre_journal.append(ecriture.copy())
                 ecriture = {}
             # Début d'écriture.
             continue
@@ -251,6 +253,7 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
         elif line[0:2] == '| ':
             continue
         elif line[0:2] == '||':
+            ecriture[NUMERO_LIGNE_ECRITURE_DEBUT] = line_index
             # Première ligne d'écriture, doit indiquer la date et l'intitulé.
             if DATE not in ecriture:
                 m = RX_DATE_INTITULE.match(line)

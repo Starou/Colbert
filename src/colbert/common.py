@@ -18,6 +18,8 @@ INTITULE = 'intitule'
 NOM = u'nom'
 NUMERO = u'numero'
 NUMERO_COMPTE = u'numero_compte'
+NUMERO_LIGNE_ECRITURE_DEBUT = u'numero_ligne_debut'
+NUMERO_LIGNE_ECRITURE_FIN = u'numero_ligne_fin'
 
 CATEGORIE = u'categorie'
 RUBRIQUES = u'rubriques'
