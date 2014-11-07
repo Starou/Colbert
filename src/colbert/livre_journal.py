@@ -255,7 +255,7 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
         elif line[0:2] == '| ':
             continue
         elif line[0:2] == '||':
-            ecriture[NUMERO_LIGNE_ECRITURE_DEBUT] = line_index
+            ecriture.setdefault(NUMERO_LIGNE_ECRITURE_DEBUT, line_index)
             # Première ligne d'écriture, doit indiquer la date et l'intitulé.
             if DATE not in ecriture:
                 m = RX_DATE_INTITULE.match(line)
