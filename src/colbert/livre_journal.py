@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import bisect
 import datetime
+import io
 import itertools
+import os
 import re
 from decimal import Decimal
-from colbert.utils import fmt_number, rst_table, DATE_FMT
-from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_FIN,
-                            INTITULE, NOM, NUMERO, COMPTES, NUMERO_LIGNE_ECRITURE_DEBUT,
-                            NUMERO_LIGNE_ECRITURE_FIN)
+from colbert.utils import fmt_number, rst_table, rst_table_row, DATE_FMT
+from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
+                            DATE, DATE_FIN, INTITULE, NOM, NUMERO, COMPTES,
+                            NUMERO_LIGNE_ECRITURE_DEBUT, NUMERO_LIGNE_ECRITURE_FIN)
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
 
@@ -368,6 +371,32 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
     return debit, credit
 
 
-def rechercher_ecriture(expression, livre_journal):
+def rechercher_ecriture(expression, livre_journal_as_list):
     return itertools.ifilter(lambda l: expression in l["intitule"].lower(),
-                             livre_journal)
+                             livre_journal_as_list)
+
+
+def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
+                     output=None, dry_run=False, verbose=False):
+    # Recherche du point d'insertion dans le livre-journal (trié par date).
+    keys = [list(reversed(r[DATE].split("/"))) for r in livre_journal_as_list]
+    index = bisect.bisect_right(keys, ecriture[DATE])  #TODO reversed()
+    numero_ligne = livre_journal_as_list[index - 1][NUMERO_LIGNE_ECRITURE_FIN]
+
+    lines, lines_to_add = None, None
+    with io.open(livre_journal_path, mode="r", encoding="utf-8") as f:
+        lines = f.readlines()
+        lines_to_add = rst_table_row(ecriture_to_livre_journal(ecriture),
+                                     stroke_char="-", add_closing_stroke=False)
+        lines_to_add = [u"%s%s" % (l, os.linesep) for l in lines_to_add]
+        lines[numero_ligne:numero_ligne] = lines_to_add
+
+    output = os.path.expanduser(output or livre_journal_path)
+    if not dry_run:
+        with io.open(output, mode="w+", encoding="utf-8") as f:
+            f.writelines(lines)
+    if verbose:
+        print u"L'écriture suivante %s été ajoutée au Livre Journal '%s' à la ligne %d:" % (
+            (dry_run and "aurait" or "a"), output, numero_ligne
+        )
+        print u"".join(lines_to_add)

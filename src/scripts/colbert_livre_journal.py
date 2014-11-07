@@ -30,7 +30,6 @@ u"""
 Commande d'ajout d'entrées dans le livre journal par duplication d'écritures.
 """
 
-import bisect
 import codecs
 import datetime
 import io
@@ -38,10 +37,9 @@ import locale
 import os
 import sys
 
-from colbert.common import DATE, NUMERO_LIGNE_ECRITURE_FIN
-from colbert.livre_journal import (livre_journal_to_list, ecriture_to_livre_journal,
-                                   ecritures_to_livre_journal, rechercher_ecriture)
-from colbert.utils import rst_table_row
+from colbert.common import DATE
+from colbert.livre_journal import (livre_journal_to_list, ecritures_to_livre_journal,
+                                   rechercher_ecriture, ajouter_ecriture)
 from colbert.utils import DATE_FMT
 from optparse import OptionParser
 
@@ -98,57 +96,37 @@ def main():
             parser.error("Vous devez passer une expression de recherche (option -f).")
 
     sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
-    livre_journal_file = codecs.open(options.livre_journal_path,
-                                     mode="r", encoding="utf-8")
-    livre_journal = livre_journal_to_list(livre_journal_file, string_only=True)
 
     if action == 'search':
-        rechercher(expression, livre_journal)
+        rechercher(expression, options.livre_journal_path)
     elif action == 'add':
-        ajouter(options, livre_journal)
+        ajouter(options)
 
 
-def rechercher(expression, livre_journal):
-    filtered = rechercher_ecriture(expression, livre_journal)
-    lines = ecritures_to_livre_journal(list(filtered))
-    print lines
+def rechercher(expression, livre_journal_path):
+    with io.open(livre_journal_path, mode="r", encoding="utf-8") as lj_file:
+        lj_as_list = livre_journal_to_list(lj_file, string_only=True)
+        filtered = rechercher_ecriture(expression, lj_as_list)
+        lines = ecritures_to_livre_journal(list(filtered))
+        print lines
 
 
-def ajouter(options, livre_journal):
-    try:
-        template_line = list(rechercher_ecriture(options.from_last_entry_like, livre_journal))[-1]
-    except IndexError:
-        print (u"Aucune écriture trouvée avec l'intitulé "
-               u"ressemblant à '%s'." % options.from_last_entry_like)
-        return
+def ajouter(options):
+    with io.open(options.livre_journal_path, mode="r", encoding="utf-8") as lj_file:
+        lj_as_list = livre_journal_to_list(lj_file, string_only=True)
+        try:
+            template_line = list(rechercher_ecriture(options.from_last_entry_like,
+                                                     lj_as_list))[-1]
+        except IndexError:
+            print (u"Aucune écriture trouvée avec l'intitulé "
+                   u"ressemblant à '%s'." % options.from_last_entry_like)
+            return
 
     # Construction de l'écriture
     template_line[DATE] = options.date
 
-    # Recherche du point d'insertion dans le livre-journal (trié par date).
-    keys = [list(reversed(r[DATE].split("/"))) for r in livre_journal]
-    index = bisect.bisect_right(keys, options.date)
-    numero_ligne = livre_journal[index - 1][NUMERO_LIGNE_ECRITURE_FIN]
-
-    # Insertion dans le livre-journal.
-    lines, lines_to_add = None, None
-    with io.open(options.livre_journal_path, mode="r", encoding="utf-8") as f:
-        lines = f.readlines()
-        lines_to_add = rst_table_row(ecriture_to_livre_journal(template_line),
-                                     stroke_char="-", add_closing_stroke=False)
-        lines_to_add = [u"%s%s" % (l, os.linesep) for l in lines_to_add]
-        lines[numero_ligne:numero_ligne] = lines_to_add
-
-    output = os.path.expanduser(options.output or options.livre_journal_path)
-    if not options.dry_run:
-        with io.open(output, mode="w+", encoding="utf-8") as f:
-            f.writelines(lines)
-
-    # Mise à jour du livre journal.
-    print u"L'écriture suivante %s été ajoutée au Livre Journal '%s' à la ligne %d:" % (
-        (options.dry_run and "aurait" or "a"), output, numero_ligne
-    )
-    print u"".join(lines_to_add)
+    ajouter_ecriture(template_line, options.livre_journal_path, lj_as_list,
+                     options.output, options.dry_run, verbose=True)
 
 
 if __name__ == "__main__":
