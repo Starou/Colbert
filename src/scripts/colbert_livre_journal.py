@@ -27,22 +27,21 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 u"""
-Commande d'ajout d'entrées dans le livre journal par duplication.
+Commande d'ajout d'entrées dans le livre journal par duplication d'écritures.
 """
 
 import bisect
 import codecs
 import datetime
 import io
-import itertools
-import json
 import locale
 import os
 import sys
 
 from colbert.common import DATE, NUMERO_LIGNE_ECRITURE_FIN
-from colbert.livre_journal import livre_journal_to_list, ecriture_to_livre_journal
-from colbert.utils import json_encoder, rst_table_row
+from colbert.livre_journal import (livre_journal_to_list, ecriture_to_livre_journal,
+                                   ecritures_to_livre_journal, rechercher_ecriture)
+from colbert.utils import rst_table_row
 from colbert.utils import DATE_FMT
 from optparse import OptionParser
 
@@ -78,7 +77,6 @@ def main():
                       help=(u"Chemin vers le fichier Livre Journal. "
                             u"Par défaut : $%s" % LJ_PATH_ENV))
 
-
     (options, args) = parser.parse_args()
 
     if not len(args) or args[0] not in ['search', 'add']:
@@ -99,7 +97,6 @@ def main():
         if not options.from_last_entry_like:
             parser.error("Vous devez passer une expression de recherche (option -f).")
 
-
     sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
     livre_journal_file = codecs.open(options.livre_journal_path,
                                      mode="r", encoding="utf-8")
@@ -112,19 +109,14 @@ def main():
 
 
 def rechercher(expression, livre_journal):
-    filtered = _rechercher(expression, livre_journal)
+    filtered = rechercher_ecriture(expression, livre_journal)
     lines = ecritures_to_livre_journal(list(filtered))
     print u"\n".join(lines)
 
 
-def _rechercher(expression, livre_journal):
-    return itertools.ifilter(lambda l: expression in l["intitule"].lower(),
-                             livre_journal)
-
-
 def ajouter(options, livre_journal):
     try:
-        template_line = list(_rechercher(options.from_last_entry_like, livre_journal))[-1]
+        template_line = list(rechercher_ecriture(options.from_last_entry_like, livre_journal))[-1]
     except IndexError:
         print (u"Aucune écriture trouvée avec l'intitulé "
                u"ressemblant à '%s'." % options.from_last_entry_like)

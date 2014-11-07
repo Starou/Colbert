@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import re
 import datetime
+import itertools
+import re
 from decimal import Decimal
-
 from colbert.utils import fmt_number, rst_table, DATE_FMT
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE, DATE_FIN,
                             INTITULE, NOM, NUMERO, COMPTES, NUMERO_LIGNE_ECRITURE_DEBUT,
                             NUMERO_LIGNE_ECRITURE_FIN)
-
 from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
 
@@ -367,3 +366,8 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
         debit, credit = Decimal("0.00"), Decimal("0.00")
 
     return debit, credit
+
+
+def rechercher_ecriture(expression, livre_journal):
+    return itertools.ifilter(lambda l: expression in l["intitule"].lower(),
+                             livre_journal)
