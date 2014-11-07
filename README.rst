@@ -188,6 +188,37 @@ In fact for a reason I don't get, if those values are not left-aligned, the LaTe
 
 The optional *thousand separator* cannot be anything else than a space character at the moment. This is on the TODO list.
 
+Adding entries
+''''''''''''''
+
+Editing the file can became cumbersome. To speed up this task you can use the ``colbert_livre_journal.py`` script
+to duplicate an entry:
+
+.. code-block:: bash
+
+    $ python colbert_livre_journal.py search cojean -l path/to/livre-journal.txt
+
+    .
+    .
+    +-------------+----------+-------+------------------------------------------------+--------+--------+
+    || 30/10/2014 ||         ||      || Repas midi - CoJean                           ||       ||       |
+    ||            || 625101  ||      || Déplacements, missions et réceptions - Repas  || 11.50 ||       |
+    ||            ||         || 512  ||     Banques                                   ||       || 11.50 |
+    +-------------+----------+-------+------------------------------------------------+--------+--------+
+    || 31/10/2014 ||         ||      || Repas midi - CoJean                           ||       ||       |
+    ||            || 625101  ||      || Déplacements, missions et réceptions - Repas  || 11.50 ||       |
+    ||            ||         || 512  ||     Banques                                   ||       || 11.50 |
+    +-------------+----------+-------+------------------------------------------------+--------+--------+
+
+    $ python colbert_livre_journal.py add -l path/to/livre-journal.txt -f cojean -d 14/09/2014 -a 13.50
+
+    L'écriture suivante a été ajoutée au Livre Journal '/Users/stan/Desktop/toto.txt' à la ligne 4359:
+    +-------------+----------+-------+------------------------------------------------+--------+--------+
+    || 14/09/2014 ||         ||      || Repas midi - CoJean                           ||       ||       |
+    ||            || 625101  ||      || Déplacements, missions et réceptions - Repas  || 13.50 ||       |
+    ||            ||         || 512  ||     Banques                                   ||       || 13.50 |
+
+
 Checking the Livre-journal
 ''''''''''''''''''''''''''
 

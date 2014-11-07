@@ -37,9 +37,10 @@ import locale
 import os
 import sys
 
-from colbert.common import DATE
+from colbert.common import DATE, DEBIT, CREDIT
 from colbert.livre_journal import (livre_journal_to_list, ecritures_to_livre_journal,
                                    rechercher_ecriture, ajouter_ecriture)
+from colbert.livre_journal import ECRITURES
 from colbert.utils import DATE_FMT
 from optparse import OptionParser
 
@@ -124,6 +125,14 @@ def ajouter(options):
 
     # Construction de l'écriture
     template_line[DATE] = options.date
+
+    if options.amounts:
+        # Version basique, un seul compte de chaque côté.
+        for e in template_line[ECRITURES]:
+            for op in (DEBIT, CREDIT):
+                if e[op] != '0.00':
+                    e[op] = options.amounts
+    print template_line
 
     ajouter_ecriture(template_line, options.livre_journal_path, lj_as_list,
                      options.output, options.dry_run, verbose=True)
