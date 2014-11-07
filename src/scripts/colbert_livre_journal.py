@@ -132,7 +132,6 @@ def ajouter(options):
             for op in (DEBIT, CREDIT):
                 if e[op] != '0.00':
                     e[op] = options.amounts
-    print template_line
 
     ajouter_ecriture(template_line, options.livre_journal_path, lj_as_list,
                      options.output, options.dry_run, verbose=True)
