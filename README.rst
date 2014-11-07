@@ -17,6 +17,14 @@ The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Je
 of France in the 17th century also known for being the father of the modern accountancy.
 
 
+Installation
+============
+
+.. code-block:: bash
+
+    pip install Colbert
+
+
 Functionalities
 ===============
 
@@ -1121,15 +1129,6 @@ And to force the *pagestyle* for the first one I sometimes add::
     \\thispagestyle{fancy}/
 
 
-Installation
-============
-
-
-.. code-block:: bash
-
-    pip install Colbert
-
-
 Tests
 =====
 
@@ -1139,10 +1138,10 @@ There are some regression tests in the *test* directory.
 Requirements
 ============
 
-- Python 2.6+ ;
-- pytz ;
-- Python Icalendar (https://github.com/collective/icalendar) ;
-- Docutils (SVN) ;
-- a *LaTex* suite if you want to render the reStructuredText in PDF ;
-- Make ;
-- Sed.
+- Python 2.7+
+- pytz
+- Python Icalendar (https://github.com/collective/icalendar)
+- Docutils (SVN)
+- a *LaTex* suite if you want to render the reStructuredText in PDF
+- Make
+- Sed
