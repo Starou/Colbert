@@ -4,3 +4,6 @@ dist
 .DS_Store
 MANIFEST
 *.swp
+tests/.coverage
+tests/coveralls.yaml
+.ropeproject
