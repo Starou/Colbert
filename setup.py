@@ -1,6 +1,5 @@
 from distutils.core import setup
 import os
-import sys
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -11,12 +10,12 @@ setup(
     author='Stanislas Guerra',
     author_email='stanislas.guerra@gmail.com',
     description='Accountancy utilities for your small (french) business',
-    long_description = README,
+    long_description=README,
     package_dir={'': 'src'},
-    packages=['colbert',
-    ],
+    packages=['colbert'],
     data_files=[],
-    scripts = [
+    scripts=[
+        'src/scripts/colbert_livre_journal.py',
         'src/scripts/colbert_check_livre_journal.py',
         'src/scripts/colbert_solde_de_compte.py',
         'src/scripts/colbert_grand_livre.py',
