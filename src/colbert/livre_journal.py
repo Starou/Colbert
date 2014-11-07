@@ -379,10 +379,11 @@ def rechercher_ecriture(expression, livre_journal_as_list):
 def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
                      output=None, dry_run=False, verbose=False):
     # Recherche du point d'insertion dans le livre-journal (trié par date).
-    keys = [list(reversed(r[DATE].split("/"))) for r in livre_journal_as_list]
-    index = bisect.bisect_right(keys, ecriture[DATE])  #TODO reversed()
+    keys = [sortable_date(r[DATE]) for r in livre_journal_as_list]
+    index = bisect.bisect_right(keys, sortable_date(ecriture[DATE]))
     numero_ligne = livre_journal_as_list[index - 1][NUMERO_LIGNE_ECRITURE_FIN]
 
+    # Ajout.
     lines, lines_to_add = None, None
     with io.open(livre_journal_path, mode="r", encoding="utf-8") as f:
         lines = f.readlines()
@@ -400,3 +401,8 @@ def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
             (dry_run and "aurait" or "a"), output, numero_ligne
         )
         print u"".join(lines_to_add)
+
+
+def sortable_date(date_fr):
+    """ '23/12/1977' -> ('1977', '12', '23') """
+    return tuple(reversed(date_fr.split("/")))
