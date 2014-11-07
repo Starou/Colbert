@@ -260,7 +260,6 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
             if DATE not in ecriture:
                 m = RX_DATE_INTITULE.match(line)
                 if not m:
-                    print line
                     raise BaseException(u"La première ligne d'une écriture doit mentionner la date et l'intitulé.")
                 m = m.groupdict()
                 if string_only:
