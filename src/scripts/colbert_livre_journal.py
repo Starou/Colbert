@@ -111,7 +111,7 @@ def main():
 def rechercher(expression, livre_journal):
     filtered = rechercher_ecriture(expression, livre_journal)
     lines = ecritures_to_livre_journal(list(filtered))
-    print u"\n".join(lines)
+    print lines
 
 
 def ajouter(options, livre_journal):
