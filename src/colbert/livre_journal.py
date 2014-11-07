@@ -286,8 +286,8 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
                     NUMERO_COMPTE_DEBIT: m[NUMERO_COMPTE_DEBIT],
                     NUMERO_COMPTE_CREDIT: m[NUMERO_COMPTE_CREDIT],
                     NOM_COMPTE: m[NOM_COMPTE],
-                    DEBIT: string_only and m[DEBIT] or (Decimal(m[DEBIT].replace(' ', '') or '0.00')),
-                    CREDIT: string_only and m[CREDIT] or (Decimal(m[CREDIT].replace(' ', '') or '0.00')),
+                    DEBIT: (m[DEBIT] or '0.00') if string_only else (Decimal(m[DEBIT].replace(' ', '') or '0.00')),
+                    CREDIT: (m[CREDIT] or '0.00') if string_only else (Decimal(m[CREDIT].replace(' ', '') or '0.00')),
                 }
                 ecriture[ECRITURES].append(sous_ecriture)
 
