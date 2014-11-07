@@ -5,7 +5,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 setup(
     name="Colbert",
-    version="0.12",
+    version="0.13",
     license='BSD Licence',
     author='Stanislas Guerra',
     author_email='stanislas.guerra@gmail.com',
