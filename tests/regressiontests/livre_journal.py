@@ -759,6 +759,42 @@ u"""+---------------------------------------------------------------------------
               u'numero_ligne_fin': 190}]
         )
 
+    def test_update_ecriture(self):
+        from colbert.livre_journal import update_ecriture
+        ecriture = {
+            'date': "12/11/2014",
+            'intitule': u"Restaurant La Tour d'argent Déjeuner d'affaire avec Vladimir P.",
+            'ecritures': [
+                {'credit': '0.00',
+                 'debit': '49.80',
+                 'nom_compte': 'Charges - Réceptions',
+                 'numero_compte_credit': u'',
+                 'numero_compte_debit': u'6257'},
+                {'credit': '49.80',
+                 'debit': '0.00',
+                 'nom_compte': u'Banques',
+                 'numero_compte_credit': u'512',
+                 'numero_compte_debit': u''}
+            ]
+        }
+        update_ecriture(ecriture, date="23/12/2014", montants="33.40")
+        self.assertEqual(ecriture, {
+            'date': "23/12/2014",
+            'intitule': u"Restaurant La Tour d'argent Déjeuner d'affaire avec Vladimir P.",
+            'ecritures': [
+                {'credit': '0.00',
+                 'debit': '33.40',
+                 'nom_compte': 'Charges - Réceptions',
+                 'numero_compte_credit': u'',
+                 'numero_compte_debit': u'6257'},
+                {'credit': '33.40',
+                 'debit': '0.00',
+                 'nom_compte': u'Banques',
+                 'numero_compte_credit': u'512',
+                 'numero_compte_debit': u''}
+            ]
+        })
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(LivreJournalTestCase)
