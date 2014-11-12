@@ -402,6 +402,16 @@ def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
         print u"".join(lines_to_add)
 
 
+def update_ecriture(ecriture, date, montants=None):
+    ecriture[DATE] = date
+
+    if montants:
+        for e in ecriture[ECRITURES]:
+            for op in (DEBIT, CREDIT):
+                if e[op] != '0.00':
+                    e[op] = montants
+
+
 def sortable_date(date_fr):
     """ '23/12/1977' -> ('1977', '12', '23') """
     return tuple(reversed(date_fr.split("/")))
