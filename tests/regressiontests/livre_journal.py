@@ -795,6 +795,51 @@ u"""+---------------------------------------------------------------------------
             ]
         })
 
+        # Avec plusieurs montants.
+        ecriture = {
+            'date': "12/11/2014",
+            'intitule': u"Restaurant La Tour d'argent Déjeuner d'affaire avec Vladimir P.",
+            'ecritures': [
+                {'credit': '0.00',
+                 'debit': '46.02',
+                 'nom_compte': 'Charges - Réceptions',
+                 'numero_compte_credit': u'',
+                 'numero_compte_debit': u'6257'},
+                {'credit': '0.00',
+                 'debit': '3.78',
+                 'nom_compte': u'T.V.A. déductible sur autres biens et services',
+                 'numero_compte_credit': u'',
+                 'numero_compte_debit': u'44566'},
+                {'credit': '49.80',
+                 'debit': '0.00',
+                 'nom_compte': u'Banques',
+                 'numero_compte_credit': u'512',
+                 'numero_compte_debit': u''}
+            ]
+        }
+        update_ecriture(ecriture, date="23/12/2014", montants=["30.10", "3.30", "33.40"])
+        self.assertEqual(ecriture, {
+            'date': "23/12/2014",
+            'intitule': u"Restaurant La Tour d'argent Déjeuner d'affaire avec Vladimir P.",
+            'ecritures': [
+                {'credit': '0.00',
+                 'debit': '30.10',
+                 'nom_compte': 'Charges - Réceptions',
+                 'numero_compte_credit': u'',
+                 'numero_compte_debit': u'6257'},
+                {'credit': '0.00',
+                 'debit': '3.30',
+                 'nom_compte': u'T.V.A. déductible sur autres biens et services',
+                 'numero_compte_credit': u'',
+                 'numero_compte_debit': u'44566'},
+                {'credit': '33.40',
+                 'debit': '0.00',
+                 'nom_compte': u'Banques',
+                 'numero_compte_credit': u'512',
+                 'numero_compte_debit': u''}
+            ]
+        })
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(LivreJournalTestCase)

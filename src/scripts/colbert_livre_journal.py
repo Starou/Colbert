@@ -122,7 +122,9 @@ def ajouter(options):
                    u"ressemblant à '%s'." % options.from_last_entry_like)
             return
 
-    update_ecriture(template_line, options.date, options.amounts.split(","))
+    amounts = options.amounts and options.amounts.split(",") or None
+
+    update_ecriture(template_line, options.date, amounts)
     ajouter_ecriture(template_line, options.livre_journal_path, lj_as_list,
                      options.output, options.dry_run, verbose=True)
 
