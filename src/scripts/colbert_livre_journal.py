@@ -51,6 +51,8 @@ def main():
         "examples:\n"
         "\t%prog search `lowercase expression'\n"
         "\t%prog add --date=21/12/2014 from-last-entry-like=cojean\n"
+        "\t%prog add --date=21/12/2014 from-last-entry-like=cojean -a 12.40\n"
+        "\t%prog add --date=21/12/2014 from-last-entry-like=cojean -a '12.40,10.00,2.40'\n"
     )
     version = "%prog 0.9"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
@@ -66,9 +68,8 @@ def main():
     parser.add_option("-d", "--date", default=datetime.date.today().strftime(DATE_FMT),
                       help=u"Date de l'entrée à ajouter (par défaut: %default)")
     parser.add_option("-a", "--amounts",
-                      help=(u"Montant(s) des débits et crédits pour chaque compte. "
-                            u"Liste des montants entrées et des sorties ou montant "
-                            u"de l'entrée/sortie (si un seul compte de chaque côté). "
+                      help=(u"Liste des montants des entrées/sorties (séparés par une virgule) "
+                            u"ou montant de l'entrée/sortie (si un seul compte de chaque côté). "
                             u"Si non précisés, reprend les montants de l'écriture cible."))
     parser.add_option("-f", "--from-last-entry-like",
                       help=(u"Chemin vers le fichier Livre Journal. "
@@ -121,7 +122,7 @@ def ajouter(options):
                    u"ressemblant à '%s'." % options.from_last_entry_like)
             return
 
-    update_ecriture(template_line, options.date, options.amounts)
+    update_ecriture(template_line, options.date, options.amounts.split(","))
     ajouter_ecriture(template_line, options.livre_journal_path, lj_as_list,
                      options.output, options.dry_run, verbose=True)
 

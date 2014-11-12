@@ -777,7 +777,7 @@ u"""+---------------------------------------------------------------------------
                  'numero_compte_debit': u''}
             ]
         }
-        update_ecriture(ecriture, date="23/12/2014", montants="33.40")
+        update_ecriture(ecriture, date="23/12/2014", montants=["33.40"])
         self.assertEqual(ecriture, {
             'date': "23/12/2014",
             'intitule': u"Restaurant La Tour d'argent Déjeuner d'affaire avec Vladimir P.",

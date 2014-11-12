@@ -403,13 +403,23 @@ def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
 
 
 def update_ecriture(ecriture, date, montants=None):
+    """
+    o date = 'jj/mm/aaaa'
+    o montant = ['debit1', 'debit2', ..., 'credit1', 'credit2', ...]
+      Si toutes les lignes ont un montant identique, passer une liste
+      avec cette seule valeur.
+    """
     ecriture[DATE] = date
 
     if montants:
-        for e in ecriture[ECRITURES]:
+        default = montants[0]
+
+        def update_montants(ecriture, montant):
             for op in (DEBIT, CREDIT):
-                if e[op] != '0.00':
-                    e[op] = montants
+                if ecriture[op] != '0.00':
+                    ecriture[op] = montant if montant is not None else default
+
+        map(update_montants, ecriture[ECRITURES], montants)
 
 
 def sortable_date(date_fr):
