@@ -75,6 +75,12 @@ def main():
                       help=(u"Chemin vers le fichier Livre Journal. "
                             u"Par défaut : $%s" % LJ_PATH_ENV))
 
+    # Set encoding first.
+    encoding = locale.getpreferredencoding()
+    sys.stdout = codecs.getwriter(encoding)(sys.stdout)
+    for i, a in enumerate(sys.argv):
+        sys.argv[i] = unicode(a.decode(encoding))
+
     (options, args) = parser.parse_args()
 
     if not len(args) or args[0] not in ['search', 'add']:
@@ -94,8 +100,6 @@ def main():
     elif action == 'add':
         if not options.from_last_entry_like:
             parser.error("Vous devez passer une expression de recherche (option -f).")
-
-    sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
     if action == 'search':
         rechercher(expression, options.livre_journal_path)
