@@ -75,6 +75,9 @@ def main():
                       help=(u"Chemin vers le fichier Livre Journal. "
                             u"Par défaut : $%s" % LJ_PATH_ENV))
 
+    # Catch --help which does not play well with encoding.
+    parser.parse_args()
+
     # Set encoding first.
     encoding = locale.getpreferredencoding()
     sys.stdout = codecs.getwriter(encoding)(sys.stdout)
