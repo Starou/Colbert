@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
+import os
 import unittest
 import codecs
 import StringIO
 
 CURRENT_DIR = os.path.dirname(__file__)
 
+
 class SoldeDeCompteTestCase(unittest.TestCase):
     def test_solde_de_compte(self):
         from colbert.solde_de_compte import solde_de_compte
-        livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"), 
+        livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"),
                                     mode="r", encoding="utf-8")
         comptes = [
             {
@@ -37,15 +38,16 @@ class SoldeDeCompteTestCase(unittest.TestCase):
                 ]
             }
         ]
-        compte_512_rst = codecs.open(os.path.join(CURRENT_DIR, "compte_512-2011.txt"), 
+        compte_512_rst = codecs.open(os.path.join(CURRENT_DIR, "compte_512-2011.txt"),
                                      mode="r", encoding="utf-8")
         output = StringIO.StringIO()
         # Uncomment to generate the file.
-        # output = codecs.open(os.path.join(CURRENT_DIR, "compte_512-2011.txt"), 
+        # output = codecs.open(os.path.join(CURRENT_DIR, "compte_512-2011.txt"),
         #                                   mode="w+", encoding="utf-8")
         solde_de_compte(livre_journal, output, comptes)
         self.maxDiff = None
         self.assertEqual(output.getvalue(), compte_512_rst.read())
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(SoldeDeCompteTestCase)
