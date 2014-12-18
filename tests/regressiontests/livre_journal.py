@@ -26,50 +26,50 @@ class LivreJournalTestCase(unittest.TestCase):
              [u'18/03/2011 - Frais de constitution de la soci\xe9t\xe9 - Annonce l\xe9gale.',
               u'OK : d\xe9bit = cr\xe9dit (99.00).'],
              [u'31/03/2011 - Facture 2011-01 MyClient1 Prestation MyClient1 mars 2011',
-              u'OK : d\xe9bit = cr\xe9dit (5980.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (5 980.00).'],
              [u'01/04/2011 - R\xe9sultat arr\xeat\xe9 compte',
               u'OK : d\xe9bit = cr\xe9dit (48.00).'],
              [u'02/04/2011 - Capital initial D\xe9p\xf4t de 1500 \u20ac par Stanislas Guerra au LCL Ledru Rollin',
-              u'OK : d\xe9bit = cr\xe9dit (1500.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (1 500.00).'],
              [u'04/04/2011 - Facture 2011-02 MyClient2 Prestation MyClient2',
-              u'OK : d\xe9bit = cr\xe9dit (1794.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (1 794.00).'],
              [u'28/04/2011 - Cotisation Option PRO  LCL',
               u'OK : d\xe9bit = cr\xe9dit (15.00).'],
              [u'02/05/2011 - Abonnement LCL Access', u'OK : d\xe9bit = cr\xe9dit (3.00).'],
              [u'11/06/2011 - BHV - Fournitures des bureau (Livres comptables).',
               u'OK : d\xe9bit = cr\xe9dit (25.65).'],
              [u'15/06/2011 - Remise ch\xe8que XXXXXXX r\xe8glement facture 2011-02',
-              u'OK : d\xe9bit = cr\xe9dit (2088.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (2 088.00).'],
              [u'05/07/2011 - Traitement mois de juin g\xe9rant.',
-              u'OK : d\xe9bit = cr\xe9dit (3000.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (3 000.00).'],
              [u'08/08/2011 - Ch\xe8que XXXXXXY Cotisation trimestrielle RSI/Pr\xe9vadi\xe8s.',
               u'OK : d\xe9bit = cr\xe9dit (393.00).'],
              [u'02/09/2011 - Virement MyClient1 ZZZZZZZZZZZ Facture 2011-01',
-              u'OK : d\xe9bit = cr\xe9dit (6960.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (6 960.00).'],
              [u'03/09/2011 - Abonnement LCL Access', u'OK : d\xe9bit = cr\xe9dit (3.00).'],
              [u'28/09/2011 - Facture 2011-04 MyClient1 Prestation aout 2011',
-              u'OK : d\xe9bit = cr\xe9dit (13156.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (13 156.00).'],
              [u'30/09/2011 - Solde des comptes de TVA du 01/03/2011 au 30/09/2011',
-              u'OK : d\xe9bit = cr\xe9dit (1274.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (1 274.00).'],
              [u'06/10/2011 - Ch\xe8que WWWWWWW R\xe8glement de la TVA trimestrielle',
-              u'OK : d\xe9bit = cr\xe9dit (1240.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (1 240.00).'],
              [u'01/11/2011 - Facture 2011-05 MyClient1 Prestation septembre 2011',
-              u'OK : d\xe9bit = cr\xe9dit (5382.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (5 382.00).'],
              [u'17/11/2011 - Ch\xe8que ZZZZZZZ Cotisation sociales Urssaf 4\xe8me trimestre.',
               u'OK : d\xe9bit = cr\xe9dit (402.00).'],
              [u'01/12/2011 - Abonnement LCL Access', u'OK : d\xe9bit = cr\xe9dit (3.00).'],
              [u'01/12/2011 - Virement MyClient1 WWWWWWWWWW Facture 2011-04, 2011-05',
-              u'OK : d\xe9bit = cr\xe9dit (21576.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (21 576.00).'],
              [u'01/12/2011 - Facture 2011-06 MyClient3',
-              u'OK : d\xe9bit = cr\xe9dit (8372.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (8 372.00).'],
              [u'31/12/2011 - Solde des comptes de TVA du 01/10/2011 au 31/12/2011',
-              u'OK : d\xe9bit = cr\xe9dit (3038.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (3 038.00).'],
              [u'31/12/2011 - Prestation MyClient1 d\xe9cembre 2011',
-              u'OK : d\xe9bit = cr\xe9dit (13156.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (13 156.00).'],
              [u'01/01/2012 - Prestation MyClient1 d\xe9cembre 2011',
-              u'OK : d\xe9bit = cr\xe9dit (13156.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (13 156.00).'],
              [u'03/01/2012 - Facture 2012-01 MyClient1 Prestation d\xe9cembre 2011',
-              u'OK : d\xe9bit = cr\xe9dit (13156.00).'],
+              u'OK : d\xe9bit = cr\xe9dit (13 156.00).'],
              [u"01/02/2012 - Restaurant La Tour d'argent D\xe9jeuner d'affaire avec Steve Jobs 0.88\u20ac TVA 19.6% ; 2.90\u20ac TVA 7.0%",
               u'OK : d\xe9bit = cr\xe9dit (49.80).']]
         )
@@ -180,25 +180,25 @@ u"""+---------------------------------------------------------------------------
 | Ecritures pour le Livre-journal                                                                                                                    |
 +=============+=================+=================+==============================================================+=================+=================+
 || 31/12/2011 ||                ||                || Ecritures de clôture des comptes.                           ||                ||                |
-||            || 706            ||                || Produits - prestations de services                          || 40000.00       ||                |
+||            || 706            ||                || Produits - prestations de services                          || 40 000.00      ||                |
 ||            || 758            ||                || Produits divers de gestion courante                         || 0.34           ||                |
-||            ||                || 127            ||     Regroupement des comptes de produits                    ||                || 40000.34       |
+||            ||                || 127            ||     Regroupement des comptes de produits                    ||                || 40 000.34      |
 +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
 || 31/12/2011 ||                ||                || Ecritures de clôture des comptes.                           ||                ||                |
-||            || 126            ||                || Regroupement des comptes de charges                         || 4048.44        ||                |
+||            || 126            ||                || Regroupement des comptes de charges                         || 4 048.44       ||                |
 ||            ||                || 60225          ||     Achats - Fournitures de bureau                          ||                || 21.44          |
 ||            ||                || 6227           ||     Achats - Frais d'actes et de contentieux                ||                || 160.00         |
 ||            ||                || 6278-LCL       ||     Autres frais de commission sur prestations de services  ||                || 72.00          |
-||            ||                || 6411           ||     Charges - Salaires et appointements                     ||                || 3000.00        |
+||            ||                || 6411           ||     Charges - Salaires et appointements                     ||                || 3 000.00       |
 ||            ||                || 6411-RSI       ||     Charges - cotisations RSI                               ||                || 393.00         |
 ||            ||                || 6411-URSF1     ||     Charges - cotisations URSSAF - Allocations familliales  ||                || 161.80         |
 ||            ||                || 6411-URSF2     ||     Charges - cotisations URSSAF - CSG/RDS déductible       ||                || 153.31         |
 ||            ||                || 6411-URSF3     ||     Charges - cotisations URSSAF - CSG/RDS non-déductible   ||                || 86.89          |
 +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
 || 31/12/2011 ||                ||                || Enregistrement du résultat net de l'exercice                ||                ||                |
-||            || 127            ||                || Regroupement des comptes de produits                        || 40000.34       ||                |
-||            ||                || 126            ||     Regroupement des comptes de charges                     ||                || 4048.44        |
-||            ||                || 120            ||     résultat de l'exercice (bénéfice)                       ||                || 35951.90       |
+||            || 127            ||                || Regroupement des comptes de produits                        || 40 000.34      ||                |
+||            ||                || 126            ||     Regroupement des comptes de charges                     ||                || 4 048.44       |
+||            ||                || 120            ||     résultat de l'exercice (bénéfice)                       ||                || 35 951.90      |
 +-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
 
 """)
