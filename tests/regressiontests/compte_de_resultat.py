@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
+import os
 import unittest
 import codecs
 import StringIO
 import datetime
 import json
-from colbert.utils import json_encoder
-from pprint import pprint
 
 from decimal import Decimal
 
 CURRENT_DIR = os.path.dirname(__file__)
+
 
 class CompteDeResultatTestCase(unittest.TestCase):
     def test_compte_de_resultat(self):
@@ -22,6 +21,7 @@ class CompteDeResultatTestCase(unittest.TestCase):
         r = compte_de_resultat(json.loads(balance_des_comptes.read()),
                                label=u"Compte de résultat 2011 - MyBusiness")
         # Uncomment to generate.
+        #from colbert.utils import json_encoder
         #output = codecs.open(os.path.join(CURRENT_DIR, "compte_de_resultat-2011.json"),
         #                              mode="w+", encoding="utf-8")
         #output.write(json.dumps(r, default=json_encoder, indent=4))
@@ -51,16 +51,17 @@ class CompteDeResultatTestCase(unittest.TestCase):
     def test_compte_de_resultat_to_rst(self):
         from colbert.compte_de_resultat import compte_de_resultat_to_rst
         compte_de_resultat = codecs.open(os.path.join(CURRENT_DIR, "compte_de_resultat-2011.json"),
-                                          mode="r", encoding="utf-8")
+                                         mode="r", encoding="utf-8")
         output = StringIO.StringIO()
         # Uncomment to generate the file.
         # output = codecs.open(os.path.join(CURRENT_DIR, "compte_de_resultat-2011.txt"),
         #                                   mode="w+", encoding="utf-8")
         compte_de_resultat_to_rst(json.loads(compte_de_resultat.read()), output)
         compte_de_resultat_txt = codecs.open(os.path.join(CURRENT_DIR, "compte_de_resultat-2011.txt"),
-                                              mode="r", encoding="utf-8")
+                                             mode="r", encoding="utf-8")
         self.maxDiff = None
         self.assertEqual(output.getvalue(), compte_de_resultat_txt.read())
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(CompteDeResultatTestCase)
