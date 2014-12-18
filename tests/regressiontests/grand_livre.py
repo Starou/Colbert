@@ -474,7 +474,7 @@ class GrandLivreTestCase(unittest.TestCase):
                 u'444': {u'ecritures': [{u'credit': Decimal('9800.00'),
                                          'date': datetime.date(2011, 12, 31),
                                          'intitule': u'Impôts sur les bénéfices.'}],
-                         u'nom': u'\xc9tat-Impôts sur les bénéfices',
+                         u'nom': u'État-Impôts sur les bénéfices',
                          u'solde_crediteur': Decimal('9800.00'),
                          u'solde_debiteur': Decimal('0.00'),
                          u'total_credit': Decimal('9800.00'),
