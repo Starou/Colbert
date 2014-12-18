@@ -20,6 +20,11 @@ def fmt_number(value):
     return locale.format("%.2f", value, grouping=True)
 
 
+def parse_number(value):
+    """Quick'n dirty. """
+    return value.replace(" ", "")
+
+
 def rst_title(title, symbol="="):
     """
     =====
@@ -64,7 +69,7 @@ def rst_table_row(row, stroke_char, add_closing_stroke=False):
                 if j == 0:
                     stroke.append(u'+%s' % (stroke_char * cell_length))
                 line.append(u'|| %s%s' % (cell_content,
-                                            u' ' * (cell_length - 2 - len(cell_content))))
+                                          u' ' * (cell_length - 2 - len(cell_content))))
             if j == 0:
                 stroke.append(u'+')
                 lines.append(u''.join(stroke))
@@ -76,7 +81,7 @@ def rst_table_row(row, stroke_char, add_closing_stroke=False):
             cell_content = truncate_words(cell_content, cell_length - 2)
             stroke.append(u'+%s' % (stroke_char * cell_length))
             line.append(u'| %s%s' % (cell_content,
-                                        u' ' * (cell_length - 1 - len(cell_content))))
+                                     u' ' * (cell_length - 1 - len(cell_content))))
         # End of line.
         stroke.append(u'+')
         line.append(u'|')

@@ -7,7 +7,7 @@ import itertools
 import os
 import re
 from decimal import Decimal
-from colbert.utils import fmt_number, rst_table, rst_table_row, DATE_FMT
+from colbert.utils import fmt_number, parse_number, rst_table, rst_table_row, DATE_FMT
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
                             DATE, DATE_FIN, INTITULE, NOM, NUMERO, COMPTES,
                             NUMERO_LIGNE_ECRITURE_DEBUT, NUMERO_LIGNE_ECRITURE_FIN)
@@ -330,8 +330,8 @@ def ecriture_to_livre_journal(ecriture):
         ],
     ]
     for e in ecriture[ECRITURES]:
-        debit = Decimal(e[DEBIT])
-        credit = Decimal(e[CREDIT])
+        debit = Decimal(parse_number(e[DEBIT]))
+        credit = Decimal(parse_number(e[CREDIT]))
 
         multiline_row.append(
             [
