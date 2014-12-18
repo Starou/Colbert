@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-import locale
 import re
 from decimal import Decimal
 
@@ -16,8 +15,9 @@ def json_encoder(obj):
     raise TypeError
 
 
+# https://www.python.org/dev/peps/pep-0378/
 def fmt_number(value):
-    return locale.format("%.2f", value, grouping=True)
+    return '{:,.2f}'.format(value).replace(",", " ")
 
 
 def parse_number(value):
@@ -92,6 +92,7 @@ def rst_table_row(row, stroke_char, add_closing_stroke=False):
         lines.append(''.join(stroke))
 
     return lines
+
 
 # http://stackoverflow.com/questions/250357/smart-truncate-in-python
 def truncate_words(content, length=100, suffix='...'):
