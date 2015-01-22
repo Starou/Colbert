@@ -6,8 +6,9 @@ import unittest
 import codecs
 import StringIO
 import datetime
-from decimal import Decimal
 import json
+from colbert.livre_journal import livre_journal_to_list
+from decimal import Decimal
 
 CURRENT_DIR = os.path.dirname(__file__)
 VERSION_INFO = sys.version_info
@@ -202,7 +203,6 @@ u"""+---------------------------------------------------------------------------
 """)
 
     def test_get_solde_compte(self):
-        from colbert.livre_journal import livre_journal_to_list
         from colbert.livre_journal import get_solde_compte
 
         livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"),
@@ -219,7 +219,6 @@ u"""+---------------------------------------------------------------------------
 
     def test_livre_journal_to_list(self):
         from colbert.livre_journal import RX_DATE_INTITULE, RX_SUITE_INTITULE, RX_ECRITURE
-        from colbert.livre_journal import livre_journal_to_list
         self.maxDiff = None
 
         # Première ligne d'écriture.
@@ -848,6 +847,86 @@ u"""+---------------------------------------------------------------------------
                  'numero_compte_debit': u''}
             ]
         })
+
+    def test_rechercher_ecriture(self):
+        from colbert.livre_journal import rechercher_ecriture
+        livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"),
+                                    mode="r", encoding="utf-8")
+        livre_journal_list = livre_journal_to_list(livre_journal)
+        self.assertEqual(list(rechercher_ecriture("lcl", livre_journal_list)), [
+            {'date': datetime.date(2011, 4, 2),
+             u'ecritures': [{u'credit': Decimal('0.00'),
+                             u'debit': Decimal('1500.00'),
+                             'nom_compte': u'Banques',
+                             'numero_compte_credit': u'',
+                             'numero_compte_debit': u'512'},
+                            {u'credit': Decimal('1500.00'),
+                             u'debit': Decimal('0.00'),
+                             'nom_compte': u"Capital et compte de l'exploitant",
+                             'numero_compte_credit': u'100',
+                             'numero_compte_debit': u''}],
+             'intitule': [u' Capital initial',
+                          u'       Dépôt de 1500 € par Stanislas Guerra',
+                          u'       au LCL Ledru Rollin'],
+             u'numero_ligne_debut': 35,
+             u'numero_ligne_fin': 40},
+            {'date': datetime.date(2011, 4, 28),
+             u'ecritures': [{u'credit': Decimal('0.00'),
+                             u'debit': Decimal('15.00'),
+                             'nom_compte': u'Autres frais de commission sur prestations de services',
+                             'numero_compte_credit': u'',
+                             'numero_compte_debit': u'6278-LCL'},
+                            {u'credit': Decimal('15.00'),
+                             u'debit': Decimal('0.00'),
+                             'nom_compte': u'Banques',
+                             'numero_compte_credit': u'512',
+                             'numero_compte_debit': u''}],
+             'intitule': [u' Cotisation Option PRO  LCL'],
+             u'numero_ligne_debut': 47,
+             u'numero_ligne_fin': 50},
+            {'date': datetime.date(2011, 5, 2),
+             u'ecritures': [{u'credit': Decimal('0.00'),
+                             u'debit': Decimal('3.00'),
+                             'nom_compte': u'Autres frais de commission sur prestations de services',
+                             'numero_compte_credit': u'',
+                             'numero_compte_debit': u'6278-LCL'},
+                            {u'credit': Decimal('3.00'),
+                             u'debit': Decimal('0.00'),
+                             'nom_compte': u'Banques',
+                             'numero_compte_credit': u'512',
+                             'numero_compte_debit': u''}],
+             'intitule': [u' Abonnement LCL Access'],
+             u'numero_ligne_debut': 53,
+             u'numero_ligne_fin': 56},
+            {'date': datetime.date(2011, 9, 3),
+             u'ecritures': [{u'credit': Decimal('0.00'),
+                             u'debit': Decimal('3.00'),
+                             'nom_compte': u'Autres frais de commission sur prestations de services',
+                             'numero_compte_credit': u'',
+                             'numero_compte_debit': u'6278-LCL'},
+                            {u'credit': Decimal('3.00'),
+                             u'debit': Decimal('0.00'),
+                             'nom_compte': u'Banques',
+                             'numero_compte_credit': u'512',
+                             'numero_compte_debit': u''}],
+             'intitule': [u' Abonnement LCL Access'],
+             u'numero_ligne_debut': 92,
+             u'numero_ligne_fin': 95},
+           {'date': datetime.date(2011, 12, 1),
+            u'ecritures': [{u'credit': Decimal('0.00'),
+                            u'debit': Decimal('3.00'),
+                            'nom_compte': u'Autres frais de commission sur prestations de services',
+                            'numero_compte_credit': u'',
+                            'numero_compte_debit': u'6278-LCL'},
+                           {u'credit': Decimal('3.00'),
+                            u'debit': Decimal('0.00'),
+                            'nom_compte': u'Banques',
+                            'numero_compte_credit': u'512',
+                            'numero_compte_debit': u''}],
+            'intitule': [u' Abonnement LCL Access'],
+            u'numero_ligne_debut': 134,
+            u'numero_ligne_fin': 137}
+        ])
 
 
 def suite():

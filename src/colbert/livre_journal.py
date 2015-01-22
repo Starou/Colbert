@@ -384,7 +384,8 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
 
 
 def rechercher_ecriture(expression, livre_journal_as_list):
-    return itertools.ifilter(lambda l: expression in l["intitule"].lower(),
+    return itertools.ifilter(lambda l: any([expression in i.lower()
+                                            for i in l["intitule"]]),
                              livre_journal_as_list)
 
 
