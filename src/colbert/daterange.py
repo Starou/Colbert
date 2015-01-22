@@ -5,6 +5,7 @@ Example Usage
 =============
 
 >>> import datetime
+>>> from colbert.daterange import daterange, datedaysrange, next_day_by_month, next_day_by_week
 >>> start = datetime.date(2009, 6, 21)
 
 >>> g1 = daterange(start)
@@ -153,8 +154,9 @@ def datedaysrange(date, to=None, days=(), by='month'):
 
     while condition(date):
         yield date
-        counter +=1
-        date = next_day(date, (days[counter%days_number],))
+        counter += 1
+        date = next_day(date, (days[counter % days_number], ))
+
 
 def next_day_by_month(date, days):
     """
@@ -169,19 +171,19 @@ def next_day_by_month(date, days):
     TODO : Use '-1' in `days` to represente the last day of the
     month (which is 28, 29, 30 or 31).
 
-
     >>> next_day_by_month(datetime.date(2011, 6, 8), (1, 16))
     datetime.date(2011, 6, 16)
 
     >>> next_day_by_month(datetime.date(2011, 6, 8), (1,))
     datetime.date(2011, 7, 1)
+
     """
 
     day, month, year = date.day, date.month, date.year
 
     if date.day > days[-1]:
         day = days[-1]
-        month +=1
+        month += 1
         if month > 12:
             year += 1
             month = 1
@@ -198,27 +200,29 @@ def next_day_by_month(date, days):
         date = None
     return date
 
+
 def next_day_by_week(date, days):
     """
     Like ``next_day_by_month`` but for weekdays.
-
 
     >>> next_day_by_week(datetime.date(2011, 6, 8), (0, 6))
     datetime.date(2011, 6, 12)
 
     >>> next_day_by_week(datetime.date(2011, 6, 12), (0, 6))
     datetime.date(2011, 6, 13)
+
     """
 
     if date.weekday() >= days[-1]:
-        first_day = date - datetime.timedelta(date.weekday()-days[0])
+        first_day = date - datetime.timedelta(date.weekday() - days[0])
         date = first_day + datetime.timedelta(weeks=1)
     else:
         for i, d in enumerate(days):
             if date.weekday() <= d:
-                date = date + datetime.timedelta(d-date.weekday())
+                date = date + datetime.timedelta(d - date.weekday())
                 break
     return date
+
 
 def daterange(date, to=None, step=datetime.timedelta(days=1)):
 
@@ -314,7 +318,7 @@ class delta(object):
     """
 
     UNIT_NAMES = {
-    ##  unit_name: unit_aliases
+        # unit_name: unit_aliases #
         'days': 'd day'.split(),
         'hours': 'h hr hrs hour'.split(),
         'minutes': 'm min mins minute'.split(),

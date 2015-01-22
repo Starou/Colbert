@@ -1,10 +1,11 @@
+import os
+import sys
 import unittest
-import os, sys
 
-REGRESSION_TEST_DIRNAME='regressiontests'
+REGRESSION_TEST_DIRNAME = 'regressiontests'
 REGRESSION_TEST_DIR = os.path.join(os.path.dirname(__file__), REGRESSION_TEST_DIRNAME)
 
-sys.path.insert(0,'../src/')
+sys.path.insert(0, '../src/')
 
 
 def load_suite_tests(only=None):
@@ -37,3 +38,7 @@ if __name__ == '__main__':
     suites = load_suite_tests(only=only)
     suite = unittest.TestSuite(suites)
     unittest.TextTestRunner(verbosity=2).run(suite)
+
+    # Doctests.
+    import doctest
+    doctest.testfile("../src/colbert/daterange.py")
