@@ -1,7 +1,7 @@
 [
     {
         "date": "31/12/2011", 
-        "intitule": "Ecritures de cl\u00f4ture des comptes.", 
+        "intitule": ["Ecritures de cl\u00f4ture des comptes."],
         "ecritures": [
             {
                 "numero_compte_debit": "706", 
@@ -28,7 +28,7 @@
     }, 
     {
         "date": "31/12/2011", 
-        "intitule": "Ecritures de cl\u00f4ture des comptes.", 
+        "intitule": ["Ecritures de cl\u00f4ture des comptes."],
         "ecritures": [
             {
                 "numero_compte_debit": "126", 
@@ -97,7 +97,7 @@
     }, 
     {
         "date": "31/12/2011", 
-        "intitule": "Enregistrement du r\u00e9sultat net de l'exercice", 
+        "intitule": ["Enregistrement du r\u00e9sultat net de l'exercice"],
         "ecritures": [
             {
                 "numero_compte_debit": "127", 

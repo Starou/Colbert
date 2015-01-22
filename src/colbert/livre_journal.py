@@ -30,7 +30,7 @@ def check_livre_journal(livre_journal_file):
     for ecriture in livre_journal:
         total_debit, total_credit = Decimal("0.0"), Decimal("0.0")
         check = [u"%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
-                               ecriture[INTITULE])]
+                               ecriture[INTITULE][0])]
         for e in ecriture[ECRITURES]:
             total_debit += e[DEBIT]
             total_credit += e[CREDIT]
@@ -95,7 +95,7 @@ def ecritures_de_cloture(balance_des_comptes):
                                              PCG['regroupement-charges'][NOM])):
         ecriture_finale = {
             DATE: datetime.datetime.strptime(balance_des_comptes[DATE_FIN], DATE_FMT).date(),
-            INTITULE: u"Ecritures de clôture des comptes.",
+            INTITULE: [u"Ecritures de clôture des comptes."],
             ECRITURES: ecritures[compte_regroupement],
         }
 
@@ -138,7 +138,7 @@ def ecritures_de_cloture(balance_des_comptes):
     # Enregistrement du résultat net de l'exercice.
     ecriture_resultat = {
         DATE: datetime.datetime.strptime(balance_des_comptes[DATE_FIN], DATE_FMT).date(),
-        INTITULE: u"Enregistrement du résultat net de l'exercice",
+        INTITULE: [u"Enregistrement du résultat net de l'exercice"],
         ECRITURES: [],
     }
 
@@ -195,7 +195,7 @@ RX_DATE_INTITULE = re.compile(ur"""^\|\|\s
                               (?P<date>\d\d/\d\d/\d\d\d\d)\s+\|\|
                               (?P<numero_compte_debit>\s+)\|\|
                               (?P<numero_compte_credit>\s+)\|\|
-                              \s(?P<intitule>.+)\|\|
+                              (?P<intitule>\s.+)\|\|
                               (?P<debit>\s+)\|\|
                               (?P<credit>\s+)\|\s*$""", flags=(re.X | re.U))
 
@@ -203,7 +203,7 @@ RX_SUITE_INTITULE = re.compile(ur"""^\|\|
                                (?P<date>\s+)\|\|
                                (?P<numero_compte_debit>\s+)\|\|
                                (?P<numero_compte_credit>\s+)\|\|
-                               \s+(?P<intitule>.+)\|\|
+                               (?P<intitule>\s+.+)\|\|
                                (?P<debit>\s+)\|\|
                                (?P<credit>\s+)\|\s*$""", flags=(re.X | re.U))
 
@@ -266,13 +266,13 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
                     ecriture[DATE] = m[DATE]
                 else:
                     ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
-                ecriture[INTITULE] = m[INTITULE].strip()
+                ecriture[INTITULE] = [m[INTITULE].rstrip()]
                 ecriture[ECRITURES] = []
             elif RX_SUITE_INTITULE.match(line):
                 if ecriture[ECRITURES]:
                     raise BaseException(u"Les lignes supplémentaires d'intitulé doivent apparaitre exclusivement sous la première ligne.")
                 m = RX_SUITE_INTITULE.match(line).groupdict()
-                ecriture[INTITULE] += u" %s" % m[INTITULE].strip()
+                ecriture[INTITULE].append(m[INTITULE].rstrip())
             else:
                 try:
                     m = RX_ECRITURE.match(line).groupdict()
@@ -324,11 +324,24 @@ def ecriture_to_livre_journal(ecriture):
             (ecriture[DATE], DATE_LEN),
             (u"", COMPTE_DEBIT_LEN),
             (u"", COMPTE_CREDIT_LEN),
-            (ecriture[INTITULE], INTITULE_LEN),
+            (ecriture[INTITULE][0], INTITULE_LEN),
             (u"", DEBIT_LEN),
             (u"", CREDIT_LEN),
         ],
     ]
+    # Lignes d'intitulés supp. si présentes.
+    for intitule in ecriture[INTITULE][1:]:
+        multiline_row.append(
+            [
+                (u"", DATE_LEN),
+                (u"", COMPTE_DEBIT_LEN),
+                (u"", COMPTE_CREDIT_LEN),
+                (intitule, INTITULE_LEN),
+                (u"", DEBIT_LEN),
+                (u"", CREDIT_LEN),
+            ]
+        )
+
     for e in ecriture[ECRITURES]:
         debit = Decimal(parse_number(e[DEBIT]))
         credit = Decimal(parse_number(e[CREDIT]))

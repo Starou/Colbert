@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
+import os
 import unittest
 import codecs
-import StringIO
 import datetime
 from decimal import Decimal
 
@@ -17,7 +16,7 @@ class TVATestCase(unittest.TestCase):
         # Produits divers pour équilibrer.
         livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"),
                                     mode="r", encoding="utf-8")
-        solde_tva = solde_comptes_de_tva(livre_journal, 
+        solde_tva = solde_comptes_de_tva(livre_journal,
                                          date_debut=datetime.date(2011, 3, 18),
                                          date_fin=datetime.date(2011, 6, 30))
         self.assertEqual(
@@ -43,16 +42,16 @@ class TVATestCase(unittest.TestCase):
                             'nom_compte': u'Produits divers de gestion courante',
                             'numero_compte_credit': '758',
                             'numero_compte_debit': u''}],
-             'intitule': u'Solde des comptes de TVA du 18/03/2011 au 30/06/2011'}
+             'intitule': [u'Solde des comptes de TVA du 18/03/2011 au 30/06/2011']}
         )
 
         # Charge diverse pour équilibrer.
         livre_journal.seek(0)
-        solde_tva = solde_comptes_de_tva(livre_journal, 
+        solde_tva = solde_comptes_de_tva(livre_journal,
                                          date_debut=datetime.date(2011, 4, 18),
                                          date_fin=datetime.date(2011, 6, 30))
         self.assertEqual(
-            solde_tva, 
+            solde_tva,
             {'date': datetime.date(2011, 6, 30),
              'ecritures': [{'credit': Decimal('0.00'),
                             'debit': Decimal('294.00'),
@@ -74,7 +73,7 @@ class TVATestCase(unittest.TestCase):
                             'nom_compte': u'Charges diverses de gestion courante',
                             'numero_compte_credit': u'',
                             'numero_compte_debit': '658'}],
-             'intitule': u'Solde des comptes de TVA du 18/04/2011 au 30/06/2011'}
+             'intitule': [u'Solde des comptes de TVA du 18/04/2011 au 30/06/2011']}
         )
 
 

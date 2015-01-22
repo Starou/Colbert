@@ -88,6 +88,6 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
         return {
             DATE: date_fin,
             ECRITURES: ecritures,
-            INTITULE: u"Solde des comptes de TVA du %s au %s" % (date_debut.strftime(DATE_FMT),
-                                                                 date_fin.strftime(DATE_FMT))
+            INTITULE: [u"Solde des comptes de TVA du %s au %s" % (
+                date_debut.strftime(DATE_FMT), date_fin.strftime(DATE_FMT))],
         }

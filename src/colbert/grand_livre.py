@@ -53,15 +53,16 @@ def grand_livre(livre_journal_file, label, date_debut, date_fin, grand_livre_pre
 
     livre_journal = livre_journal_to_list(livre_journal_file)
     for ecriture in livre_journal:
+        intitule_pour_grand_livre = u" ".join(i.strip() for i in ecriture[INTITULE])
         if grand_livre_precedent and (grand_livre_precedent[DATE_DEBUT] <= ecriture[DATE] <= grand_livre_precedent[DATE_FIN]):
             # Certaines écritures sont passées en fin d'exercice N-1 lors de l'exercice N et
             # n'apparaissent donc pas dans le grand_livre N-1.
             for e in ecriture[ECRITURES]:
-                if not ecriture_journal_in_grand_livre(e, ecriture[DATE], ecriture[INTITULE], grand_livre_precedent):
-                    ajouter_ecriture_to_comptes(e, ecriture[DATE], ecriture[INTITULE], comptes)
+                if not ecriture_journal_in_grand_livre(e, ecriture[DATE], intitule_pour_grand_livre, grand_livre_precedent):
+                    ajouter_ecriture_to_comptes(e, ecriture[DATE], intitule_pour_grand_livre, comptes)
         if date_debut <= ecriture[DATE] <= date_fin:
             for e in ecriture[ECRITURES]:
-                ajouter_ecriture_to_comptes(e, ecriture[DATE], ecriture[INTITULE], comptes)
+                ajouter_ecriture_to_comptes(e, ecriture[DATE], intitule_pour_grand_livre, comptes)
 
     # Calcul des soldes de chaque compte.
     for compte in comptes.values():

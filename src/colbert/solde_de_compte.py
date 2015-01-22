@@ -22,7 +22,40 @@ SOLDE_CREDIT_LEN = 17
 
 
 def solde_de_compte(livre_journal_file, output_file, comptes=None):
-    """ Calcule le solde des comptes à partir du livre-journal."""
+    """ Calcule le solde des comptes à partir du livre-journal.
+
+    Utilisé dans le rapprochement d'écritures (ex: relevés bancaire
+    vs livre-journal).
+
+    comptes: Liste de comptes et des soldes attendus
+        pour une ou plusieurs périodes.
+        ex: [
+              {
+                  'numero_compte': "512",
+                  'journaux': [
+                      {
+                          'label': "Avril 2011",
+                          'date_debut': "01/04/2011",
+                          'date_fin': "02/05/2011",
+                          'debit_initial': "0.00",
+                          'credit_initial': "0.00",
+                          'debit_final': "1485.93",
+                          'credit_final': "0.00",
+                      },
+                      {
+                          'label': "Mai 2011",
+                          'date_debut': "03/05/2011",
+                          'date_fin': "01/06/2011",
+                          'debit_initial': "1485.93",
+                          'credit_initial': "0.00",
+                          'debit_final': "1461.94",
+                          'credit_final': "0.00",
+                      },
+                  ]
+              }
+          ]
+
+    """
 
     lines = []
     livre_journal = livre_journal_to_list(livre_journal_file)
@@ -71,7 +104,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
                                 solde_debiteur, solde_crediteur = Decimal("0.00"), -(solde)
 
                             table.append([(ecriture[DATE].strftime(DATE_FMT), DATE_LEN),
-                                          (ecriture[INTITULE], LIBELLE_LEN),
+                                          (" - ".join([i.strip() for i in ecriture[INTITULE]]), LIBELLE_LEN),
                                           (e[DEBIT] and fmt_number(e[DEBIT]) or '', DEBIT_LEN),
                                           (e[CREDIT] and fmt_number(e[CREDIT]) or '', CREDIT_LEN),
                                           (solde_debiteur and fmt_number(solde_debiteur) or '', SOLDE_DEBIT_LEN),
