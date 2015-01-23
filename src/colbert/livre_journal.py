@@ -25,23 +25,22 @@ def check_livre_journal(livre_journal_file):
     """Vérifie l'équilibre de chaque écriture du Livre-Journal. """
 
     livre_journal = livre_journal_to_list(livre_journal_file)
-    checks = []
+    return [check_ecriture_livre_journal(e) for e in livre_journal]
 
-    for ecriture in livre_journal:
-        total_debit, total_credit = Decimal("0.0"), Decimal("0.0")
-        check = [u"%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
-                               ecriture[INTITULE][0])]
-        for e in ecriture[ECRITURES]:
-            total_debit += e[DEBIT]
-            total_credit += e[CREDIT]
-        if total_debit == total_credit:
-            check.append(u"OK : débit = crédit (%s)." % fmt_number(total_credit))
-        else:
-            check.append(u"ERREUR : débit (%s) != crédit (%s)." % (fmt_number(total_debit),
-                                                                     fmt_number(total_credit)))
-        checks.append(check)
 
-    return checks
+def check_ecriture_livre_journal(ecriture):
+    total_debit, total_credit = Decimal("0.0"), Decimal("0.0")
+    check = [u"%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
+                           ecriture[INTITULE][0])]
+    for e in ecriture[ECRITURES]:
+        total_debit += e[DEBIT]
+        total_credit += e[CREDIT]
+    if total_debit == total_credit:
+        check.append(u"OK : débit = crédit (%s)." % fmt_number(total_credit))
+    else:
+        check.append(u"ERREUR : débit (%s) != crédit (%s)." % (fmt_number(total_debit),
+                                                               fmt_number(total_credit)))
+    return check
 
 
 def ecritures_de_cloture(balance_des_comptes):
