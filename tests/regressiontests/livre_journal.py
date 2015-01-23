@@ -74,6 +74,113 @@ class LivreJournalTestCase(unittest.TestCase):
              u'OK : débit = crédit (49.80).']
         ])
 
+    def test_check_ecriture_livre_journal(self):
+        from colbert.livre_journal import check_ecriture_livre_journal
+        ecriture = {
+            'date': datetime.date(2011, 3, 18),
+            'numero_ligne_debut': 13,
+            'numero_ligne_fin': 17,
+            'intitule': [u' Frais de constitution de la société CFE Paris.'],
+            'ecritures': [
+                {
+                    u'credit': Decimal('0.00'),
+                    u'debit': Decimal('80.00'),
+                    'nom_compte': u"Achats - Frais d'actes et de contentieux",
+                    'numero_compte_credit': u'',
+                    'numero_compte_debit': u'6227'
+                },
+                {
+                    u'credit': Decimal('0.00'),
+                    u'debit': Decimal('10.45'),
+                    'nom_compte': u'T.V.A. déductible sur autres biens et services',
+                    'numero_compte_credit': u'',
+                    'numero_compte_debit': u'44566'
+                },
+                {
+                    u'credit': Decimal('90.45'),
+                    u'debit': Decimal('0.00'),
+                    'nom_compte': u'Associés - Comptes courants',
+                    'numero_compte_credit': u'455',
+                    'numero_compte_debit': u''
+                }
+            ],
+        }
+        self.assertEqual(
+            check_ecriture_livre_journal(ecriture),
+            [u'18/03/2011 -  Frais de constitution de la société CFE Paris.', u'OK : débit = crédit (90.45).']
+        )
+
+        # Erreur dans la colonne du compte.
+        ecriture = {
+            'date': datetime.date(2011, 3, 18),
+            'numero_ligne_debut': 13,
+            'numero_ligne_fin': 17,
+            'intitule': [u' Frais de constitution de la société CFE Paris.'],
+            'ecritures': [
+                {
+                    u'credit': Decimal('0.00'),
+                    u'debit': Decimal('80.00'),
+                    'nom_compte': u"Achats - Frais d'actes et de contentieux",
+                    'numero_compte_credit': u'',
+                    'numero_compte_debit': u'6227'
+                },
+                {
+                    u'credit': Decimal('0.00'),
+                    u'debit': Decimal('10.45'),
+                    'nom_compte': u'T.V.A. déductible sur autres biens et services',
+                    'numero_compte_credit': u'',
+                    'numero_compte_debit': u'44566'
+                },
+                {
+                    u'credit': Decimal('90.45'),
+                    u'debit': Decimal('0.00'),
+                    'nom_compte': u'Associés - Comptes courants',
+                    'numero_compte_credit': u'',
+                    'numero_compte_debit': u'455'
+                }
+            ],
+        }
+        self.assertEqual(
+            check_ecriture_livre_journal(ecriture),
+            [u'18/03/2011 -  Frais de constitution de la société CFE Paris.',
+             u'ERREUR : incohérence entre les colonnes numéro de compte et montant']
+        )
+
+        ecriture = {
+            'date': datetime.date(2011, 3, 18),
+            'numero_ligne_debut': 13,
+            'numero_ligne_fin': 17,
+            'intitule': [u' Frais de constitution de la société CFE Paris.'],
+            'ecritures': [
+                {
+                    u'credit': Decimal('0.00'),
+                    u'debit': Decimal('80.00'),
+                    'nom_compte': u"Achats - Frais d'actes et de contentieux",
+                    'numero_compte_credit': u'6227',
+                    'numero_compte_debit': u''
+                },
+                {
+                    u'credit': Decimal('0.00'),
+                    u'debit': Decimal('10.45'),
+                    'nom_compte': u'T.V.A. déductible sur autres biens et services',
+                    'numero_compte_credit': u'',
+                    'numero_compte_debit': u'44566'
+                },
+                {
+                    u'credit': Decimal('90.45'),
+                    u'debit': Decimal('0.00'),
+                    'nom_compte': u'Associés - Comptes courants',
+                    'numero_compte_credit': u'455',
+                    'numero_compte_debit': u''
+                }
+            ],
+        }
+        self.assertEqual(
+            check_ecriture_livre_journal(ecriture),
+            [u'18/03/2011 -  Frais de constitution de la société CFE Paris.',
+             u'ERREUR : incohérence entre les colonnes numéro de compte et montant']
+        )
+
     def test_ecritures_de_cloture(self):
         from colbert.livre_journal import ecritures_de_cloture
         balance_des_comptes = codecs.open(os.path.join(CURRENT_DIR, "balance_des_comptes-2011.json"),

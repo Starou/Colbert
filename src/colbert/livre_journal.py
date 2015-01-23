@@ -33,6 +33,9 @@ def check_ecriture_livre_journal(ecriture):
     check = [u"%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
                            ecriture[INTITULE][0])]
     for e in ecriture[ECRITURES]:
+        if (e[DEBIT] and not e[NUMERO_COMPTE_DEBIT]) or (e[CREDIT] and not e[NUMERO_COMPTE_CREDIT]):
+            check.append(u"ERREUR : incohérence entre les colonnes numéro de compte et montant")
+            return check
         total_debit += e[DEBIT]
         total_credit += e[CREDIT]
     if total_debit == total_credit:
