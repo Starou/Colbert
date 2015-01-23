@@ -99,7 +99,11 @@ def truncate_words(content, length=100, suffix='...'):
     if len(content) <= length:
         return content
     else:
-        return ' '.join(content[:length + 1 - len(suffix)].split(' ')[0:-1]) + suffix
+        content_trunc = ' '.join(content[:length + 1 - len(suffix)].split(' ')[0:-1])
+        # On rétabli un éventuel contexte italique tronqué.
+        if content_trunc.count("*") % 2:
+            content_trunc = u"%s*" % content_trunc[:-1]
+        return content_trunc + suffix
 
 
 def d_round(value, rounding=2):
