@@ -90,7 +90,7 @@ def facture_to_tex(facture, tex_template, output_file):
     date_fin_fmt = u"%A %d %B %Y"
     date_debut_fmt = u"%A %d"
     if date_debut.month != date_fin.month:
-        date_debut_fmt += " u%B"
+        date_debut_fmt += u" %B"
     if date_debut.year != date_fin.year:
         date_debut_fmt += u" %Y"
     kwargs["periode_execution"] = u"Du %s au %s" % (date_debut.strftime(date_debut_fmt.encode("utf-8")).decode("utf-8"),
