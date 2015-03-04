@@ -135,6 +135,6 @@ def ecriture_facture(facture):
     return {
         DATE: date_facture,
         ECRITURES: ecritures,
-        INTITULE: u"Facture %s %s" % (facture["numero_facture"],
-                                      facture["client"]["nom"])
+        INTITULE: [u"Facture %s %s" % (facture["numero_facture"],
+                                       facture["client"]["nom"])]
     }
