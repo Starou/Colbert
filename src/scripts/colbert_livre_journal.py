@@ -31,6 +31,7 @@ Commande d'ajout d'entrées dans le livre journal par duplication d'écritures.
 """
 
 import codecs
+import copy
 import datetime
 import io
 import locale
@@ -128,6 +129,8 @@ def ajouter(options):
             print (u"Aucune écriture trouvée avec l'intitulé "
                    u"ressemblant à '%s'." % options.from_last_entry_like)
             return
+        else:
+            template_line = copy.deepcopy(template_line)
 
     amounts = options.amounts and options.amounts.split(",") or None
 
