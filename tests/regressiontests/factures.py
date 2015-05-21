@@ -1,35 +1,35 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
+import os
 import unittest
 import codecs
 import StringIO
 import datetime
 import json
-from colbert.utils import json_encoder
-from pprint import pprint
-
 from decimal import Decimal
 
 CURRENT_DIR = os.path.dirname(__file__)
 
+
 class FacturesTestCase(unittest.TestCase):
     def test_calculer_facture(self):
         from colbert.factures import calculer_facture
-        facture = codecs.open(os.path.join(CURRENT_DIR, "facture-1.json"), 
+        facture = codecs.open(os.path.join(CURRENT_DIR, "facture-1.json"),
                               mode="r", encoding="utf-8")
 
         facture = calculer_facture(json.loads(facture.read()))
+        #from pprint import pprint
+        #from colbert.utils import json_encoder
         #pprint(facture)
         # Uncomment to generate.
-        #output = codecs.open(os.path.join(CURRENT_DIR, "facture-1_calculee.json"), 
+        #output = codecs.open(os.path.join(CURRENT_DIR, "facture-1_calculee.json"),
         #                              mode="w+", encoding="utf-8")
         #output.write(json.dumps(facture, default=json_encoder, indent=4))
         #output.close()
 
         self.maxDiff = None
         self.assertDictEqual(
-            facture, 
+            facture,
             {u'client': {u'adresse': u'1, Infinite Loop',
                          u'code_postal': u'11222',
                          u'nom': u'MyClient#1',
@@ -79,25 +79,25 @@ class FacturesTestCase(unittest.TestCase):
 
     def test_facture_to_tex(self):
         from colbert.factures import facture_to_tex
-        facture = codecs.open(os.path.join(CURRENT_DIR, "facture-1_calculee.json"), 
+        facture = codecs.open(os.path.join(CURRENT_DIR, "facture-1_calculee.json"),
                               mode="r", encoding="utf-8")
-        tex_template = codecs.open(os.path.join(CURRENT_DIR, "facture-template.tex"), 
-                                               mode="r", encoding="utf-8")
+        tex_template = codecs.open(os.path.join(CURRENT_DIR, "facture-template.tex"),
+                                   mode="r", encoding="utf-8")
         output = StringIO.StringIO()
         # Uncomment to generate the file.
-        #output = codecs.open(os.path.join(CURRENT_DIR, "facture-1.tex"), 
+        #output = codecs.open(os.path.join(CURRENT_DIR, "facture-1.tex"),
         #                                  mode="w+", encoding="utf-8")
         facture_to_tex(json.loads(facture.read()), tex_template, output)
-        facture_tex = codecs.open(os.path.join(CURRENT_DIR, "facture-1.tex"), 
-                                               mode="r", encoding="utf-8")
+        facture_tex = codecs.open(os.path.join(CURRENT_DIR, "facture-1.tex"),
+                                  mode="r", encoding="utf-8")
         self.maxDiff = None
         self.assertEqual(output.getvalue(), facture_tex.read())
 
     def test_ecriture_facture(self):
         from colbert.factures import ecriture_facture
-        facture = codecs.open(os.path.join(CURRENT_DIR, "facture-1_calculee.json"), 
+        facture = codecs.open(os.path.join(CURRENT_DIR, "facture-1_calculee.json"),
                               mode="r", encoding="utf-8")
-        ecriture = ecriture_facture(json.loads(facture.read())) 
+        ecriture = ecriture_facture(json.loads(facture.read()))
         self.maxDiff = None
         self.assertEqual(
             ecriture,
@@ -115,12 +115,13 @@ class FacturesTestCase(unittest.TestCase):
                   'numero_compte_debit': u''},
                  {'credit': Decimal('1050.73'),
                   'debit': Decimal('0.00'),
-                  'nom_compte': u'Taxes sur le CA sur factures \xe0 \xe9tablir',
+                  'nom_compte': u'Taxes sur le CA sur factures à établir',
                   'numero_compte_credit': '44587',
                   'numero_compte_debit': u''}
              ],
-             'intitule': u'Facture YYYYYYY MyClient#1'}
+             'intitule': [u'Facture YYYYYYY MyClient#1']}
         )
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(FacturesTestCase)
