@@ -320,25 +320,36 @@ def ecritures_to_livre_journal(ecritures, output_file=None, label=u"Ecritures po
     return output_file
 
 
-def ecriture_to_livre_journal(ecriture):
+def ecriture_to_livre_journal(ecriture, remove_lspace_intitule=False):
+
+    def clean_intitule(text, remove_lspace_intitule):
+        if remove_lspace_intitule and text[0] == ' ':
+            text = text[1:]
+        return text
+
+    intitule = ecriture[INTITULE][0]
+
     multiline_row = [
         [
             (ecriture[DATE], DATE_LEN),
             (u"", COMPTE_DEBIT_LEN),
             (u"", COMPTE_CREDIT_LEN),
-            (ecriture[INTITULE][0], INTITULE_LEN),
+            (clean_intitule(ecriture[INTITULE][0], remove_lspace_intitule), INTITULE_LEN),
             (u"", DEBIT_LEN),
             (u"", CREDIT_LEN),
         ],
     ]
     # Lignes d'intitulés supp. si présentes.
     for intitule in ecriture[INTITULE][1:]:
+        if remove_lspace_intitule and intitule[0] == ' ':
+            del intitule[0]
+
         multiline_row.append(
             [
                 (u"", DATE_LEN),
                 (u"", COMPTE_DEBIT_LEN),
                 (u"", COMPTE_CREDIT_LEN),
-                (intitule, INTITULE_LEN),
+                (clean_intitule(intitule, remove_lspace_intitule), INTITULE_LEN),
                 (u"", DEBIT_LEN),
                 (u"", CREDIT_LEN),
             ]
@@ -402,7 +413,7 @@ def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
     lines, lines_to_add = None, None
     with io.open(livre_journal_path, mode="r", encoding="utf-8") as f:
         lines = f.readlines()
-        lines_to_add = rst_table_row(ecriture_to_livre_journal(ecriture),
+        lines_to_add = rst_table_row(ecriture_to_livre_journal(ecriture, True),
                                      stroke_char="-", add_closing_stroke=False)
         lines_to_add = [u"%s%s" % (l, os.linesep) for l in lines_to_add]
         lines[numero_ligne:numero_ligne] = lines_to_add
