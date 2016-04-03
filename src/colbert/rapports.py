@@ -33,11 +33,13 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
             # http://www.bedework.org/trac/bedework/wiki/Bedework/DevDocs/DtstartEndNotes
             if not hasattr(date_fin_event, "date"):
                 date_fin_event = date_fin_event - datetime.timedelta(1)
-
             date_debut_event_date, date_fin_event_date = [(lambda d: (hasattr(d, "date") and d.date() or d))(day)
                                                           for day in (date_debut_event, date_fin_event)]
-            if (date_debut <= date_debut_event_date <= date_fin):
-                for day in daterange.daterange(date_debut_event_date, date_fin_event_date):
+            event_days = list(daterange.daterange(date_debut_event_date, date_fin_event_date))
+            if any([(day >= date_debut and day <= date_fin) for day in event_days]):
+                for day in event_days:
+                    if day < date_debut or day > date_fin:
+                        continue
                     events = events_by_date.setdefault(day, [])
                     events.append((date_debut_event, date_fin_event, unicode(component["SUMMARY"])))
 

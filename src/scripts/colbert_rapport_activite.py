@@ -64,11 +64,8 @@ def main():
         from colbert.rapports import rapport_activite
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
-        livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
-        grand_livre_precedent = None
         date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()
         date_fin = datetime.datetime.strptime(options.date_fin, DATE_FMT).date()
-
         calendrier = open(args[0], mode="r")
         rapport = rapport_activite(calendrier, 
                                    date_debut,
