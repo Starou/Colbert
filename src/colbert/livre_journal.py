@@ -6,6 +6,7 @@ import io
 import itertools
 import os
 import re
+import sys
 from decimal import Decimal
 from colbert.utils import fmt_number, parse_number, rst_table, rst_table_row, DATE_FMT
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
@@ -199,7 +200,9 @@ RX_DATE_INTITULE = re.compile(ur"""^\|\|\s
                               (?P<numero_compte_credit>\s+)\|\|
                               (?P<intitule>\s.+)\|\|
                               (?P<debit>\s+)\|\|
-                              (?P<credit>\s+)\|\s*$""", flags=(re.X | re.U))
+                              (?P<credit>\s+)\|
+                              (?P<checked>[\w\s]+)\|
+                              \s*$""", flags=(re.X | re.U))
 
 RX_SUITE_INTITULE = re.compile(ur"""^\|\|
                                (?P<date>\s+)\|\|
@@ -207,7 +210,9 @@ RX_SUITE_INTITULE = re.compile(ur"""^\|\|
                                (?P<numero_compte_credit>\s+)\|\|
                                (?P<intitule>\s+.+)\|\|
                                (?P<debit>\s+)\|\|
-                               (?P<credit>\s+)\|\s*$""", flags=(re.X | re.U))
+                               (?P<credit>\s+)\|
+                               (?P<checked>[\w\s]+)\|
+                               \s*$""", flags=(re.X | re.U))
 
 RX_ECRITURE = re.compile(ur"""^\|\|
                          (?P<date>\s+)\|\|
@@ -215,7 +220,9 @@ RX_ECRITURE = re.compile(ur"""^\|\|
                          (?P<numero_compte_credit>[\s\w-]+)\|\|
                          \s+(?P<nom_compte>.+)\|\|
                          (?P<debit>[\d\s.]+)\|\|
-                         (?P<credit>[\d\s.]+)\|\s*$""", flags=(re.X | re.U))
+                         (?P<credit>[\d\s.]+)\|
+                         (?P<checked>[\w\s]+)\|
+                         \s*$""", flags=(re.X | re.U))
 
 
 def livre_journal_to_list(livre_journal_file, string_only=False):
@@ -262,14 +269,17 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
             if DATE not in ecriture:
                 m = RX_DATE_INTITULE.match(line)
                 if not m:
-                    import sys
                     sys.stderr.write(line)
                     raise BaseException(u"La première ligne d'une écriture doit mentionner la date et l'intitulé.")
                 m = m.groupdict()
                 if string_only:
                     ecriture[DATE] = m[DATE]
                 else:
-                    ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
+                    try:
+                        ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
+                    except BaseException, e:
+                        sys.stderr.write(line)
+                        raise e
                 ecriture[INTITULE] = [m[INTITULE].rstrip()]
                 ecriture[ECRITURES] = []
             elif RX_SUITE_INTITULE.match(line):
@@ -281,7 +291,6 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
                 try:
                     m = RX_ECRITURE.match(line).groupdict()
                 except BaseException, e:
-                    import sys
                     sys.stderr.write(u"La ligne suivante n'est pas valide:\n%s" % line)
                     raise e
                 m = dict([(k, v.strip()) for k, v in m.items()])
