@@ -15,42 +15,46 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
 
     livre_journal = livre_journal_to_list(livre_journal_file)
 
-    # On ne devrait avoir que du crédit en tva collecté et du débit en tva déductible.
-    debit_tva_collectee, credit_tva_collectee = get_solde_compte(livre_journal,
-                                                                 PCG['tva-collectee'][NUMERO],
-                                                                 date_debut, date_fin)
+    tva_collectes, tva_deductibles = [], []
 
-    debit_tva_deductible, credit_tva_deductible = get_solde_compte(livre_journal,
-                                                                   PCG['tva-deductible'][NUMERO],
-                                                                   date_debut, date_fin)
+    for compte in PCG['tva-collectee']:
+        debit, credit = get_solde_compte(livre_journal, compte[NUMERO], date_debut, date_fin)
+        tva_collectes.append({
+            'compte': compte,
+            'debit': debit,
+            'credit': credit,
+        })
+
+    for compte in PCG['tva-deductible']:
+        debit, credit = get_solde_compte(livre_journal, compte[NUMERO], date_debut, date_fin)
+        tva_deductibles.append({
+            'compte': compte,
+            'debit': debit,
+            'credit': credit,
+        })
 
     compte_tva, debit_tva, credit_tva = None, Decimal("0"), Decimal("0")
 
     # Ecritures.
     ecritures = []
-    if credit_tva_collectee:
-        ecritures.append({
-            CREDIT: Decimal('0.00'),
-            DEBIT: credit_tva_collectee,
-            NOM_COMPTE: PCG['tva-collectee'][NOM],
-            NUMERO_COMPTE_CREDIT: u'',
-            NUMERO_COMPTE_DEBIT: PCG['tva-collectee'][NUMERO],
-        })
-    if debit_tva_deductible:
-        ecritures.append({
-            CREDIT: debit_tva_deductible,
-            DEBIT: Decimal('0.00'),
-            NOM_COMPTE: PCG['tva-deductible'][NOM],
-            NUMERO_COMPTE_CREDIT: PCG['tva-deductible'][NUMERO],
-            NUMERO_COMPTE_DEBIT: u'',
-        })
 
-    if credit_tva_collectee == debit_tva_deductible:
+    # Lignes d'écriture de solde des comptes de TVA.
+    for solde_compte in (tva_collectes + tva_deductibles):
+        ecriture = _ecriture_solde(solde_compte)
+        if ecriture:
+            ecritures.append(ecriture)
+
+    # ~ Equilibrage de l'écriture ~ #
+
+    credit_tva_collectees = reduce(lambda x, y: x+y, [tva['credit'] for tva in tva_collectes], Decimal('0.0'))
+    debit_tva_deductibles = reduce(lambda x, y: x+y, [tva['debit'] for tva in tva_deductibles], Decimal('0.0'))
+
+    if credit_tva_collectees == debit_tva_deductibles:
         pass
 
     # On a une dette envers l'état.
-    elif credit_tva_collectee > debit_tva_deductible:
-        credit_tva = credit_tva_collectee - debit_tva_deductible
+    elif credit_tva_collectees > debit_tva_deductibles:
+        credit_tva = credit_tva_collectees - debit_tva_deductibles
         credit_tva_arrondi = Decimal(str(round(credit_tva)))
 
         ecritures.append({
@@ -81,8 +85,7 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
             })
 
     # On a une créance sur l'état.
-    elif credit_tva_deductible > debit_tva_collectee:
-        pass  # TODO
+    # TODO
 
     if ecritures:
         return {
@@ -90,4 +93,23 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
             ECRITURES: ecritures,
             INTITULE: [u"Solde des comptes de TVA du %s au %s" % (
                 date_debut.strftime(DATE_FMT), date_fin.strftime(DATE_FMT))],
+        }
+
+
+def _ecriture_solde(solde_compte):
+    if solde_compte['credit'] > solde_compte['debit']:
+        return {
+            CREDIT: Decimal('0.00'),
+            DEBIT: solde_compte['credit'] - solde_compte['debit'],
+            NOM_COMPTE: solde_compte['compte'][NOM],
+            NUMERO_COMPTE_CREDIT: u'',
+            NUMERO_COMPTE_DEBIT: solde_compte['compte'][NUMERO],
+        }
+    elif solde_compte['credit'] < solde_compte['debit']:
+        return {
+            CREDIT: solde_compte['debit'] - solde_compte['credit'],
+            DEBIT: Decimal('0.00'),
+            NOM_COMPTE: solde_compte['compte'][NOM],
+            NUMERO_COMPTE_CREDIT: solde_compte['compte'][NUMERO],
+            NUMERO_COMPTE_DEBIT: u'',
         }

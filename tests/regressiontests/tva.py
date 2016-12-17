@@ -76,6 +76,105 @@ class TVATestCase(unittest.TestCase):
              'intitule': [u'Solde des comptes de TVA du 18/04/2011 au 30/06/2011']}
         )
 
+        # Ecritures TVA plusieurs comptes, crédit en déduction.
+        livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal-tva.txt"),
+                                    mode="r", encoding="utf-8")
+        solde_tva = solde_comptes_de_tva(livre_journal,
+                                         date_debut=datetime.date(2011, 3, 18),
+                                         date_fin=datetime.date(2011, 6, 30))
+        self.assertEqual(
+            solde_tva,
+            {'date': datetime.date(2011, 6, 30),
+             'ecritures': [{'credit': Decimal('0.00'),
+                            'debit': Decimal('294.00'),
+                            'nom_compte': u'TVA collect\xe9',
+                            'numero_compte_credit': u'',
+                            'numero_compte_debit': '44571'},
+                           {'credit': Decimal('36.46'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'TVA d\xe9ductible sur autres biens et services',
+                            'numero_compte_credit': '44566',
+                            'numero_compte_debit': u''},
+                           {'credit': Decimal('258.0'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'TVA \xe0 d\xe9caisser',
+                            'numero_compte_credit': '44551',
+                            'numero_compte_debit': u''},
+                           {'credit': Decimal('0.00'),
+                            'debit': Decimal('0.46'),
+                            'nom_compte': u'Charges diverses de gestion courante',
+                            'numero_compte_debit': '658',
+                            'numero_compte_credit': u''}],
+             'intitule': [u'Solde des comptes de TVA du 18/03/2011 au 30/06/2011']}
+        )
+
+        # Remboursement de TVA en juillet.
+        livre_journal.seek(0)
+        solde_tva = solde_comptes_de_tva(livre_journal,
+                                         date_debut=datetime.date(2011, 3, 18),
+                                         date_fin=datetime.date(2011, 7, 31))
+        self.assertEqual(
+            solde_tva,
+            {'date': datetime.date(2011, 7, 31),
+             'ecritures': [{'credit': Decimal('0.00'),
+                            'debit': Decimal('294.00'),
+                            'nom_compte': u'TVA collect\xe9',
+                            'numero_compte_credit': u'',
+                            'numero_compte_debit': '44571'},
+                           {'credit': Decimal('33.66'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'TVA d\xe9ductible sur autres biens et services',
+                            'numero_compte_credit': '44566',
+                            'numero_compte_debit': u''},
+                           {'credit': Decimal('260.0'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'TVA \xe0 d\xe9caisser',
+                            'numero_compte_credit': '44551',
+                            'numero_compte_debit': u''},
+                           {'credit': Decimal('0.34'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'Produits divers de gestion courante',
+                            'numero_compte_credit': '758',
+                            'numero_compte_debit': u''}],
+             'intitule': [u'Solde des comptes de TVA du 18/03/2011 au 31/07/2011']}
+        )
+
+        # Achat immobilisation en septembre, autre compte de TVA déductible.
+        livre_journal.seek(0)
+        solde_tva = solde_comptes_de_tva(livre_journal,
+                                         date_debut=datetime.date(2011, 3, 18),
+                                         date_fin=datetime.date(2011, 8, 31))
+        self.assertEqual(
+            solde_tva,
+            {'date': datetime.date(2011, 8, 31),
+             'ecritures': [{'credit': Decimal('0.00'),
+                            'debit': Decimal('294.00'),
+                            'nom_compte': u'TVA collect\xe9',
+                            'numero_compte_credit': u'',
+                            'numero_compte_debit': '44571'},
+                           {'credit': Decimal('80.67'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'TVA sur immobilisations',
+                            'numero_compte_credit': '44562',
+                            'numero_compte_debit': u''},
+                           {'credit': Decimal('33.66'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'TVA d\xe9ductible sur autres biens et services',
+                            'numero_compte_credit': '44566',
+                            'numero_compte_debit': u''},
+                           {'credit': Decimal('180.0'),
+                            'debit': Decimal('0.00'),
+                            'nom_compte': u'TVA \xe0 d\xe9caisser',
+                            'numero_compte_credit': '44551',
+                            'numero_compte_debit': u''},
+                           {'credit': Decimal('0.00'),
+                            'debit': Decimal('0.33'),
+                            'nom_compte': u'Charges diverses de gestion courante',
+                            'numero_compte_debit': '658',
+                            'numero_compte_credit': u''}],
+             'intitule': [u'Solde des comptes de TVA du 18/03/2011 au 31/08/2011']}
+        )
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(TVATestCase)
