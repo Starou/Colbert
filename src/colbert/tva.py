@@ -46,8 +46,8 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
 
     # ~ Equilibrage de l'écriture ~ #
 
-    credit_tva_collectees = reduce(lambda x, y: x['credit'] + y['credit'], tva_collectes, {'credit': Decimal('0.0')})
-    debit_tva_deductibles = reduce(lambda x, y: x['debit'] + y['debit'], tva_deductibles, {'debit': Decimal('0.0')})
+    credit_tva_collectees = reduce(lambda x, y: x+y, [tva['credit'] for tva in tva_collectes], Decimal('0.0'))
+    debit_tva_deductibles = reduce(lambda x, y: x+y, [tva['debit'] for tva in tva_deductibles], Decimal('0.0'))
 
     if credit_tva_collectees == debit_tva_deductibles:
         pass

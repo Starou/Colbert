@@ -32,6 +32,10 @@ PLAN_COMPTABLE_GENERAL = {
     ],
     'tva-deductible': [
         {
+            NUMERO: "44562",
+            NOM: u"TVA sur immobilisations",
+        },
+        {
             NUMERO: "44566",
             NOM: u"TVA déductible sur autres biens et services",
         },
