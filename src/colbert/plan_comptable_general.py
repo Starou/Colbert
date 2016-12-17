@@ -24,14 +24,18 @@ PLAN_COMPTABLE_GENERAL = {
         NUMERO: "44587",
         NOM: u"Taxes sur le CA sur factures à établir",
     },
-    'tva-collectee': {
-        NUMERO: "44571",
-        NOM: u"TVA collecté",
-    },
-    'tva-deductible': {
-        NUMERO: "44566",
-        NOM: u"TVA déductible sur autres biens et services",
-    },
+    'tva-collectee': [
+        {
+            NUMERO: "44571",
+            NOM: u"TVA collecté",
+        },
+    ],
+    'tva-deductible': [
+        {
+            NUMERO: "44566",
+            NOM: u"TVA déductible sur autres biens et services",
+        },
+    ],
     'tva-a-decaisser': {
         NUMERO: "44551",
         NOM: u"TVA à décaisser",
