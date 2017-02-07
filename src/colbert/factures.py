@@ -23,7 +23,7 @@ def calculer_facture(facture):
 
     # Calcul du montant de chaque ligne et du montant HT total.
     for ligne in facture["detail"]:
-        ligne["montant_ht"] = Decimal(ligne["prix_unitaire_ht"]) * Decimal(ligne["quantite"])
+        ligne["montant_ht"] = d_round(Decimal(ligne["prix_unitaire_ht"]) * Decimal(ligne["quantite"]), 2)
         facture["montant_ht"] += ligne["montant_ht"]
         facture["tva"].setdefault(ligne["taux_tva"], Decimal("0.00"))
         tva = d_round(ligne["montant_ht"] * Decimal(ligne["taux_tva"]) / Decimal("100.0"), 2)

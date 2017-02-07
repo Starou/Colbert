@@ -26,8 +26,6 @@ class FacturesTestCase(unittest.TestCase):
         #                              mode="w+", encoding="utf-8")
         #output.write(json.dumps(facture, default=json_encoder, indent=4))
         #output.close()
-
-        self.maxDiff = None
         self.assertDictEqual(
             facture,
             {u'client': {u'adresse': u'1, Infinite Loop',
@@ -68,6 +66,52 @@ class FacturesTestCase(unittest.TestCase):
              u'numero_compte': u'706',
              u'taux_penalites': u'11',
              'tva': {u'19.6': Decimal('1050.73')}}
+        )
+
+        facture = codecs.open(os.path.join(CURRENT_DIR, "facture-2.json"),
+                              mode="r", encoding="utf-8")
+
+        facture = calculer_facture(json.loads(facture.read()))
+        self.assertDictEqual(
+            facture,
+            {u'client': {u'adresse': u'1, Infinite Loop',
+                         u'code_postal': u'11222',
+                         u'nom': u'MyClient#1',
+                         u'numero_compte': u'4111-CL1',
+                         u'nom_compte': u'Clients - ventes de biens ou prestations de services',
+                         u'reference_commande': u'XXXXX',
+                         u'ville': u'Cupertino'},
+             u'date_debut_execution': u'10/04/2011',
+             u'date_facture': u'10/05/2011',
+             u'date_fin_execution': u'30/04/2011',
+             'date_reglement': datetime.date(2011, 7, 31),
+             'date_debut_penalites': datetime.date(2011, 8, 1),
+             u'deja_paye': u'0.00',
+             u'detail': [{u'description': u'Prestation A.',
+                          'montant_ht': Decimal('450.00'),
+                          u'prix_unitaire_ht': u'100.00',
+                          u'unite': u'jours',
+                          u'quantite': u'4.5',
+                          u'reference': u'ref-A',
+                          u'taux_tva': u'19.6'},
+                         {u'description': u'Prestation B.',
+                          'montant_ht': Decimal('5073.64'),
+                          u'prix_unitaire_ht': u'450.99',
+                          u'unite': u'jours',
+                          u'quantite': u'11.25',
+                          u'reference': u'ref-B',
+                          u'taux_tva': u'19.6'}],
+             u'devise': u'Euro',
+             'montant_ht': Decimal('5523.64'),
+             'montant_ttc': Decimal('6606.27'),
+             'reste_a_payer': Decimal('6606.27'),
+             u'nb_jours_payable_fin_de_mois': u'60',
+             u'numero_facture': u'YYYYYYY',
+             u'symbole_devise': u'\u20ac',
+             u'nom_compte': u'Produits - prestations de services',
+             u'numero_compte': u'706',
+             u'taux_penalites': u'11',
+             'tva': {u'19.6': Decimal('1082.63')}}
         )
 
     def test_date_reglement_facture(self):

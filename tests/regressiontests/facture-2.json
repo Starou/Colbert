@@ -1,0 +1,40 @@
+{
+    "client": {
+        "nom": "MyClient#1",
+            "adresse": "1, Infinite Loop",
+            "code_postal": "11222",
+            "ville": "Cupertino",
+            "numero_compte": "4111-CL1",
+            "nom_compte": "Clients - ventes de biens ou prestations de services",
+            "reference_commande": "XXXXX"
+    },
+    "numero_facture": "YYYYYYY",
+    "date_facture": "10/05/2011",
+    "nb_jours_payable_fin_de_mois": "60",
+    "taux_penalites": "11",
+    "date_debut_execution": "10/04/2011",
+    "date_fin_execution": "30/04/2011",
+    "devise": "Euro",
+    "symbole_devise": "€",
+    "numero_compte": "706",
+    "nom_compte": "Produits - prestations de services",
+    "detail": [
+        {
+            "reference": "ref-A",
+            "description": "Prestation A.",
+            "prix_unitaire_ht": "100.00",
+            "unite": "jours",
+            "taux_tva": "19.6",
+            "quantite": "4.5"
+        },
+        {
+            "reference": "ref-B",
+            "description": "Prestation B.",
+            "prix_unitaire_ht": "450.99",
+            "unite": "jours",
+            "taux_tva": "19.6",
+            "quantite": "11.25"
+        }
+    ],
+    "deja_paye": "0.00"
+}
