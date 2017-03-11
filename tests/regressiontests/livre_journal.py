@@ -329,7 +329,7 @@ u"""+---------------------------------------------------------------------------
         self.maxDiff = None
 
         # Première ligne d'écriture.
-        s = u"|| 31/03/2011 ||                ||                || Facture 2011-01 AdenClassifieds      ||          ||           |  "
+        s = u"|| 31/03/2011 ||                ||                || Facture 2011-01 AdenClassifieds      ||          ||           |   | "
         if VERSION_INFO >= (2, 7):
             self.assertRegexpMatches(s, RX_DATE_INTITULE)
         m = RX_DATE_INTITULE.match(s)
@@ -338,16 +338,17 @@ u"""+---------------------------------------------------------------------------
                                          'debit': u'          ',
                                          'date': u'31/03/2011',
                                          'numero_compte_credit': u'                ',
-                                         'numero_compte_debit': u'                '})
+                                         'numero_compte_debit': u'                ',
+                                         'checked': u'   '})
 
         # Ligne supplementaire d'intitulé.
-        s = u"||   ||       ||        ||    suite et fin de l'intitulé     ||     ||   |"
+        s = u"||   ||       ||        ||    suite et fin de l'intitulé     ||     ||   |  |"
         if VERSION_INFO >= (2, 7):
             self.assertRegexpMatches(s, RX_SUITE_INTITULE)
         m = RX_SUITE_INTITULE.match(s)
 
         # Ecriture.
-        s = u"||   ||    4111-clie   ||        ||   Clients - ventes de biens ou prestations de services  ||    8 372   ||         |"
+        s = u"||   ||    4111-clie   ||        ||   Clients - ventes de biens ou prestations de services  ||    8 372   ||         |   |"
         if VERSION_INFO >= (2, 7):
             self.assertRegexpMatches(s, RX_ECRITURE)
         m = RX_ECRITURE.match(s)
@@ -356,7 +357,8 @@ u"""+---------------------------------------------------------------------------
                                          'debit': u'    8 372   ',
                                          'date': u'   ',
                                          'numero_compte_credit': u'        ',
-                                         'numero_compte_debit': u'    4111-clie   '})
+                                         'numero_compte_debit': u'    4111-clie   ',
+                                         'checked': u'   '})
 
         # Conversion du livre journal.
         livre_journal = codecs.open(os.path.join(CURRENT_DIR, "livre-journal.txt"),
