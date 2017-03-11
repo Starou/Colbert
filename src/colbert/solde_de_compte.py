@@ -124,12 +124,13 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
             if (solde == solde_final) and (type_solde == type_solde_final):
                 solde_is_ok = True
 
-            last_row = u"Solde final calculé (*%s €*, %s) %s solde final attendu (*%s €*, %s)" % (
+            last_row = u"Solde final calculé (*%s €*, %s) %s solde final attendu (*%s €*, %s)%s" % (
                 fmt_number(solde),
                 type_solde,
                 solde_is_ok and u"*identique* au" or u"**différent** du",
                 fmt_number(solde_final),
                 type_solde_final,
+                "" if solde_is_ok else u" : %s €" % fmt_number(solde - solde_final)
             )
             lines.append(rst_table(table))
             lines.append(rst_table([[(last_row, SOLDE_TABLE_LEN)]]))
