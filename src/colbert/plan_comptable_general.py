@@ -44,6 +44,10 @@ PLAN_COMPTABLE_GENERAL = {
         NUMERO: "44551",
         NOM: u"TVA à décaisser",
     },
+    'credit-de-tva-a-reporter': {
+        NUMERO: "44567",
+        NOM: u"Crédit de TVA à reporter",
+    },
     'produits-divers-gestion-courante': {
         NUMERO: "758",
         NOM: u"Produits divers de gestion courante",

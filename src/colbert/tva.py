@@ -85,7 +85,37 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
             })
 
     # On a une créance sur l'état.
-    # TODO
+    else:
+        debit_tva = debit_tva_deductibles - credit_tva_collectees
+        debit_tva_arrondi = Decimal(str(round(debit_tva)))
+
+        ecritures.append({
+            CREDIT: Decimal('0.00'),
+            DEBIT: debit_tva_arrondi ,
+            NOM_COMPTE: PCG['credit-de-tva-a-reporter'][NOM],
+            NUMERO_COMPTE_CREDIT: u'',
+            NUMERO_COMPTE_DEBIT: PCG['credit-de-tva-a-reporter'][NUMERO],
+        })
+
+        # L'arrondi est équilibré avec les comptes 658/758.
+        if debit_tva_arrondi > debit_tva:
+            ecritures.append({
+                CREDIT: debit_tva_arrondi - debit_tva,
+                DEBIT: Decimal('0.00'),
+                NOM_COMPTE: PCG['produits-divers-gestion-courante'][NOM],
+                NUMERO_COMPTE_CREDIT: PCG['produits-divers-gestion-courante'][NUMERO],
+                NUMERO_COMPTE_DEBIT: u'',
+            })
+        elif debit_tva_arrondi < debit_tva:
+            ecritures.append({
+                CREDIT: Decimal('0.00'),
+                DEBIT: debit_tva - debit_tva_arrondi,
+                NOM_COMPTE: PCG['charges-diverses-gestion-courante'][NOM],
+                NUMERO_COMPTE_CREDIT: u'',
+                NUMERO_COMPTE_DEBIT: PCG['charges-diverses-gestion-courante'][NUMERO],
+            })
+
+
 
     if ecritures:
         return {
