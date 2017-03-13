@@ -306,13 +306,14 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
     return livre_journal
 
 
-LIVRE_JOURNAL_LEN = 148
+LIVRE_JOURNAL_LEN = 153
 DATE_LEN = 13
 COMPTE_DEBIT_LEN = 17
 COMPTE_CREDIT_LEN = 17
 INTITULE_LEN = 62
 DEBIT_LEN = 17
 CREDIT_LEN = 17
+CHECK_LEN = 4
 
 
 def ecritures_to_livre_journal(ecritures, output_file=None, label=u"Ecritures pour le Livre-journal"):
@@ -348,6 +349,7 @@ def ecriture_to_livre_journal(ecriture, remove_lspace_intitule=False):
             (clean_intitule(ecriture[INTITULE][0], remove_lspace_intitule), INTITULE_LEN),
             (u"", DEBIT_LEN),
             (u"", CREDIT_LEN),
+            (u"", CHECK_LEN),
         ],
     ]
     # Lignes d'intitulés supp. si présentes.
@@ -363,6 +365,7 @@ def ecriture_to_livre_journal(ecriture, remove_lspace_intitule=False):
                 (clean_intitule(intitule, remove_lspace_intitule), INTITULE_LEN),
                 (u"", DEBIT_LEN),
                 (u"", CREDIT_LEN),
+                (u"", CHECK_LEN),
             ]
         )
 
@@ -378,6 +381,7 @@ def ecriture_to_livre_journal(ecriture, remove_lspace_intitule=False):
                 (u"%s%s" % (credit and u"    " or u"", e[NOM_COMPTE]), INTITULE_LEN),
                 (debit and fmt_number(debit) or u"", DEBIT_LEN),
                 (credit and fmt_number(credit) or u"", CREDIT_LEN),
+                (u"", CHECK_LEN),
             ]
         )
     return multiline_row

@@ -282,30 +282,30 @@ class LivreJournalTestCase(unittest.TestCase):
         ecritures_to_livre_journal(json.loads(ecritures.read()), output)
         self.maxDiff = None
         self.assertEqual(output.getvalue(),
-u"""+----------------------------------------------------------------------------------------------------------------------------------------------------+
-| Ecritures pour le Livre-journal                                                                                                                    |
-+=============+=================+=================+==============================================================+=================+=================+
-|| 31/12/2011 ||                ||                || Ecritures de clôture des comptes.                           ||                ||                |
-||            || 706            ||                || Produits - prestations de services                          || 40 000.00      ||                |
-||            || 758            ||                || Produits divers de gestion courante                         || 0.34           ||                |
-||            ||                || 127            ||     Regroupement des comptes de produits                    ||                || 40 000.34      |
-+-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-|| 31/12/2011 ||                ||                || Ecritures de clôture des comptes.                           ||                ||                |
-||            || 126            ||                || Regroupement des comptes de charges                         || 4 048.44       ||                |
-||            ||                || 60225          ||     Achats - Fournitures de bureau                          ||                || 21.44          |
-||            ||                || 6227           ||     Achats - Frais d'actes et de contentieux                ||                || 160.00         |
-||            ||                || 6278-LCL       ||     Autres frais de commission sur prestations de services  ||                || 72.00          |
-||            ||                || 6411           ||     Charges - Salaires et appointements                     ||                || 3 000.00       |
-||            ||                || 6411-RSI       ||     Charges - cotisations RSI                               ||                || 393.00         |
-||            ||                || 6411-URSF1     ||     Charges - cotisations URSSAF - Allocations familliales  ||                || 161.80         |
-||            ||                || 6411-URSF2     ||     Charges - cotisations URSSAF - CSG/RDS déductible       ||                || 153.31         |
-||            ||                || 6411-URSF3     ||     Charges - cotisations URSSAF - CSG/RDS non-déductible   ||                || 86.89          |
-+-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
-|| 31/12/2011 ||                ||                || Enregistrement du résultat net de l'exercice                ||                ||                |
-||            || 127            ||                || Regroupement des comptes de produits                        || 40 000.34      ||                |
-||            ||                || 126            ||     Regroupement des comptes de charges                     ||                || 4 048.44       |
-||            ||                || 120            ||     résultat de l'exercice (bénéfice)                       ||                || 35 951.90      |
-+-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+
+u"""+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Ecritures pour le Livre-journal                                                                                                                         |
++=============+=================+=================+==============================================================+=================+=================+====+
+|| 31/12/2011 ||                ||                || Ecritures de clôture des comptes.                           ||                ||                |    |
+||            || 706            ||                || Produits - prestations de services                          || 40 000.00      ||                |    |
+||            || 758            ||                || Produits divers de gestion courante                         || 0.34           ||                |    |
+||            ||                || 127            ||     Regroupement des comptes de produits                    ||                || 40 000.34      |    |
++-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+----+
+|| 31/12/2011 ||                ||                || Ecritures de clôture des comptes.                           ||                ||                |    |
+||            || 126            ||                || Regroupement des comptes de charges                         || 4 048.44       ||                |    |
+||            ||                || 60225          ||     Achats - Fournitures de bureau                          ||                || 21.44          |    |
+||            ||                || 6227           ||     Achats - Frais d'actes et de contentieux                ||                || 160.00         |    |
+||            ||                || 6278-LCL       ||     Autres frais de commission sur prestations de services  ||                || 72.00          |    |
+||            ||                || 6411           ||     Charges - Salaires et appointements                     ||                || 3 000.00       |    |
+||            ||                || 6411-RSI       ||     Charges - cotisations RSI                               ||                || 393.00         |    |
+||            ||                || 6411-URSF1     ||     Charges - cotisations URSSAF - Allocations familliales  ||                || 161.80         |    |
+||            ||                || 6411-URSF2     ||     Charges - cotisations URSSAF - CSG/RDS déductible       ||                || 153.31         |    |
+||            ||                || 6411-URSF3     ||     Charges - cotisations URSSAF - CSG/RDS non-déductible   ||                || 86.89          |    |
++-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+----+
+|| 31/12/2011 ||                ||                || Enregistrement du résultat net de l'exercice                ||                ||                |    |
+||            || 127            ||                || Regroupement des comptes de produits                        || 40 000.34      ||                |    |
+||            ||                || 126            ||     Regroupement des comptes de charges                     ||                || 4 048.44       |    |
+||            ||                || 120            ||     résultat de l'exercice (bénéfice)                       ||                || 35 951.90      |    |
++-------------+-----------------+-----------------+--------------------------------------------------------------+-----------------+-----------------+----+
 
 """)
 

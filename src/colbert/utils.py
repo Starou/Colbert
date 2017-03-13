@@ -63,12 +63,13 @@ def rst_table_row(row, stroke_char, add_closing_stroke=False):
     if isinstance(row[0][0], list) or isinstance(row[0][0], tuple):
         for j, subrow in enumerate(row):
             line = []
-            for cell_content, cell_length in subrow:
+            for k, (cell_content, cell_length) in enumerate(subrow):
                 cell_content = truncate_words(cell_content, cell_length - 2)
                 # Idéalement, on devrait faire le stroke sur la dernière sous-ligne, pas la premiere.
                 if j == 0:
                     stroke.append(u'+%s' % (stroke_char * cell_length))
-                line.append(u'|| %s%s' % (cell_content,
+                sep = '||' if k < (len(subrow) - 1) else '| '
+                line.append(u'%s %s%s' % (sep, cell_content,
                                           u' ' * (cell_length - 2 - len(cell_content))))
             if j == 0:
                 stroke.append(u'+')
