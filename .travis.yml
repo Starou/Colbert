@@ -13,7 +13,4 @@ install:
 before_script:
   - cd tests
 
-script: make coverage
-
-after_script: coveralls
-
+script: make coverage && coveralls
