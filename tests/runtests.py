@@ -32,13 +32,15 @@ def load_suite_tests(only=None):
 
 
 if __name__ == '__main__':
+    # Doctests.
+    import doctest
+    doctest_response = doctest.testfile("../src/colbert/daterange.py")
+
     only = None
     if len(sys.argv) > 1:
         only = sys.argv[1]
     suites = load_suite_tests(only=only)
     suite = unittest.TestSuite(suites)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest_response = unittest.TextTestRunner(verbosity=2).run(suite)
 
-    # Doctests.
-    import doctest
-    doctest.testfile("../src/colbert/daterange.py")
+    sys.exit(bool(doctest_response.failed or unittest_response.errors))

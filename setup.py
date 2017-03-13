@@ -12,6 +12,7 @@ setup(
     description='Accountancy utilities for your small (french) business',
     long_description=README,
     package_dir={'': 'src'},
+    install_requires=['icalendar', 'pytz'],
     packages=['colbert'],
     data_files=[],
     scripts=[
@@ -42,7 +43,6 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
     ],
 )
