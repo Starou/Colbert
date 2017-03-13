@@ -17,11 +17,13 @@ RESULTAT = u'resultat'
 EXPLOITATION = u"exploitation"
 FINANCIERES = u"financières"
 EXCEPTIONNELLES = u"exceptionnelles"
+AMMORTISSEMENTS_ET_PROVISIONS = u"ammortissements et provisions"
 
 CHARGES = u"charges"
 PRODUITS = u"produits"
 CHARGES_EXPLOITATION = u"charges d'exploitation"
 FOURNITURES_NON_STOCKABLES = u"fournitures non stockables"
+ACHATS_DE_MARCHANDISES = u"achats de marchandises"
 SERVICES_EXTERIEURS = u"services extérieurs"
 AUTRES_SERVICES_EXTERIEURS = u"autres services extérieurs"
 AUTRES_IMPOTS = u"Autres impôts, taxes et versements assimilés"
@@ -32,6 +34,8 @@ CHARGES_FINANCIERES = u"charges financières"
 
 CHARGES_EXCEPTIONNELLES = u"charges exceptionnelles"
 CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION = u"Charges exceptionnelles sur opérations de gestion"
+DOTATIONS_AUX_AMMORTISSEMENTS_ET_PROVISIONS = u"dotations aux ammortissements et provisions"
+IMMOBILISATIONS_CORPORELLES = u"immobilisations corporelles"
 
 CHARGES_IMPOT_SOCIETES = u"impôt sur les sociétés"
 
@@ -42,6 +46,7 @@ AUTRES_PRODUITS_GESTION_COURANTE = u"Autres produits de gestion courante"
 
 PRODUITS_FINANCIERS = u"produits financiers"
 REVENUS_VALEURS_MOBILIERES_DE_PLACEMENT = u"Revenus des valeurs mobilières de placement"
+REPRISES_SUR_AMMORTISSEMENTS_ET_PROVISIONS = u"reprises sur amortissements et provisions"
 
 PRODUITS_EXCEPTIONNELS = u"produits exceptionnels"
 
@@ -54,6 +59,7 @@ LIGNES_RESULTAT = {
             COMPTES: [
                 REMUNERATIONS_DU_PERSONNEL,
                 FOURNITURES_NON_STOCKABLES,
+                ACHATS_DE_MARCHANDISES,
                 SERVICES_EXTERIEURS,
                 AUTRES_SERVICES_EXTERIEURS,
                 AUTRES_IMPOTS,
@@ -69,6 +75,12 @@ LIGNES_RESULTAT = {
             LABEL: CHARGES_EXCEPTIONNELLES,
             COMPTES: [
                 CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION,
+            ]
+        },
+        AMMORTISSEMENTS_ET_PROVISIONS: {
+            LABEL: DOTATIONS_AUX_AMMORTISSEMENTS_ET_PROVISIONS,
+            COMPTES: [
+                IMMOBILISATIONS_CORPORELLES,
             ]
         },
         CHARGES_IMPOT_SOCIETES: {
@@ -94,9 +106,12 @@ LIGNES_RESULTAT = {
         },
         EXCEPTIONNELLES: {
             LABEL: PRODUITS_EXCEPTIONNELS,
-            COMPTES: [
-            ]
-        }
+            COMPTES: []
+        },
+        AMMORTISSEMENTS_ET_PROVISIONS: {
+            LABEL: REPRISES_SUR_AMMORTISSEMENTS_ET_PROVISIONS,
+            COMPTES: []
+        },
     },
 }
 
@@ -107,11 +122,13 @@ MAPPING_COMPTE_TO_RESULTAT = {
     '60611': (CHARGES, EXPLOITATION, FOURNITURES_NON_STOCKABLES),
     '6063': (CHARGES, EXPLOITATION, FOURNITURES_NON_STOCKABLES),
     '6064': (CHARGES, EXPLOITATION, FOURNITURES_NON_STOCKABLES),
+    '607': (CHARGES, EXPLOITATION, ACHATS_DE_MARCHANDISES),
     '635': (CHARGES, EXPLOITATION, AUTRES_IMPOTS),
     '641': (CHARGES, EXPLOITATION, REMUNERATIONS_DU_PERSONNEL),
     '65': (CHARGES, EXPLOITATION, AUTRES_CHARGES_GESTION_COURANTE),
 
     '671': (CHARGES, EXCEPTIONNELLES, CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION),
+    '68112': (CHARGES, AMMORTISSEMENTS_ET_PROVISIONS, IMMOBILISATIONS_CORPORELLES),
 
     '695': (CHARGES, CHARGES_IMPOT_SOCIETES, CHARGES_IMPOT_SOCIETES),
 
@@ -169,12 +186,14 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
             EXPLOITATION: {},
             FINANCIERES: {},
             EXCEPTIONNELLES: {},
+            AMMORTISSEMENTS_ET_PROVISIONS: {},
             CHARGES_IMPOT_SOCIETES: {}
         },
         PRODUITS: {
             EXPLOITATION: {},
             FINANCIERES: {},
             EXCEPTIONNELLES: {},
+            AMMORTISSEMENTS_ET_PROVISIONS: {},
         },
     }
 
@@ -260,7 +279,7 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
             (produits and fmt_number(Decimal(produits)) or '', MONTANT_LEN),
         ]
 
-    for categorie in (EXPLOITATION, FINANCIERES, EXCEPTIONNELLES):
+    for categorie in (EXPLOITATION, FINANCIERES, EXCEPTIONNELLES, AMMORTISSEMENTS_ET_PROVISIONS):
         table.append([
             (u"*%s*" % LIGNES_RESULTAT[CHARGES][categorie][LABEL].capitalize(), CHARGES_LEN),
             (u"", MONTANT_LEN),

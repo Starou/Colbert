@@ -8,7 +8,8 @@
         }, 
         "financi\u00e8res": {}, 
         "imp\u00f4t sur les soci\u00e9t\u00e9s": {}, 
-        "exceptionnelles": {}
+        "exceptionnelles": {}, 
+        "ammortissements et provisions": {}
     }, 
     "produits": {
         "exploitation": {
@@ -16,7 +17,8 @@
             "Autres produits de gestion courante": "0.34"
         }, 
         "financi\u00e8res": {}, 
-        "exceptionnelles": {}
+        "exceptionnelles": {}, 
+        "ammortissements et provisions": {}
     }, 
     "label": "Compte de r\u00e9sultat 2011 - MyBusiness", 
     "total_produits": "40000.34", 
