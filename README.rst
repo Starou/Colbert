@@ -2,20 +2,23 @@
 Colbert
 =======
 
-
 .. image:: https://coveralls.io/repos/Starou/Colbert/badge.png
   :target: https://coveralls.io/r/Starou/Colbert
 
-.. image:: https://pypip.in/v/Colbert/badge.png
+.. image:: https://img.shields.io/pypi/v/colbert.svg
   :target: https://pypi.python.org/pypi/Colbert
 
-.. image:: https://pypip.in/py_versions/Colbert/badge.svg
+.. image:: https://img.shields.io/pypi/pyversions/colbert.svg
     :target: https://pypi.python.org/pypi/Colbert/
     :alt: Supported Python versions
 
-.. image:: https://pypip.in/license/Colbert/badge.svg
+.. image:: https://img.shields.io/pypi/l/colbert.svg
     :target: https://pypi.python.org/pypi/Colbert/
     :alt: License
+
+.. image:: https://api.travis-ci.org/Starou/Colbert.svg
+    :target: https://travis-ci.org/Starou/Colbert
+    :alt: Travis C.I.
 
 *Colbert* is not about `Stephen Colbert <http://www.colbertnation.com/the-colbert-report-videos/430767/november-21-2013/intro---11-21-13>`_. It is serious matter.
 
