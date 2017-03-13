@@ -12,6 +12,7 @@ setup(
     description='Accountancy utilities for your small (french) business',
     long_description=README,
     package_dir={'': 'src'},
+    install_requires=['icalendar', 'pytz'],
     packages=['colbert'],
     data_files=[],
     scripts=[

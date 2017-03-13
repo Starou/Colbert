@@ -7,8 +7,6 @@ python:
 install: 
   - pip install -q coverage
   - pip install -q coveralls
-  - pip install -q icalendar
-  - pip install -q pytz
   - pip install .
 
 before_script:
