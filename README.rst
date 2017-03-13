@@ -20,11 +20,12 @@ Colbert
     :target: https://travis-ci.org/Starou/Colbert
     :alt: Travis C.I.
 
-*Colbert* is not about `Stephen Colbert <http://www.colbertnation.com/the-colbert-report-videos/430767/november-21-2013/intro---11-21-13>`_. It is serious matter.
+*Colbert* is not about `Stephen Colbert <http://www.colbertnation.com/the-colbert-report-videos/430767/november-21-2013/intro---11-21-13>`_.
+It is serious matter.
 
-The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_, the Minister of Finances
-of France in the 17th century also known for being the father of the modern accountancy.
-
+The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_,
+the Minister of Finances of France in the 17th century also known for being the
+father of the modern accountancy.
 
 Installation
 ============
@@ -33,22 +34,22 @@ Installation
 
     pip install Colbert
 
-
 Functionalities
 ===============
 
-Colbert helps you to manage your accountancy with a unique constraint: get your *Livre Journal* (the book where you are supposed
-to daily register the financial operations) up-to-date. That's it.
+Colbert helps you to manage your accountancy with a unique constraint: get your
+*Livre Journal* (the book where you are supposed to daily register the financial
+operations) up-to-date. That's it.
 
-From that file it produce the annual reports (*Bilan*, *Compte de résultat* etc). There are also some utilities to check
-your Livre-journal against the bank reports, to generate invoices, activity report from *iCalendar* etc.
-
+From that file it produce the annual reports (*Bilan*, *Compte de résultat* etc).
+There are also some utilities to check your Livre-journal against the bank
+reports, to generate invoices, activity report from *iCalendar* etc.
 
 Disclaimer(s)
 =============
 
-This software has **not** been written by and /or with the help of an accountant (and no accountant has been hurt during the process).
-
+This software has **not** been written by and /or with the help of an accountant
+(and no accountant has been hurt during the process).
 
 The concepts
 ============
@@ -56,13 +57,17 @@ The concepts
 Background
 ----------
 
-I am running a small business since 2011 and from the start I decided to not outsource the accountancy nor to use a commercial software.
+I am running a small business since 2011 and from the start I decided to not
+outsource the accountancy nor to use a commercial software.
 
-Maybe I should have given `Gnucash <http://www.gnucash.org/>`_ but I decided to be cheap on the technology side and to build a collection
-of utilities on the fly as I was facing formalities.
+Maybe I should have given `Gnucash <http://www.gnucash.org/>`_ but I decided to
+be cheap on the technology side and to build a collection of utilities on the
+fly as I was facing formalities.
 
-*Colbert* is that very collection of tools working over organized and formated text files (*reStructuredText* and *JSON*).
-These tools produce other text files. Combined with LaTex (inside Makefile for automation) you can produce beautiful documents.
+*Colbert* is that very collection of tools working over organized and formated
+text files (*reStructuredText* and *JSON*).
+These tools produce other text files. Combined with LaTex (inside Makefile for
+automation) you can produce beautiful documents.
 
 ::
 
@@ -80,13 +85,13 @@ These tools produce other text files. Combined with LaTex (inside Makefile for a
     file-A.ps
     
 
+The core of accountancy is *le livre-journal*. This is our database where every
+single operation occuring in your business is recorded. Each operation must be
+balanced: the sum of the entries must be balanced by one or more output of the
+same amount.
 
-
-
-The core of accountancy is *le livre-journal*. This is our database where every single operation occuring in your business
-is recorded. Each operation must be balanced: the sum of the entries must be balanced by one or more output of the same amount.
-
-In large compagnies, this book is usualy splitted in several ones to regroup operations by type.
+In large compagnies, this book is usualy splitted in several ones to regroup
+operations by type.
 
 The scaffold I use is the following::
 
@@ -117,38 +122,45 @@ The scaffold I use is the following::
                                                     ...
 
 
-*Le livre-journal* is a never-ending story, this is the reason for keeping it at the root level. In accountancy, a main concept is
-*l'indépendance des exercices comptables* which is why I have broken down my organization by year (I am opening my accounts on Junary the 1st
-and closing them on December, 31th, every year).
+*Le livre-journal* is a never-ending story, this is the reason for keeping it
+at the root level. In accountancy, a main concept is *l'indépendance des
+exercices comptables* which is why I have broken down my organization by year
+(I am opening my accounts on Junary the 1st and closing them on December, 31th,
+every year).
 
-In each year directory reside sub-directories named with the tasks, books or documents you have to deal with and produce all along the financial/fiscal year.
+In each year directory reside sub-directories named with the tasks, books or
+documents you have to deal with and produce all along the financial/fiscal year.
 
-Almost every sub-directory should contain a Makefile to automatically call some Colbert or LaTeX routines to update your files from the source 
-(which may be the *livre-journal*, the *Grand-livre* or the *Balance des comptes*).
+Almost every sub-directory should contain a Makefile to automatically call some
+Colbert or LaTeX routines to update your files from the source (which may be
+the *livre-journal*, the *Grand-livre* or the *Balance des comptes*).
 
 
 In a nutshell, a typical usage at the end of a fiscal year is:
 
 1. having a *Livre-journal* up-to-date and accurate ;
-2. check your *relevés bancaires* (bank statement) against the Livre-journal. Go back to (1) if it is not the case ;
+2. check your *relevés bancaires* (bank statement) against the Livre-journal.
+   Go back to (1) if it is not the case ;
 3. generate the *Grand-livre* as JSON from the Livre-journal ;
 4. generate the *Balance des comptes* from the *grand_livre.json* file ;
 5. compute the *Bilan* from  the *balance_des_comptes.json* file ;
 6. compute the *Compte de résultat* from  the *balance_des_comptes.json* file ;
-7. compute the *écritures de clôture* from  the *balance_des_comptes.json* file and write them back to the Livre-journal ;
+7. compute the *écritures de clôture* from  the *balance_des_comptes.json* file
+   and write them back to the Livre-journal.
 
-
-
-**Note** : each *JSON* file can be converted in a *reStructuredText* format with a *colbert_\*_to_rst* script. 
-
+**Note** : each *JSON* file can be converted in a *reStructuredText* format
+with a *colbert_\*_to_rst* script.
 
 Le Livre-journal
 ----------------
 
-The Livre-journal is a diary or a book where every flow of money is logged. There is a tight legislation concerning those books in general and
-you must refer yourself to the legislation of your country or juridiction.
+The Livre-journal is a diary or a book where every flow of money is logged.
+There is a tight legislation concerning those books in general and you must
+refer yourself to the legislation of your country or juridiction.
 
-In Colbert, this is a reStructuredText file meeting the french administration requirements (the columns' width had been reduced to fit properly in this document):
+In Colbert, this is a reStructuredText file meeting the french administration
+requirements (the columns' width had been reduced to fit properly in this
+document):
 
 .. code-block:: rst
 
@@ -192,22 +204,24 @@ In Colbert, this is a reStructuredText file meeting the french administration re
 
 Each entry is a multiline row in the table. 
 
-I use *Line Blocks* to get a descent formatting in the multiline cells. Trying to right-align the content of the two last columns was a failure.
-In fact for a reason I don't get, if those values are not left-aligned, the LaTeX conversion sucks.
+I use *Line Blocks* to get a descent formatting in the multiline cells. Trying
+to right-align the content of the two last columns was a failure.
+In fact for a reason I don't get, if those values are not left-aligned,
+the LaTeX conversion sucks.
 
-The optional *thousand separator* cannot be anything else than a space character at the moment. This is on the TODO list.
+The optional *thousand separator* cannot be anything else than a space
+character at the moment. This is on the TODO list.
 
 Adding entries
 ''''''''''''''
 
-Editing the file can became cumbersome. To speed up this task you can use the ``colbert_livre_journal.py`` script
-to duplicate an entry:
+Editing the file can became cumbersome. To speed up this task you can use the
+``colbert_livre_journal.py`` script to duplicate an entry:
 
 .. code-block:: bash
 
     $ python colbert_livre_journal.py search cojean -l path/to/livre-journal.txt
     $ python colbert_livre_journal.py add -l path/to/livre-journal.txt -f cojean -d 14/09/2014 -a 13.50
-
 
 Checking the Livre-journal
 ''''''''''''''''''''''''''
@@ -217,7 +231,6 @@ A first script allows you to check the entries balance of the book:
 .. code-block:: bash
 
     $ colbert_check_livre_journal.py my_livre_journal.txt
-
 
 My Makefile in the Livre-journal directory being:
 
@@ -245,13 +258,14 @@ My Makefile in the Livre-journal directory being:
             [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
         done
 
-
 Computing VAT
 '''''''''''''
 
-The *colbert_solder_tva.py* script compute the flow of money on the VAT-related accounts for a period of time and produce an JSON-entry
-to counter-balance these entries. Then you (manually) copy/paste this entry in the Livre-journal.
-Obviously, the JSON-entry need to be converted first in the reStructuredText format of the Livre-journal with the *colbert_ecritures_to_livre_journal.py*
+The *colbert_solder_tva.py* script compute the flow of money on the VAT-related
+accounts for a period of time and produce an JSON-entry to counter-balance
+these entries. Then you (manually) copy/paste this entry in the Livre-journal.
+Obviously, the JSON-entry need to be converted first in the reStructuredText
+format of the Livre-journal with the *colbert_ecritures_to_livre_journal.py*
 utility.
 
 This is something you have to do every month or every quarter in France.
@@ -263,13 +277,14 @@ In the *TVA* directory:
     $ colbert_solder_tva ../../livre-journal/livre-journal.txt -d 01/03/2011 -f 30/9/2011 > solde-tva-sept-2011.json
     $ colbert_ecritures_to_livre_journal solde-tva-sept-2011.json > solde-tva-sept-2011.txt
 
-
 Le Grand-livre
 --------------
 
-In that book are gathered the entries of the Livre-journal by account number for a period of time (a fiscal year). One table for every single account.
+In that book are gathered the entries of the Livre-journal by account number
+for a period of time (a fiscal year). One table for every single account.
 
-Every account should start with the *report à nouveau* (the balance) of the previous fiscal year.
+Every account should start with the *report à nouveau* (the balance) of the
+previous fiscal year.
 
 To generate the Grand-livre, run the following:
 
@@ -321,7 +336,8 @@ Or in a Makefile:
             [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
         done
 
-The *fix_table.sed* in the TeX conversion rule is a Sed script managing the right-alignment of the money columns::
+The *fix_table.sed* in the TeX conversion rule is a Sed script managing the
+right-alignment of the money columns::
 
     s/\\begin{longtable\*}.*/\\newcolumntype{x}[1]{% \
     >{\\raggedleft\\hspace{0pt}}p{#1}}% \
@@ -381,29 +397,30 @@ Here an example of the reStructuredText output:
 
     .. raw:: latex
 
-
 N+1 years
 '''''''''
 
-When you start a new year there are two things to keep in mind for the Grand-Livre:
+When you start a new year there are two things to keep in mind for the
+Grand-Livre:
 
 - to start with the *Report à nouveau* of the account of the previous year ;
-- to include the entries of the previous year that have not been included in the Grand-Livre.
+- to include the entries of the previous year that have not been included in
+  the Grand-Livre.
 
 
-*Colbert* does it for you. All you have to do is to provide the path of the previous one (as JSON):
+*Colbert* does it for you. All you have to do is to provide the path of the
+previous one (as JSON):
 
 .. code-block:: bash
 
     $ @colbert_grand_livre.py ../../livre-journal/livre-journal.txt --label="MyBusiness - Grand-Livre 2012" \
         -d 1/1/2012 -f 31/12/2012 -p ../../2011/grand-livre/grand-livre_2011.json > grand-livre_2012.json
 
-
 La balance des comptes
 ----------------------
 
-The next financial piece is a single table regrouping the balance of the accounts. It is computed from the Grand-livre for
-the sake of simplicity. 
+The next financial piece is a single table regrouping the balance of the
+accounts. It is computed from the Grand-livre for the sake of simplicity.
 
 Again, you first generate a JSON file and then a reStructuredText file:
 
@@ -412,7 +429,6 @@ Again, you first generate a JSON file and then a reStructuredText file:
     $ colbert_balance_des_comptes.py ../grand-livre/grand_livre-2011.json \
         --label="MyBusiness - Balance des comptes 2011 en €"  > $balance-des-comptes.json
     $ colbert_balance_des_comptes_to_rst.py balance-des-comptes.json > balance-des-comptes.txt
-
 
 And again, you should use this Makefile:
 
@@ -449,7 +465,6 @@ And again, you should use this Makefile:
             [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
         done
 
-
 With the Sed fix::
 
     s/\\begin{longtable\*}.*/\\newcolumntype{x}[1]{% \
@@ -461,8 +476,8 @@ With the Sed fix::
     s/&[[:space:]]+\\\\/\& \\tabularnewline/
     s/[[:space:]]+\\\\$/\\tabularnewline/
 
-
-And here a example of the reStructuredText output (again, the table width had been reduced here to fit well):
+And here a example of the reStructuredText output (again, the table width had
+been reduced here to fit well):
 
 .. code-block:: rst
 
@@ -524,18 +539,17 @@ And here a example of the reStructuredText output (again, the table width had be
     |              | **Totaux**                                        | **89598.10**| **89598.10** | **48255.79**| **48255.79**|
     +--------------+---------------------------------------------------+-------------+--------------+-------------+-------------+
 
-
 Le Bilan
 --------
 
-This document is a *résumé* or a «picture» of your business. It is generated from the *Balance des comptes*:
+This document is a *résumé* or a «picture» of your business. It is generated
+from the *Balance des comptes*:
 
 .. code-block:: bash
 
     $ colbert_bilan.py ../balance-des-comptes/balance_des_comptes-2011.json \
         --label="MyBusiness - Bilan 2011 en €" > bilan.json
     $ colbert_bilan_to_rst.py bilan.json > bilan.txt
-
 
 A Makefile to automatically do all the work:
 
@@ -607,18 +621,17 @@ The reStructuredText output:
     | *Total*                      | *11964.21*       | *0.00*         | **11964.21**  | *Total*               | **11964.21**  |
     +------------------------------+------------------+----------------+---------------+-----------------------+---------------+
 
-
 Le compte de résultat
 ---------------------
 
-The purpose of this last document is to give an idea of your activity during the fiscal year:
+The purpose of this last document is to give an idea of your activity during
+the fiscal year:
 
 .. code-block:: bash
 
     $ colbert_compte_de_resultat.py ../balance-des-comptes/balance_des_comptes-2011.json \
         --label="MyBusiness - Compte de résultat 2011 en €"  > compte-de-resultat.json
     $ colbert_compte_de_resultat_to_rst.py compte-de-resultat.json > compte-de-resultat.txt
-
 
 In a Makefile:
 
@@ -656,7 +669,6 @@ In a Makefile:
             [ -e $(FILENAME)$${ext} ] && rm $(FILENAME)$${ext} || [ 1 ] ;\
         done
 
-
 The Sed script::
 
     s/\\begin{longtable\*}.*/\\newcolumntype{x}[1]{% \
@@ -667,7 +679,6 @@ The Sed script::
     s/} \\\\/} \\tabularnewline/
     s/&[[:space:]]+\\\\/\& \\tabularnewline/
     s/[[:space:]]+\\\\$/\\tabularnewline/
-
 
 The reStructuredText output:
 
@@ -719,26 +730,29 @@ The reStructuredText output:
     | **Résultat (bénéfice)**         | 35951.90  |                                                  |                  |
     +---------------------------------+-----------+--------------------------------------------------+------------------+
 
-
 Managing the transition between 2 fiscal years
 ==============================================
 
-When you have closed your fiscal year (say 2011) you have to create a new one (2012). In Colbert, you create a new directory,
-*2012*, aside *2011*. You can simply make a *cp 2011 2012*, then run the *make purge* rules in each subdirectories and 
-replace the dates and the filenames at the top of each Makefile.
+When you have closed your fiscal year (say 2011) you have to create a new one
+(2012). In Colbert, you create a new directory, *2012*, aside *2011*. You can
+simply make a *cp 2011 2012*, then run the *make purge* rules in each
+subdirectories and replace the dates and the filenames at the top of each
+Makefile.
 
 This may looks a bit awkward but this occurs only once a year!
-
 
 Les écritures de clôture
 ------------------------
 
-When a fiscal year is closed and when your documents and books are up-to-date (*Grand-livre*, *Balance des comptes*,
-*Bilan* and *Compte de résultat*) you have to insert in the Livre-journal the *écritures de clôture* (accounts closing entries).
-The purpose of these entries is:
+When a fiscal year is closed and when your documents and books are up-to-date
+(*Grand-livre*, *Balance des comptes*, *Bilan* and *Compte de résultat*) you
+have to insert in the Livre-journal the *écritures de clôture* (accounts
+closing entries).  The purpose of these entries is:
 
-1. to reset the *comptes de résultat* (in France, it is those having a number in *6xx* and *7xx*) ;
-2. transfert the gain or the lost registred at the end of the fiscal year on the *comptes de bilan*.
+1. to reset the *comptes de résultat* (in France, it is those having a number
+   in *6xx* and *7xx*) ;
+2. transfert the gain or the lost registred at the end of the fiscal year on
+   the *comptes de bilan*.
 
 Colbert comes with a script to compute such entries:
 
@@ -749,17 +763,19 @@ Colbert comes with a script to compute such entries:
         ecritures-de-cloture.json > ecritures-de-cloture.txt
 
 
-And copy/paste the body of *ecritures-de-cloture.txt* into the Livre-journal at the right place.
-
+And copy/paste the body of *ecritures-de-cloture.txt* into the Livre-journal at
+the right place.
 
 Checking your account statements against the Livre-journal
 ==========================================================
 
-There must be reciprocity between your account statements from your bank and the entries in your Livre-journal.
+There must be reciprocity between your account statements from your bank and
+the entries in your Livre-journal.
 
-Colbert is able to generate account statements for a bank account (say *512*) and to check the balance against 
-a JSON file representing the balances of each account statement received from the bank establishment. Write such 
-a file with your text editor:
+Colbert is able to generate account statements for a bank account (say *512*)
+and to check the balance against a JSON file representing the balances of each
+account statement received from the bank establishment. Write such a file with
+your text editor:
 
 .. code-block:: json
 
@@ -789,8 +805,8 @@ a file with your text editor:
         }
     ]
 
-
-And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt solde.json* which outputs:
+And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt solde.json*
+which outputs:
 
 .. code-block:: rst
 
@@ -837,12 +853,12 @@ And run *colbert_solde_de_compte.py ../../../livre-journal/livre-journal.txt sol
 
         \newpage
 
-
 Making invoices
 ===============
 
-Colbert can assist you to compute invoices, generate TeX/PDF outputs and the Livre-journal entries from them.
-You start with a JSON file like the one below and use the script *colbert_calculer_facture.py* to fill it out:
+Colbert can assist you to compute invoices, generate TeX/PDF outputs and the
+Livre-journal entries from them.  You start with a JSON file like the one below
+and use the script *colbert_calculer_facture.py* to fill it out:
 
 .. code-block:: json
 
@@ -947,32 +963,34 @@ Produce the following:
     }
 
 
-You should redirect the output to a new file, say *my_invoice_ok.json* and use it to generate a LaTeX output:
+You should redirect the output to a new file, say *my_invoice_ok.json* and use
+it to generate a LaTeX output:
 
 .. code-block:: bash
 
     $ colbert_facture_to_tex.py my_invoice_ok.json my_invoice_template.tex > my_invoice.tex
     $ xelatex my_invoice.tex
 
-The parameter *my_invoice_template.tex* is a TeX file having placeholder for Python string formatting with keyword arguments.
+The parameter *my_invoice_template.tex* is a TeX file having placeholder for
+Python string formatting with keyword arguments.
 There is an example of such template in the *tests/regressiontests/* folder.
-
 
 Livre-journal entry
 -------------------
 
-Having an invoice filled-in you can now generate the entry for the Livre-journal:
+Having an invoice filled-in you can now generate the entry for the
+Livre-journal:
 
 .. code-block:: bash
 
     $ colbert_ecriture_facture.py my_invoice_ok.json > my_invoice_entry.json
     $ colbert_ecritures_to_livre_journal.py --label="Entry to report" my_invoice_entry.json > my_invoice_entry.txt
 
-
 Workflow
 --------
 
-My method is to use a directory for each invoice with the following Makefile in it:
+My method is to use a directory for each invoice with the following Makefile in
+it:
 
 .. code-block:: make
 
@@ -1000,12 +1018,11 @@ My method is to use a directory for each invoice with the following Makefile in 
             [ -e $(filename)$${ext} ] && rm $(filename)$${ext} || [ 1 ] ;\
         done
 
-
 Activity report from iCal
 -------------------------
 
-There is a template of LaTeX class in the *tex* directory. Again, I use a Makefile (the same to generate
-the invoice associated with):
+There is a template of LaTeX class in the *tex* directory. Again, I use a
+Makefile (the same to generate the invoice associated with):
 
 .. code-block:: make
 
@@ -1067,21 +1084,22 @@ the invoice associated with):
             [ -e $(rac_filename)$${ext} ] && rm $(rac_filename)$${ext} || [ 1 ] ;\
         done
 
-
-You should take a look in the *tests/regressiontests* directory to grab the LaTeX template.
+You should take a look in the *tests/regressiontests* directory to grab the
+LaTeX template.
 
 Working with LaTeX
 ==================
 
-I convert my reStructuredText files using docutils' *rst2latex.py* with the *--table-style=booktabs* option except for the
-Livre-journal.
+I convert my reStructuredText files using docutils' *rst2latex.py* with the
+*--table-style=booktabs* option except for the Livre-journal.
 
-Aside each Makefile in each directory (like *TVA* or *grand-livre*) there is a docutils configuration file *docutils.conf* and 
-a LaTeX stylesheet *docutils.tex*.
+Aside each Makefile in each directory (like *TVA* or *grand-livre*) there is a
+docutils configuration file *docutils.conf* and a LaTeX stylesheet
+*docutils.tex*.
 
-Because I want to right-align some columns and because docutils does not handle that, I process the LaTeX outputs with a 
-bit of *Sed* before the PDF conversion.
-
+Because I want to right-align some columns and because docutils does not
+handle that, I process the LaTeX outputs with a bit of *Sed* before the PDF
+conversion.
 
 The docutils.conf file
 ----------------------
@@ -1105,7 +1123,8 @@ Almost always::
 
 If the LaTeX compiler complains about utf-8 you may add the *ucs* package.
 
-You may want to precisely control the header and the footer with *fancyhdr* package::
+You may want to precisely control the header and the footer with *fancyhdr*
+package::
 
     \usepackage{fancyhdr}
     \fancyhf{}
@@ -1117,13 +1136,11 @@ You may want to precisely control the header and the footer with *fancyhdr* pack
     \renewcommand{\headrulewidth}{0pt}
     \renewcommand{\footrulewidth}{0.4pt}
 
-
-
 The Sed script
 --------------
 
-The idea is to change the table(s) declaration(s) to get columns with managed width and alignment.
-
+The idea is to change the table(s) declaration(s) to get columns with managed
+width and alignment.
 
 In the Makefile it looks like that:
 
@@ -1133,9 +1150,7 @@ In the Makefile it looks like that:
     	@rst2latex.py --table-style=booktabs $(FILENAME).txt >  $(FILENAME).tex.tmp
     	@sed -E -f fix_table.sed < $(FILENAME).tex.tmp > $(FILENAME).tex
 
-
 The Sed script depends of the TeX file. Here an example::
-
 
     s/\\begin{longtable\*}.*/\\newcolumntype{x}[1]{% \
     >{\\raggedleft\\hspace{0pt}}p{#1}}% \
@@ -1149,17 +1164,18 @@ And to force the *pagestyle* for the first one I sometimes add::
     s/\\maketitle/\\maketitle\
     \\thispagestyle{fancy}/
 
-
 Tests
 =====
 
-There are some regression tests in the *test* directory.
+.. code-block:: bash
 
+    cd tests
+    python runtests.py
 
 Requirements
 ============
 
-- Python 2.7+
+- Python 2.7.x
 - pytz
 - Python Icalendar (https://github.com/collective/icalendar)
 - Docutils (SVN)
