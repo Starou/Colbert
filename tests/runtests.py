@@ -43,6 +43,4 @@ if __name__ == '__main__':
     suite = unittest.TestSuite(suites)
     unittest_response = unittest.TextTestRunner(verbosity=2).run(suite)
 
-    if doctest_response.failed or unittest_response.errors:
-        sys.exit(bool(doctest_response.failed or unittest_response.errors))
-
+    sys.exit(bool(doctest_response.failed or unittest_response.errors))
