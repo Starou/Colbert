@@ -1,11 +1,12 @@
+tests:
+	@PYTHONPATH=..:${PYTHONPATH} python runtests.py
+
 coveralls:
-	# There is no way to tell coveralls to run runtests.py.
-	# Maybe the --config-file?
-	# This generate the .coverage report file (default).
-	# https://github.com/z4r/python-coveralls
-	@coverage run --rcfile=coveragerc runtests.py
+	@PYTHONPATH=..:${PYTHONPATH} coverage run --rcfile=coveragerc runtests.py
 	@coveralls -y coveralls.yaml -d .coverage
 
-coverage:
-	@coverage run --rcfile=coveragerc runtests.py
+coverage-report: coverage
 	@coverage report -m
+
+coverage:
+	@PYTHONPATH=..:${PYTHONPATH} coverage run --rcfile=coveragerc runtests.py
