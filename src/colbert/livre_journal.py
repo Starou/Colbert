@@ -306,6 +306,47 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
     return livre_journal
 
 
+def ecritures_to_livre_journal_md(ecritures):
+    """Converti une liste d'écritures JSON dans le format MarkDown Pandoc. """
+
+    md_lines = [
+        u'--------------------------------------------------------------------------------------------------------------------------------------------',
+        u' Date        Compte débit   Compte crédit   Libellé de l\'Opération et des Comptes                                   Débit €         Crédit €',
+        u'------------ -------------- --------------- -------------------------------------------------------------- ---------------- ----------------',
+    ]
+    for ecriture in ecritures:
+        md_lines.extend(ecriture_to_livre_journal_md_lines(ecriture))
+
+    md_lines.append(
+        u'--------------------------------------------------------------------------------------------------------------------------------------------'
+    )
+
+    return md_lines
+
+
+def ecriture_to_livre_journal_md_lines(ecriture):
+    # Date et libellé de l'opération.
+    md_lines = [u'_{}_                                  _{}_'.format(ecriture[DATE], ecriture[INTITULE][0].strip())]
+
+    # Lignes supplémentaires du libellé.
+    for line in ecriture[INTITULE][1:]:
+        md_lines.append(u'                                            _{}_'.format(line.strip()))
+
+    md_lines.append('')
+
+    # Lignes comptables
+    for line in ecriture[ECRITURES]:
+        if Decimal(parse_number(line[DEBIT])):
+            md_lines.append(u'             {numero_compte_debit: <014}                 {nom_compte: <062} {debit: >016}\n'.format(**line))
+        else:
+            md_lines.append(u'                            {numero_compte_credit: <014}  {nom_compte: <078}  {credit: >016}\n'.format(**line))
+
+    md_lines.append(u'\_\_\_\_\_\_\n')
+
+    return md_lines
+
+
+
 LIVRE_JOURNAL_LEN = 153
 DATE_LEN = 13
 COMPTE_DEBIT_LEN = 17
