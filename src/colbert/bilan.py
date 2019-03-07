@@ -372,15 +372,15 @@ def bilan_to_rst(bilan, output_file):
 
     def row(ligne_actif, ligne_passif):
         return [
-            (ligne_actif and ligne_actif[0] or '', ACTIF_LEN),
-            ((ligne_actif and ligne_actif[1]) and
+            (ligne_actif and ligne_actif[0] or '', ACTIF_LEN),  # Label
+            ((ligne_actif and (ligne_actif[1] != '')) and
              fmt_number(ligne_actif[1]) or '', BRUT_LEN),
-            ((ligne_actif and ligne_actif[2]) and
+            ((ligne_actif and (ligne_actif[2] != '')) and
              fmt_number(ligne_actif[2]) or '', AMORTISSEMENT_LEN),
-            ((ligne_actif and ligne_actif[3]) and
+            ((ligne_actif and (ligne_actif[3] != '')) and
              fmt_number(ligne_actif[3]) or '', NET_LEN),
-            (ligne_passif and ligne_passif[0] or '', PASSIF_LEN),
-            ((ligne_passif and ligne_passif[1]) and
+            (ligne_passif and ligne_passif[0] or '', PASSIF_LEN),  # Label
+            ((ligne_passif and (ligne_passif[1] != '')) and
              fmt_number(ligne_passif[1]) or '', MONTANT_LEN)
         ]
 
