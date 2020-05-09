@@ -76,10 +76,8 @@ def facture_to_tex(facture, tex_template, output_file):
 
     # Lignes de TVA.
     kwargs["lignes_tva"] = "\\cline{3-5}".join([
-        "\\multicolumn{2}{l|}{} & \\multicolumn{2}{|l|}{\sc TVA %s\\%%} & \\numprint{%s}\\\\" % (
-            taux_tva,
-            tva
-        ) for taux_tva, tva in list(kwargs["tva"].items())
+        "\\multicolumn{2}{l|}{} & \\multicolumn{2}{|l|}{\\sc TVA %s\\%%} & \\numprint{%s}\\\\" % (taux_tva, tva)
+        for taux_tva, tva in list(kwargs["tva"].items())
     ])
 
     # Période d'exécution de la prestation.
