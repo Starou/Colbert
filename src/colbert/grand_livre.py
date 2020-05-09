@@ -9,6 +9,7 @@ from colbert.common import titre_principal_rst
 from colbert.common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
                             DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM, COMPTES)
 from functools import reduce
+from itertools import zip_longest
 
 DATE_LEN = 12
 LIBELLE_LEN = 45
@@ -179,7 +180,8 @@ def grand_livre_to_rst(grand_livre, output_file):
         debits = [(e[DATE], e[INTITULE], e[DEBIT]) for e in compte[ECRITURES] if DEBIT in e]
         credits = [(e[DATE], e[INTITULE], e[CREDIT]) for e in compte[ECRITURES] if CREDIT in e]
 
-        list(map(lambda d, c: table.append(row(d, c)), debits, credits))
+        for debit, credit in zip_longest(debits, credits):
+            table.append(row(debit, credit))
 
         # Ligne du solde.
         solde_crediteur = Decimal(compte[SOLDE_CREDITEUR])
