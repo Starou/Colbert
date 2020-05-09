@@ -43,17 +43,16 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
                     events = events_by_date.setdefault(day, [])
                     events.append((date_debut_event, date_fin_event, str(component["SUMMARY"])))
 
-    # Then, events are sorted by date_debut in the same day but we must cast date in datetime to compare.
-    def sort_date_and_datetime(x, y):
-        x, y = [(lambda d: (not hasattr(d, "date") and
-                            datetime.datetime(d.year, d.month, d.day, tzinfo=pytz.utc) or
-                            d))(d) for d in (x, y)]
-        return cmp(x, y)
+    def _as_datetime(date_or_datetime):
+        if not hasattr(date_or_datetime, "date"):
+            return datetime.datetime(date_or_datetime.year, date_or_datetime.month,
+                                     date_or_datetime.day, tzinfo=pytz.utc)
+        else:
+            return date_or_datetime
 
     for day in list(events_by_date.keys()):
         events_by_date[day] = sorted(events_by_date[day],
-                                     key=lambda e: e[0],
-                                     cmp=sort_date_and_datetime)
+                                     key=lambda event: _as_datetime(event[0]))
 
     # Then we are distinguishing datetime.date and datetime.datetime in the same day.
     for day in sorted(events_by_date):
