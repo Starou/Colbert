@@ -9,6 +9,7 @@ from colbert.utils import DATE_FMT
 from colbert.common import titre_principal_rst
 from colbert.common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
                             LABEL, NUMERO, COMPTES)
+from itertools import zip_longest
 
 TOTAL_CHARGES = 'total_charges'
 TOTAL_PRODUITS = 'total_produits'
@@ -287,9 +288,8 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
             ("", MONTANT_LEN),
         ])
         # La structure du tableau est donnée par le mapping LIGNES_RESULTAT.
-        list(map(lambda charge, produit: table.append(row(compte_de_resultat, categorie, charge, produit)),
-            LIGNES_RESULTAT[CHARGES][categorie][COMPTES],
-            LIGNES_RESULTAT[PRODUITS][categorie][COMPTES]))
+        for charge, produit in zip_longest(LIGNES_RESULTAT[CHARGES][categorie][COMPTES], LIGNES_RESULTAT[PRODUITS][categorie][COMPTES]):
+            table.append(row(compte_de_resultat, categorie, charge, produit))
 
         table.append([("", CHARGES_LEN), ("", MONTANT_LEN), ("", PRODUITS_LEN), ("", MONTANT_LEN)])
 
