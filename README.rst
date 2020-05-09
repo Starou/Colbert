@@ -20,7 +20,7 @@ Colbert
     :target: https://travis-ci.org/Starou/Colbert
     :alt: Travis C.I.
 
-*Colbert* is not about `Stephen Colbert <http://www.colbertnation.com/the-colbert-report-videos/430767/november-21-2013/intro---11-21-13>`_.
+*Colbert* is not about this douche `Stephen Colbert <https://www.rt.com/usa/507821-barack-obama-stephen-colbert-interview/>`_.
 It is serious matter.
 
 The name is a tribute to `Jean-Baptiste Colbert <http://en.wikipedia.org/wiki/Jean-Baptiste_Colbert>`_,
@@ -1175,7 +1175,7 @@ Tests
 Requirements
 ============
 
-- Python 3.7.x
+- Python 3.9+
 - pytz
 - Python Icalendar (https://github.com/collective/icalendar)
 - Docutils (SVN)

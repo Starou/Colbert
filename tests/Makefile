@@ -1,5 +1,5 @@
 tests:
-	@PYTHONPATH=..:${PYTHONPATH} python runtests.py
+	@PYTHONPATH=..:${PYTHONPATH} python3 runtests.py
 
 coveralls:
 	@PYTHONPATH=..:${PYTHONPATH} coverage run --rcfile=coveragerc runtests.py

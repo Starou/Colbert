@@ -3,7 +3,7 @@ import sys
 import unittest
 
 REGRESSION_TEST_DIRNAME = 'regressiontests'
-REGRESSION_TEST_DIR = os.path.join(os.path.dirname(__file__), REGRESSION_TEST_DIRNAME)
+REGRESSION_TEST_DIR = REGRESSION_TEST_DIRNAME
 
 sys.path.insert(0, '../src/')
 

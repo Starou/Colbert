@@ -2,9 +2,9 @@ sudo: required
 language: python
 
 python:
-  - 2.7
+  - 3.9
 
-install: 
+install:
   - pip install -q coverage
   - pip install -q coveralls
   - pip install .
