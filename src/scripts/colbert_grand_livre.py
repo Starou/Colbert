@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -27,12 +27,15 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import sys, locale, codecs
-from optparse import OptionParser
 import datetime
+import json
+import sys
+from colbert.grand_livre import grand_livre
 from colbert.utils import DATE_FMT
 from colbert.utils import json_encoder
 from colbert.utils import decode_as_ecriture as as_ecriture
+from optparse import OptionParser
+from pathlib import Path
 
 
 def main():
@@ -40,13 +43,13 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-l", "--label", dest="label", default="Grand Livre", 
+    parser.add_option("-l", "--label", dest="label", default="Grand Livre",
                       help="Titre à faire apparaitre sur le Grand-Livre")
-    parser.add_option("-d", "--date-debut", dest="date_debut", 
+    parser.add_option("-d", "--date-debut", dest="date_debut",
                       help="date de début de l'exercice au format jj/mm/aaaa.")
-    parser.add_option("-f", "--date-fin", dest="date_fin", 
+    parser.add_option("-f", "--date-fin", dest="date_fin",
                       help="date de fin de l'exercice au format jj/mm/aaaa.")
-    parser.add_option("-p", "--grandlivre-precedent", dest="grand_livre_precedent", 
+    parser.add_option("-p", "--grandlivre-precedent", dest="grand_livre_precedent",
                       help="chemin vers le fichier du Grand Livre de l'exercice précédent au format JSON.")
 
     (options, args) = parser.parse_args()
@@ -55,21 +58,18 @@ def main():
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Livre-Journal au format reStructuredText.")
     else:
-        import json
-        from colbert.grand_livre import grand_livre
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
-        livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
+        livre_journal = open(args[0], mode="r")
         grand_livre_precedent = None
         if options.grand_livre_precedent:
-            grand_livre_precedent = json.loads(codecs.open(options.grand_livre_precedent, mode="r",
-                                                           encoding="utf-8").read(), object_hook=as_ecriture)
+            grand_livre_precedent = json.loads(Path(options.grand_livre_precedent).read_text(),
+                                               object_hook=as_ecriture)
         date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()
         date_fin = datetime.datetime.strptime(options.date_fin, DATE_FMT).date()
 
         gl = grand_livre(livre_journal, options.label, date_debut, date_fin, grand_livre_precedent)
-        
+
         json.dump(gl, sys.stdout, default=json_encoder, indent=4)
+
 
 if __name__ == "__main__":
     main()

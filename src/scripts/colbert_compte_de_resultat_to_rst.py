@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -27,8 +27,11 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import sys, locale, codecs
+import json
+import sys
+from colbert.compte_de_resultat import compte_de_resultat_to_rst
 from optparse import OptionParser
+from pathlib import Path
 
 
 def main():
@@ -42,13 +45,9 @@ def main():
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "de compte de resultat au format JSON.")
     else:
-        import json
-        from colbert.compte_de_resultat import compte_de_resultat_to_rst
-        locale.setlocale(locale.LC_ALL, '')
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
-        compte_de_resultat = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
+        compte_de_resultat = json.loads(Path(args[0]).read_text())
         compte_de_resultat_to_rst(compte_de_resultat, sys.stdout)
+
 
 if __name__ == "__main__":
     main()

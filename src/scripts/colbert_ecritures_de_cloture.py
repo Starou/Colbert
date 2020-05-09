@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -27,10 +27,12 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import sys, locale, codecs
+import sys
+import json
+from colbert.livre_journal import ecritures_de_cloture
+from colbert.utils import json_encoder
 from optparse import OptionParser
-import datetime
-from decimal import Decimal
+from pathlib import Path
 
 
 def main():
@@ -44,15 +46,10 @@ def main():
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "de balance des comptes au format JSON.")
     else:
-        import json
-        from colbert.utils import json_encoder
-        from colbert.livre_journal import ecritures_de_cloture
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
-        balance_des_comptes = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
+        balance_des_comptes = json.loads(Path(args[0]).read_text())
         edc = ecritures_de_cloture(balance_des_comptes)
-        
         json.dump(edc, sys.stdout, default=json_encoder, indent=4)
+
 
 if __name__ == "__main__":
     main()
