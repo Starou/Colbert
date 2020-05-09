@@ -79,11 +79,11 @@ automation) you can produce beautiful documents.
          |                             |
          | LaTex, etc.                 | LaTeX, etc.
          |                             |
-         v                             v 
+         v                             v
     file-A.tex                       file-C.tex
     file-A.pdf
     file-A.ps
-    
+
 
 The core of accountancy is *le livre-journal*. This is our database where every
 single operation occuring in your business is recorded. Each operation must be
@@ -96,29 +96,29 @@ operations by type.
 The scaffold I use is the following::
 
 
-    + MyBusiness/   +-- accountancy/    +-- livre-journal/  +-- livre-journal.txt 
-                                        |                   | 
-                                        |                   +-- Makefile 
+    + MyBusiness/   +-- accountancy/    +-- livre-journal/  +-- livre-journal.txt
+                                        |                   |
+                                        |                   +-- Makefile
                                         |
                                         +-- 2011/   +-- grand-livre/
                                         |           |
-                                        |           +-- releves-bancaires/  
+                                        |           +-- releves-bancaires/
                                         |           |
-                                        |           +-- factures/           
+                                        |           +-- factures/
                                         |           |
                                         |           +-- balance-des-comptes/
                                         |           |
                                         |           +-- bilan/
                                         |           |
-                                        |           +-- compte-de-resultat/ 
+                                        |           +-- compte-de-resultat/
                                         |           |
-                                        |           +-- TVA/                
+                                        |           +-- TVA/
                                         |           |
                                         |           +-- ecritures-de-cloture/
                                         |
                                         +-- 2012/   +-- grand-livre/
                                         |           |
-                                        |           +-- releves-bancaires/  
+                                        |           +-- releves-bancaires/
                                                     ...
 
 
@@ -202,7 +202,7 @@ document):
 
 
 
-Each entry is a multiline row in the table. 
+Each entry is a multiline row in the table.
 
 I use *Line Blocks* to get a descent formatting in the multiline cells. Trying
 to right-align the content of the two last columns was a failure.
@@ -235,7 +235,7 @@ A first script allows you to check the entries balance of the book:
 My Makefile in the Livre-journal directory being:
 
 .. code-block:: make
-    
+
     FILENAME="livre-journal"
 
     all:	pdf
@@ -591,7 +591,7 @@ And the Sed script::
 
     s/\\setlength{\\DUtablewidth}{\\linewidth}/\\setlength{\\tabcolsep}{25pt} \\setlength{\\extrarowheight}{4.5pt}/
     s/\\begin{longtable\*}.*/\\begin{longtable*}[c]{lrrr|lr}/
-    
+
 
 The reStructuredText output:
 
@@ -880,8 +880,8 @@ and use the script *colbert_calculer_facture.py* to fill it out:
         "date_fin_execution": "30/04/2011",
         "devise": "Euro",
         "symbole_devise": "€",
-        "nom_compte": "Produits - prestations de services", 
-        "numero_compte": "706", 
+        "nom_compte": "Produits - prestations de services",
+        "numero_compte": "706",
         "detail": [
             {
                 "reference": "ref-A",
@@ -912,53 +912,53 @@ Produce the following:
 .. code-block:: json
 
     {
-        "date_facture": "10/05/2011", 
-        "symbole_devise": "\u20ac", 
-        "deja_paye": "0.00", 
-        "taux_penalites": "11", 
-        "montant_ht": "5360.89", 
-        "date_fin_execution": "30/04/2011", 
+        "date_facture": "10/05/2011",
+        "symbole_devise": "\u20ac",
+        "deja_paye": "0.00",
+        "taux_penalites": "11",
+        "montant_ht": "5360.89",
+        "date_fin_execution": "30/04/2011",
         "detail": [
             {
-                "quantite": "4", 
-                "description": "Prestation A.", 
-                "reference": "ref-A", 
-                "montant_ht": "400.00", 
-                "prix_unitaire_ht": "100.00", 
-                "unite": "jours", 
+                "quantite": "4",
+                "description": "Prestation A.",
+                "reference": "ref-A",
+                "montant_ht": "400.00",
+                "prix_unitaire_ht": "100.00",
+                "unite": "jours",
                 "taux_tva": "19.6"
-            }, 
+            },
             {
-                "quantite": "11", 
-                "description": "Prestation B.", 
-                "reference": "ref-B", 
-                "montant_ht": "4960.89", 
-                "prix_unitaire_ht": "450.99", 
-                "unite": "jours", 
+                "quantite": "11",
+                "description": "Prestation B.",
+                "reference": "ref-B",
+                "montant_ht": "4960.89",
+                "prix_unitaire_ht": "450.99",
+                "unite": "jours",
                 "taux_tva": "19.6"
             }
-        ], 
-        "numero_facture": "YYYYYYY", 
-        "devise": "Euro", 
-        "nom_compte": "Produits - prestations de services", 
-        "numero_compte": "706", 
+        ],
+        "numero_facture": "YYYYYYY",
+        "devise": "Euro",
+        "nom_compte": "Produits - prestations de services",
+        "numero_compte": "706",
         "client": {
-            "ville": "Cupertino", 
-            "code_postal": "11222", 
-            "nom": "MyClient#1", 
-            "adresse": "1, Infinite Loop", 
-            "reference_commande": "XXXXX", 
+            "ville": "Cupertino",
+            "code_postal": "11222",
+            "nom": "MyClient#1",
+            "adresse": "1, Infinite Loop",
+            "reference_commande": "XXXXX",
             "nom_compte": "Clients - ventes de biens ou prestations de services",
             "numero_compte": "4111-CL1"
-        }, 
-        "montant_ttc": "6411.62", 
-        "date_debut_execution": "10/04/2011", 
-        "reste_a_payer": "6411.62", 
-        "nb_jours_payable_fin_de_mois": "60", 
-        "date_debut_penalites": "01/08/2011", 
+        },
+        "montant_ttc": "6411.62",
+        "date_debut_execution": "10/04/2011",
+        "reste_a_payer": "6411.62",
+        "nb_jours_payable_fin_de_mois": "60",
+        "date_debut_penalites": "01/08/2011",
         "tva": {
             "19.6": "1050.73"
-        }, 
+        },
         "date_reglement": "31/07/2011"
     }
 
@@ -1029,8 +1029,8 @@ Makefile (the same to generate the invoice associated with):
     month = Juin
     month_index = 007
     year = 2012
-    date_debut = 01/06/2012 
-    date_fin = 30/06/2012 
+    date_debut = 01/06/2012
+    date_fin = 30/06/2012
 
     ref_facture = $(year)-$(month_index)
 
@@ -1175,7 +1175,7 @@ Tests
 Requirements
 ============
 
-- Python 2.7.x
+- Python 3.7.x
 - pytz
 - Python Icalendar (https://github.com/collective/icalendar)
 - Docutils (SVN)
