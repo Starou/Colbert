@@ -9,6 +9,7 @@ from colbert.utils import DATE_FMT
 from colbert.common import titre_principal_rst
 from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
                             LABEL, NUMERO, CATEGORIE, RUBRIQUES, COMPTES)
+from itertools import zip_longest
 
 BRUT = 'brut'
 NET = 'net'
@@ -384,7 +385,8 @@ def bilan_to_rst(bilan, output_file):
              fmt_number(ligne_passif[1]) or '', MONTANT_LEN)
         ]
 
-    list(map(lambda actif, passif: table.append(row(actif, passif)), *flatten_bilan(bilan)))
+    for actif, passif in zip_longest(*flatten_bilan(bilan)):
+        table.append(row(actif, passif))
 
     # Dernière ligne.
     table.append([
