@@ -4,9 +4,9 @@ import datetime
 import pytz
 from icalendar import Calendar
 
-from colbert import daterange
-from colbert.utils import DATE_FMT
-from colbert.utils import latex_escape
+from . import daterange
+from .utils import DATE_FMT
+from .utils import latex_escape
 
 DATE_RAPPORT_FMT = "%A %d"
 HOUR_MIN_FMT = "%H.%M"

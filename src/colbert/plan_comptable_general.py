@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from colbert.common import NOM, NUMERO
+from .common import NOM, NUMERO
 
 
 PLAN_COMPTABLE_GENERAL = {

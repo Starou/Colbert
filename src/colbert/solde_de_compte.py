@@ -2,15 +2,12 @@
 
 import datetime
 from decimal import Decimal
-
-from colbert.livre_journal import livre_journal_to_list
-from colbert.livre_journal import ECRITURES, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
-
-from colbert.utils import fmt_number, rst_title, rst_section, rst_table
-from colbert.utils import DATE_FMT
-
-from colbert.common import (DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN,
-                            LABEL, INTITULE, NUMERO_COMPTE)
+from .common import (DEBIT, CREDIT, DATE, DATE_DEBUT, DATE_FIN,
+                     LABEL, INTITULE, NUMERO_COMPTE)
+from .livre_journal import livre_journal_to_list
+from .livre_journal import ECRITURES, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
+from .utils import fmt_number, rst_title, rst_section, rst_table
+from .utils import DATE_FMT
 
 SOLDE_TABLE_LEN = 134
 DATE_LEN = 12

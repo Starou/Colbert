@@ -2,11 +2,11 @@
 
 import datetime
 from decimal import Decimal
-from colbert.utils import fmt_number, rst_table
-from colbert.utils import DATE_FMT
-from colbert.common import titre_principal_rst
-from colbert.common import (TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
-                            DATE_DEBUT, DATE_FIN, LABEL, NOM, NUMERO, COMPTES)
+from .common import titre_principal_rst
+from .common import (TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
+                     DATE_DEBUT, DATE_FIN, LABEL, NOM, NUMERO, COMPTES)
+from .utils import fmt_number, rst_table
+from .utils import DATE_FMT
 
 TOTAL_DEBITS = 'total_debits'
 TOTAL_CREDITS = 'total_credits'

@@ -7,13 +7,12 @@ import os
 import re
 import sys
 from decimal import Decimal
-from colbert.utils import fmt_number, parse_number, rst_table, rst_table_row, DATE_FMT
-from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
-                            DATE, DATE_FIN, INTITULE, NOM, NUMERO, COMPTES,
-                            NUMERO_LIGNE_ECRITURE_DEBUT, NUMERO_LIGNE_ECRITURE_FIN)
-from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
-from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
-
+from .common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
+                     DATE, DATE_FIN, INTITULE, NOM, NUMERO, COMPTES,
+                     NUMERO_LIGNE_ECRITURE_DEBUT, NUMERO_LIGNE_ECRITURE_FIN)
+from .compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
+from .plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
+from .utils import fmt_number, parse_number, rst_table, rst_table_row, DATE_FMT
 
 ECRITURES = 'ecritures'
 NOM_COMPTE = 'nom_compte'

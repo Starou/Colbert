@@ -2,14 +2,12 @@
 
 import datetime
 from decimal import Decimal
-
-from colbert.utils import fmt_number, rst_table
-from colbert.utils import DATE_FMT
-
-from colbert.common import titre_principal_rst
-from colbert.common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
-                            LABEL, NUMERO, COMPTES)
 from itertools import zip_longest
+from .common import titre_principal_rst
+from .common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
+                     LABEL, NUMERO, COMPTES)
+from .utils import fmt_number, rst_table
+from .utils import DATE_FMT
 
 TOTAL_CHARGES = 'total_charges'
 TOTAL_PRODUITS = 'total_produits'

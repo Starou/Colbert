@@ -2,11 +2,11 @@
 
 import datetime
 from decimal import Decimal
-from colbert.utils import d_round
-from colbert.utils import DATE_FMT
-from colbert.common import DATE, INTITULE, NOM, NUMERO
-from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
-from colbert.livre_journal import ECRITURES
+from .common import DATE, INTITULE, NOM, NUMERO
+from .livre_journal import ECRITURES
+from .plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
+from .utils import d_round
+from .utils import DATE_FMT
 
 
 def calculer_facture(facture):
@@ -134,5 +134,5 @@ def ecriture_facture(facture):
         DATE: date_facture,
         ECRITURES: ecritures,
         INTITULE: ["Facture %s %s" % (facture["numero_facture"],
-                                       facture["client"]["nom"])]
+                                      facture["client"]["nom"])]
     }

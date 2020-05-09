@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from decimal import Decimal
-
-from colbert.livre_journal import livre_journal_to_list
-from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
-from colbert.utils import fmt_number, rst_table, rst_section
-from colbert.common import titre_principal_rst
-from colbert.common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
-                            DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM, COMPTES)
 from functools import reduce
 from itertools import zip_longest
+from .common import titre_principal_rst
+from .common import (DEBIT, CREDIT, TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
+                     DATE, DATE_DEBUT, DATE_FIN, LABEL, INTITULE, NOM, COMPTES)
+from .livre_journal import livre_journal_to_list
+from .livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
+from .utils import fmt_number, rst_table, rst_section
 
 DATE_LEN = 12
 LIBELLE_LEN = 45

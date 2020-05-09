@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from decimal import Decimal
-
-from colbert.utils import DATE_FMT
-from colbert.common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
-from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
-
-from colbert.livre_journal import livre_journal_to_list, get_solde_compte
-from colbert.livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
 from functools import reduce
+from .common import DEBIT, CREDIT, DATE, INTITULE, NOM, NUMERO
+from .livre_journal import livre_journal_to_list, get_solde_compte
+from .livre_journal import ECRITURES, NOM_COMPTE, NUMERO_COMPTE_DEBIT, NUMERO_COMPTE_CREDIT
+from .plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
+from .utils import DATE_FMT
 
 
 def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
