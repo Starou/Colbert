@@ -93,12 +93,12 @@ def facture_to_tex(facture, tex_template, output_file):
         date_debut_fmt += " %B"
     if date_debut.year != date_fin.year:
         date_debut_fmt += " %Y"
-    kwargs["periode_execution"] = "Du %s au %s" % (date_debut.strftime(date_debut_fmt.encode("utf-8")).decode("utf-8"),
-                                                    date_fin.strftime(date_fin_fmt.encode("utf-8")).decode("utf-8"))
+    kwargs["periode_execution"] = "Du %s au %s" % (date_debut.strftime(date_debut_fmt),
+                                                   date_fin.strftime(date_fin_fmt))
 
     # Reformatage des dates.
     for d in ("date_facture", "date_reglement", "date_debut_penalites"):
-        kwargs[d] = datetime.datetime.strptime(kwargs[d], DATE_FMT).date().strftime(date_fin_fmt.encode("utf-8")).decode("utf-8")
+        kwargs[d] = datetime.datetime.strptime(kwargs[d], DATE_FMT).date().strftime(date_fin_fmt)
 
     tex_string = tex_template.read() % kwargs
     output_file.write(tex_string)
