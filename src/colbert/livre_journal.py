@@ -3,7 +3,6 @@
 import bisect
 import datetime
 import io
-import itertools
 import os
 import re
 import sys
@@ -32,7 +31,7 @@ def check_livre_journal(livre_journal_file):
 def check_ecriture_livre_journal(ecriture):
     total_debit, total_credit = Decimal("0.0"), Decimal("0.0")
     check = ["%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
-                           ecriture[INTITULE][0])]
+                          ecriture[INTITULE][0])]
     for e in ecriture[ECRITURES]:
         if (e[DEBIT] and not e[NUMERO_COMPTE_DEBIT]) or (e[CREDIT] and not e[NUMERO_COMPTE_CREDIT]):
             check.append("ERREUR : incohérence entre les colonnes numéro de compte et montant")
@@ -43,7 +42,7 @@ def check_ecriture_livre_journal(ecriture):
         check.append("OK : débit = crédit (%s)." % fmt_number(total_credit))
     else:
         check.append("ERREUR : débit (%s) != crédit (%s)." % (fmt_number(total_debit),
-                                                               fmt_number(total_credit)))
+                                                              fmt_number(total_credit)))
     return check
 
 
@@ -412,9 +411,7 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
 
 
 def rechercher_ecriture(expression, livre_journal_as_list):
-    return filter(lambda l: any([expression in i.lower()
-                                            for i in l["intitule"]]),
-                             livre_journal_as_list)
+    return filter(lambda l: any([expression in i.lower() for i in l["intitule"]]), livre_journal_as_list)
 
 
 def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
@@ -454,14 +451,14 @@ def update_ecriture(ecriture, date, montants=None):
     ecriture[DATE] = date
 
     if montants:
-        default = montants[0]
-
-        def update_montants(ecriture, montant):
+        for i, ligne_ecriture in enumerate(ecriture[ECRITURES]):
+            try:
+                montant = montants[i]
+            except IndexError:
+                montant = montants[0]
             for op in (DEBIT, CREDIT):
-                if ecriture[op] != '0.00':
-                    ecriture[op] = montant if montant is not None else default
-
-        list(map(update_montants, ecriture[ECRITURES], montants))
+                if ligne_ecriture[op] != '0.00':
+                    ligne_ecriture[op] = montant
 
 
 def sortable_date(date_fr):
