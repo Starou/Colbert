@@ -32,7 +32,7 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
             'credit': credit,
         })
 
-    compte_tva, debit_tva, credit_tva = None, Decimal("0"), Decimal("0")
+    debit_tva, credit_tva = Decimal("0"), Decimal("0")
 
     # Ecritures.
     ecritures = []
@@ -45,8 +45,8 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
 
     # ~ Equilibrage de l'écriture ~ #
 
-    credit_tva_collectees = reduce(lambda x, y: x+y, [tva['credit'] for tva in tva_collectes], Decimal('0.0'))
-    debit_tva_deductibles = reduce(lambda x, y: x+y, [tva['debit'] for tva in tva_deductibles], Decimal('0.0'))
+    credit_tva_collectees = reduce(lambda x, y: x + y, [tva['credit'] for tva in tva_collectes], Decimal('0.0'))
+    debit_tva_deductibles = reduce(lambda x, y: x + y, [tva['debit'] for tva in tva_deductibles], Decimal('0.0'))
 
     if credit_tva_collectees == debit_tva_deductibles:
         pass
@@ -90,7 +90,7 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
 
         ecritures.append({
             CREDIT: Decimal('0.00'),
-            DEBIT: debit_tva_arrondi ,
+            DEBIT: debit_tva_arrondi,
             NOM_COMPTE: PCG['credit-de-tva-a-reporter'][NOM],
             NUMERO_COMPTE_CREDIT: '',
             NUMERO_COMPTE_DEBIT: PCG['credit-de-tva-a-reporter'][NUMERO],
@@ -113,8 +113,6 @@ def solde_comptes_de_tva(livre_journal_file, date_debut, date_fin):
                 NUMERO_COMPTE_CREDIT: '',
                 NUMERO_COMPTE_DEBIT: PCG['charges-diverses-gestion-courante'][NUMERO],
             })
-
-
 
     if ecritures:
         return {
