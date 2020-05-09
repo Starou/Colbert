@@ -45,7 +45,7 @@ def date_reglement_facture(date_facture, nb_jours_payable_fin_de_mois):
         datetime.timedelta(nb_jours_payable_fin_de_mois)
 
     # Premier du mois suivant moins 1 jour pour avoir le dernier jour du mois.
-    year = date_reglement.year + (date_reglement.month / 12)
+    year = date_reglement.year + (date_reglement.month // 12)
     month = (date_reglement.month % 12) + 1
 
     date_reglement = datetime.date(year, month, 1)
