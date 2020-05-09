@@ -39,9 +39,9 @@ def main():
     (options, args) = parser.parse_args()
 
     if len(args) != 2:
-        parser.error(u"Vous devez passer en argument le chemin d'un fichier "
-                     u"`Facture calculée' au format JSON et un modèle de "
-                     u"facture au format LaTeX.")
+        parser.error("Vous devez passer en argument le chemin d'un fichier "
+                     "`Facture calculée' au format JSON et un modèle de "
+                     "facture au format LaTeX.")
     else:
         import json
         from colbert.utils import json_encoder

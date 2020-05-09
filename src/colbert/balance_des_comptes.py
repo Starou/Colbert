@@ -8,10 +8,10 @@ from colbert.common import titre_principal_rst
 from colbert.common import (TOTAL_DEBIT, TOTAL_CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR,
                             DATE_DEBUT, DATE_FIN, LABEL, NOM, NUMERO, COMPTES)
 
-TOTAL_DEBITS = u'total_debits'
-TOTAL_CREDITS = u'total_credits'
-TOTAL_SOLDES_DEBITEURS = u'total_soldes_debiteurs'
-TOTAL_SOLDES_CREDITEURS = u'total_soldes_crediteurs'
+TOTAL_DEBITS = 'total_debits'
+TOTAL_CREDITS = 'total_credits'
+TOTAL_SOLDES_DEBITEURS = 'total_soldes_debiteurs'
+TOTAL_SOLDES_CREDITEURS = 'total_soldes_crediteurs'
 
 
 def balance_des_comptes(grand_livre, label="Balance des comptes"):
@@ -96,12 +96,12 @@ def balance_des_comptes_to_rst(balance_des_comptes, output_file):
     table = [
         # BUG dans la largeur du tableau pour conversion en PDF
         # [(u"**Comptes**", COMPTES_LEN), (u"**Totaux**", TOTAUX_LEN), (u"**Soldes**", SOLDES_LEN)],
-        [(u"N°", NUMERO_COMPTE_LEN),
-         (u"Libellé", LIBELLE_COMPTE_LEN),
-         (u"Total débit", DEBIT_LEN),
-         (u"Total crédit", CREDIT_LEN),
-         (u"Solde débit", DEBIT_LEN),
-         (u"Solde crédit", CREDIT_LEN)]
+        [("N°", NUMERO_COMPTE_LEN),
+         ("Libellé", LIBELLE_COMPTE_LEN),
+         ("Total débit", DEBIT_LEN),
+         ("Total crédit", CREDIT_LEN),
+         ("Solde débit", DEBIT_LEN),
+         ("Solde crédit", CREDIT_LEN)]
     ]
 
     for compte in balance_des_comptes[COMPTES]:
@@ -127,16 +127,16 @@ def balance_des_comptes_to_rst(balance_des_comptes, output_file):
 
     table.append([
         ('', NUMERO_COMPTE_LEN),
-        (u"**Totaux**", LIBELLE_COMPTE_LEN),
-        (total_debits and u"**%s**" % fmt_number(total_debits) or '', DEBIT_LEN),
-        (total_credits and u"**%s**" % fmt_number(total_credits) or '', CREDIT_LEN),
-        (total_soldes_debiteurs and u"**%s**" % fmt_number(total_soldes_debiteurs) or '', DEBIT_LEN),
-        (total_soldes_crediteurs and u"**%s**" % fmt_number(total_soldes_crediteurs) or '', CREDIT_LEN),
+        ("**Totaux**", LIBELLE_COMPTE_LEN),
+        (total_debits and "**%s**" % fmt_number(total_debits) or '', DEBIT_LEN),
+        (total_credits and "**%s**" % fmt_number(total_credits) or '', CREDIT_LEN),
+        (total_soldes_debiteurs and "**%s**" % fmt_number(total_soldes_debiteurs) or '', DEBIT_LEN),
+        (total_soldes_crediteurs and "**%s**" % fmt_number(total_soldes_crediteurs) or '', CREDIT_LEN),
     ])
 
     lines.append(rst_table(table))
 
-    output_file.write(u"\n".join(lines))
-    output_file.write(u"\n\n")
+    output_file.write("\n".join(lines))
+    output_file.write("\n\n")
 
     return output_file

@@ -3,7 +3,7 @@
 import os
 import unittest
 import codecs
-import StringIO
+import io
 
 CURRENT_DIR = os.path.dirname(__file__)
 
@@ -40,7 +40,7 @@ class SoldeDeCompteTestCase(unittest.TestCase):
         ]
         compte_512_rst = codecs.open(os.path.join(CURRENT_DIR, "compte_512-2011.txt"),
                                      mode="r", encoding="utf-8")
-        output = StringIO.StringIO()
+        output = io.StringIO()
         # Uncomment to generate the file.
         # output = codecs.open(os.path.join(CURRENT_DIR, "compte_512-2011.txt"),
         #                                   mode="w+", encoding="utf-8")

@@ -41,19 +41,19 @@ def main():
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
     parser.add_option("-l", "--label", dest="label", default="Grand Livre", 
-                      help=u"Titre à faire apparaitre sur le Grand-Livre")
+                      help="Titre à faire apparaitre sur le Grand-Livre")
     parser.add_option("-d", "--date-debut", dest="date_debut", 
-                      help=u"date de début de l'exercice au format jj/mm/aaaa.")
+                      help="date de début de l'exercice au format jj/mm/aaaa.")
     parser.add_option("-f", "--date-fin", dest="date_fin", 
-                      help=u"date de fin de l'exercice au format jj/mm/aaaa.")
+                      help="date de fin de l'exercice au format jj/mm/aaaa.")
     parser.add_option("-p", "--grandlivre-precedent", dest="grand_livre_precedent", 
-                      help=u"chemin vers le fichier du Grand Livre de l'exercice précédent au format JSON.")
+                      help="chemin vers le fichier du Grand Livre de l'exercice précédent au format JSON.")
 
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
-        parser.error(u"Vous devez passer en argument le chemin d'un fichier "
-                     u"Livre-Journal au format reStructuredText.")
+        parser.error("Vous devez passer en argument le chemin d'un fichier "
+                     "Livre-Journal au format reStructuredText.")
     else:
         import json
         from colbert.grand_livre import grand_livre

@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
+"""
     
 """
 
@@ -42,7 +42,7 @@ def main():
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
     parser.add_option("-l", "--label", dest="label", default="Balance des comptes", 
-                      help=u"Titre à faire apparaitre sur la balance des comptes")
+                      help="Titre à faire apparaitre sur la balance des comptes")
     (options, args) = parser.parse_args()
 
     if len(args) != 1:

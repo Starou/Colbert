@@ -36,8 +36,8 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-l", "--label", dest="label", default=u"Ecritures pour le Livre-Journal",
-                      help=u"Titre à faire apparaitre sur le tableau")
+    parser.add_option("-l", "--label", dest="label", default="Ecritures pour le Livre-Journal",
+                      help="Titre à faire apparaitre sur le tableau")
 
     (options, args) = parser.parse_args()
 

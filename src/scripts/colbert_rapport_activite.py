@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
+"""
 Génère un fichier d'activité au format JSON à partir d'un calendrier iCal.
 
 """
@@ -46,20 +46,20 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-l", "--label", dest="label", default=u"Rapport d\'activite", 
-                      help=u"Titre à faire apparaitre sur le rapport")
-    parser.add_option("-r", "--ref-facture", dest="ref_facture", default=u"Référence facture", 
-                      help=u"Titre à faire apparaitre sur le rapport")
+    parser.add_option("-l", "--label", dest="label", default="Rapport d\'activite", 
+                      help="Titre à faire apparaitre sur le rapport")
+    parser.add_option("-r", "--ref-facture", dest="ref_facture", default="Référence facture", 
+                      help="Titre à faire apparaitre sur le rapport")
     parser.add_option("-d", "--date-debut", dest="date_debut", 
-                      help=u"date de début de la période au format jj/mm/aaaa.")
+                      help="date de début de la période au format jj/mm/aaaa.")
     parser.add_option("-f", "--date-fin", dest="date_fin", 
-                      help=u"date de fin de la période au format jj/mm/aaaa.")
+                      help="date de fin de la période au format jj/mm/aaaa.")
 
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
-        parser.error(u"Vous devez passer en argument le chemin d'un calendrier "
-                     u"iCal.")
+        parser.error("Vous devez passer en argument le chemin d'un calendrier "
+                     "iCal.")
     else:
         from colbert.rapports import rapport_activite
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 

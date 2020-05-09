@@ -41,7 +41,7 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
                     if day < date_debut or day > date_fin:
                         continue
                     events = events_by_date.setdefault(day, [])
-                    events.append((date_debut_event, date_fin_event, unicode(component["SUMMARY"])))
+                    events.append((date_debut_event, date_fin_event, str(component["SUMMARY"])))
 
     # Then, events are sorted by date_debut in the same day but we must cast date in datetime to compare.
     def sort_date_and_datetime(x, y):
@@ -50,7 +50,7 @@ def rapport_activite(calendrier_ical, date_debut, date_fin, titre, ref_facture):
                             d))(d) for d in (x, y)]
         return cmp(x, y)
 
-    for day in events_by_date.keys():
+    for day in list(events_by_date.keys()):
         events_by_date[day] = sorted(events_by_date[day],
                                      key=lambda e: e[0],
                                      cmp=sort_date_and_datetime)
@@ -131,7 +131,7 @@ def rapport_activite_to_tex(activite, tex_template, output_file):
             col_1 = ""
             if i == 0:
                 col_1 = datetime.datetime.strptime(date, DATE_FMT).strftime(DATE_RAPPORT_FMT)
-            lignes_activites.append(u" %s  & %s\\\\" % (col_1, intitule_activite_to_tex(activite_jour)))
+            lignes_activites.append(" %s  & %s\\\\" % (col_1, intitule_activite_to_tex(activite_jour)))
 
     kwargs["lignes_activites"] = "\n".join(lignes_activites)
     tex_string = tex_template.read() % kwargs

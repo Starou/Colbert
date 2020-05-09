@@ -42,9 +42,9 @@ def main():
     (options, args) = parser.parse_args()
 
     if len(args) != 2:
-        parser.error(u"Vous devez passer en argument le chemin d'un fichier "
-                     u"`rapport d\'activité' au format JSON et un modèle de "
-                     u"rapport au format LaTeX.")
+        parser.error("Vous devez passer en argument le chemin d'un fichier "
+                     "`rapport d\'activité' au format JSON et un modèle de "
+                     "rapport au format LaTeX.")
     else:
         locale.setlocale(locale.LC_ALL, '')
         sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 

@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
+"""
 """
 
 import sys, locale, codecs
@@ -51,7 +51,7 @@ def main():
         livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
         result = check_livre_journal(livre_journal)
         for row in result:
-            print '%s\t\t%s' % (row[1], row[0])
+            print('%s\t\t%s' % (row[1], row[0]))
 
 if __name__ == "__main__":
     main()

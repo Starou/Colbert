@@ -16,7 +16,7 @@ from colbert.plan_comptable_general import PLAN_COMPTABLE_GENERAL as PCG
 from colbert.compte_de_resultat import COMPTES_DE_RESULTAT, COMPTES_DE_CHARGES, COMPTES_DE_PRODUITS
 
 
-ECRITURES = u'ecritures'
+ECRITURES = 'ecritures'
 NOM_COMPTE = 'nom_compte'
 NUMERO_COMPTE_DEBIT = 'numero_compte_debit'
 NUMERO_COMPTE_CREDIT = 'numero_compte_credit'
@@ -31,18 +31,18 @@ def check_livre_journal(livre_journal_file):
 
 def check_ecriture_livre_journal(ecriture):
     total_debit, total_credit = Decimal("0.0"), Decimal("0.0")
-    check = [u"%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
+    check = ["%s - %s" % (ecriture[DATE].strftime(DATE_FMT),
                            ecriture[INTITULE][0])]
     for e in ecriture[ECRITURES]:
         if (e[DEBIT] and not e[NUMERO_COMPTE_DEBIT]) or (e[CREDIT] and not e[NUMERO_COMPTE_CREDIT]):
-            check.append(u"ERREUR : incohérence entre les colonnes numéro de compte et montant")
+            check.append("ERREUR : incohérence entre les colonnes numéro de compte et montant")
             return check
         total_debit += e[DEBIT]
         total_credit += e[CREDIT]
     if total_debit == total_credit:
-        check.append(u"OK : débit = crédit (%s)." % fmt_number(total_credit))
+        check.append("OK : débit = crédit (%s)." % fmt_number(total_credit))
     else:
-        check.append(u"ERREUR : débit (%s) != crédit (%s)." % (fmt_number(total_debit),
+        check.append("ERREUR : débit (%s) != crédit (%s)." % (fmt_number(total_debit),
                                                                fmt_number(total_credit)))
     return check
 
@@ -75,8 +75,8 @@ def ecritures_de_cloture(balance_des_comptes):
             DEBIT: solde_crediteur,
             CREDIT: solde_debiteur,
             NOM_COMPTE: compte[NOM],
-            NUMERO_COMPTE_DEBIT: solde_crediteur and compte[NUMERO] or u'',
-            NUMERO_COMPTE_CREDIT: solde_debiteur and compte[NUMERO] or u''
+            NUMERO_COMPTE_DEBIT: solde_crediteur and compte[NUMERO] or '',
+            NUMERO_COMPTE_CREDIT: solde_debiteur and compte[NUMERO] or ''
         })
 
     # Création des écritures finales.
@@ -98,7 +98,7 @@ def ecritures_de_cloture(balance_des_comptes):
                                              PCG['regroupement-charges'][NOM])):
         ecriture_finale = {
             DATE: datetime.datetime.strptime(balance_des_comptes[DATE_FIN], DATE_FMT).date(),
-            INTITULE: [u"Ecritures de clôture des comptes."],
+            INTITULE: ["Ecritures de clôture des comptes."],
             ECRITURES: ecritures[compte_regroupement],
         }
 
@@ -121,8 +121,8 @@ def ecritures_de_cloture(balance_des_comptes):
             DEBIT: debit,
             CREDIT: credit,
             NOM_COMPTE: nom_compte,
-            NUMERO_COMPTE_DEBIT: debit and compte_regroupement or u'',
-            NUMERO_COMPTE_CREDIT: credit and compte_regroupement or u''
+            NUMERO_COMPTE_DEBIT: debit and compte_regroupement or '',
+            NUMERO_COMPTE_CREDIT: credit and compte_regroupement or ''
         }
 
         # On respecte la règle du débit en premier dans une écriture.
@@ -141,7 +141,7 @@ def ecritures_de_cloture(balance_des_comptes):
     # Enregistrement du résultat net de l'exercice.
     ecriture_resultat = {
         DATE: datetime.datetime.strptime(balance_des_comptes[DATE_FIN], DATE_FMT).date(),
-        INTITULE: [u"Enregistrement du résultat net de l'exercice"],
+        INTITULE: ["Enregistrement du résultat net de l'exercice"],
         ECRITURES: [],
     }
 
@@ -158,8 +158,8 @@ def ecritures_de_cloture(balance_des_comptes):
                 DEBIT: debit,
                 CREDIT: credit,
                 NOM_COMPTE: nom_compte,
-                NUMERO_COMPTE_DEBIT: debit and compte_regroupement or u'',
-                NUMERO_COMPTE_CREDIT: credit and compte_regroupement or u''
+                NUMERO_COMPTE_DEBIT: debit and compte_regroupement or '',
+                NUMERO_COMPTE_CREDIT: credit and compte_regroupement or ''
             }
         )
 
@@ -181,8 +181,8 @@ def ecritures_de_cloture(balance_des_comptes):
         DEBIT: debit,
         CREDIT: credit,
         NOM_COMPTE: debit and PCG['perte'][NOM] or PCG['benefice'][NOM],
-        NUMERO_COMPTE_DEBIT: debit and PCG['perte'][NUMERO] or u'',
-        NUMERO_COMPTE_CREDIT: credit and PCG['benefice'][NUMERO] or u''
+        NUMERO_COMPTE_DEBIT: debit and PCG['perte'][NUMERO] or '',
+        NUMERO_COMPTE_CREDIT: credit and PCG['benefice'][NUMERO] or ''
     }
     if debit:
         ecriture_resultat[ECRITURES].insert(0, ecriture_equilibre)
@@ -194,7 +194,7 @@ def ecritures_de_cloture(balance_des_comptes):
     return ecritures_finales
 
 
-RX_DATE_INTITULE = re.compile(ur"""^\|\|\s
+RX_DATE_INTITULE = re.compile(r"""^\|\|\s
                               (?P<date>\d\d/\d\d/\d\d\d\d)\s+\|\|
                               (?P<numero_compte_debit>\s+)\|\|
                               (?P<numero_compte_credit>\s+)\|\|
@@ -204,7 +204,7 @@ RX_DATE_INTITULE = re.compile(ur"""^\|\|\s
                               (?P<checked>[\w\s]+)\|
                               \s*$""", flags=(re.X | re.U))
 
-RX_SUITE_INTITULE = re.compile(ur"""^\|\|
+RX_SUITE_INTITULE = re.compile(r"""^\|\|
                                (?P<date>\s+)\|\|
                                (?P<numero_compte_debit>\s+)\|\|
                                (?P<numero_compte_credit>\s+)\|\|
@@ -214,7 +214,7 @@ RX_SUITE_INTITULE = re.compile(ur"""^\|\|
                                (?P<checked>[\w\s]+)\|
                                \s*$""", flags=(re.X | re.U))
 
-RX_ECRITURE = re.compile(ur"""^\|\|
+RX_ECRITURE = re.compile(r"""^\|\|
                          (?P<date>\s+)\|\|
                          (?P<numero_compte_debit>[\s\w-]+)\|\|
                          (?P<numero_compte_credit>[\s\w-]+)\|\|
@@ -270,30 +270,30 @@ def livre_journal_to_list(livre_journal_file, string_only=False):
                 m = RX_DATE_INTITULE.match(line)
                 if not m:
                     sys.stderr.write(line)
-                    raise BaseException(u"La première ligne d'une écriture doit mentionner la date et l'intitulé.")
+                    raise BaseException("La première ligne d'une écriture doit mentionner la date et l'intitulé.")
                 m = m.groupdict()
                 if string_only:
                     ecriture[DATE] = m[DATE]
                 else:
                     try:
                         ecriture[DATE] = datetime.datetime.strptime(m[DATE], DATE_FMT).date()
-                    except BaseException, e:
+                    except BaseException as e:
                         sys.stderr.write(line)
                         raise e
                 ecriture[INTITULE] = [m[INTITULE].rstrip()]
                 ecriture[ECRITURES] = []
             elif RX_SUITE_INTITULE.match(line):
                 if ecriture[ECRITURES]:
-                    raise BaseException(u"Les lignes supplémentaires d'intitulé doivent apparaitre exclusivement sous la première ligne.")
+                    raise BaseException("Les lignes supplémentaires d'intitulé doivent apparaitre exclusivement sous la première ligne.")
                 m = RX_SUITE_INTITULE.match(line).groupdict()
                 ecriture[INTITULE].append(m[INTITULE].rstrip())
             else:
                 try:
                     m = RX_ECRITURE.match(line).groupdict()
-                except BaseException, e:
-                    sys.stderr.write(u"La ligne suivante n'est pas valide:\n%s" % line)
+                except BaseException as e:
+                    sys.stderr.write("La ligne suivante n'est pas valide:\n%s" % line)
                     raise e
-                m = dict([(k, v.strip()) for k, v in m.items()])
+                m = dict([(k, v.strip()) for k, v in list(m.items())])
                 sous_ecriture = {
                     NUMERO_COMPTE_DEBIT: m[NUMERO_COMPTE_DEBIT],
                     NUMERO_COMPTE_CREDIT: m[NUMERO_COMPTE_CREDIT],
@@ -316,7 +316,7 @@ CREDIT_LEN = 17
 CHECK_LEN = 4
 
 
-def ecritures_to_livre_journal(ecritures, output_file=None, label=u"Ecritures pour le Livre-journal"):
+def ecritures_to_livre_journal(ecritures, output_file=None, label="Ecritures pour le Livre-journal"):
     """Converti une liste d'écritures JSON dans le format reStructuredText du Livre-journal. """
 
     table = [[(label, LIVRE_JOURNAL_LEN)]]
@@ -328,7 +328,7 @@ def ecritures_to_livre_journal(ecritures, output_file=None, label=u"Ecritures po
     if not output_file:
         return lines
     output_file.write(lines)
-    output_file.write(u"\n\n")
+    output_file.write("\n\n")
     return output_file
 
 
@@ -344,12 +344,12 @@ def ecriture_to_livre_journal(ecriture, remove_lspace_intitule=False):
     multiline_row = [
         [
             (ecriture[DATE], DATE_LEN),
-            (u"", COMPTE_DEBIT_LEN),
-            (u"", COMPTE_CREDIT_LEN),
+            ("", COMPTE_DEBIT_LEN),
+            ("", COMPTE_CREDIT_LEN),
             (clean_intitule(ecriture[INTITULE][0], remove_lspace_intitule), INTITULE_LEN),
-            (u"", DEBIT_LEN),
-            (u"", CREDIT_LEN),
-            (u"", CHECK_LEN),
+            ("", DEBIT_LEN),
+            ("", CREDIT_LEN),
+            ("", CHECK_LEN),
         ],
     ]
     # Lignes d'intitulés supp. si présentes.
@@ -359,13 +359,13 @@ def ecriture_to_livre_journal(ecriture, remove_lspace_intitule=False):
 
         multiline_row.append(
             [
-                (u"", DATE_LEN),
-                (u"", COMPTE_DEBIT_LEN),
-                (u"", COMPTE_CREDIT_LEN),
+                ("", DATE_LEN),
+                ("", COMPTE_DEBIT_LEN),
+                ("", COMPTE_CREDIT_LEN),
                 (clean_intitule(intitule, remove_lspace_intitule), INTITULE_LEN),
-                (u"", DEBIT_LEN),
-                (u"", CREDIT_LEN),
-                (u"", CHECK_LEN),
+                ("", DEBIT_LEN),
+                ("", CREDIT_LEN),
+                ("", CHECK_LEN),
             ]
         )
 
@@ -375,13 +375,13 @@ def ecriture_to_livre_journal(ecriture, remove_lspace_intitule=False):
 
         multiline_row.append(
             [
-                (u"", DATE_LEN),
-                (debit and e[NUMERO_COMPTE_DEBIT] or u"", COMPTE_DEBIT_LEN),
-                (credit and e[NUMERO_COMPTE_CREDIT] or u"", COMPTE_CREDIT_LEN),
-                (u"%s%s" % (credit and u"    " or u"", e[NOM_COMPTE]), INTITULE_LEN),
-                (debit and fmt_number(debit) or u"", DEBIT_LEN),
-                (credit and fmt_number(credit) or u"", CREDIT_LEN),
-                (u"", CHECK_LEN),
+                ("", DATE_LEN),
+                (debit and e[NUMERO_COMPTE_DEBIT] or "", COMPTE_DEBIT_LEN),
+                (credit and e[NUMERO_COMPTE_CREDIT] or "", COMPTE_CREDIT_LEN),
+                ("%s%s" % (credit and "    " or "", e[NOM_COMPTE]), INTITULE_LEN),
+                (debit and fmt_number(debit) or "", DEBIT_LEN),
+                (credit and fmt_number(credit) or "", CREDIT_LEN),
+                ("", CHECK_LEN),
             ]
         )
     return multiline_row
@@ -412,7 +412,7 @@ def get_solde_compte(livre_journal, numero_compte, date_debut, date_fin):
 
 
 def rechercher_ecriture(expression, livre_journal_as_list):
-    return itertools.ifilter(lambda l: any([expression in i.lower()
+    return filter(lambda l: any([expression in i.lower()
                                             for i in l["intitule"]]),
                              livre_journal_as_list)
 
@@ -430,7 +430,7 @@ def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
         lines = f.readlines()
         lines_to_add = rst_table_row(ecriture_to_livre_journal(ecriture, True),
                                      stroke_char="-", add_closing_stroke=False)
-        lines_to_add = [u"%s%s" % (l, os.linesep) for l in lines_to_add]
+        lines_to_add = ["%s%s" % (l, os.linesep) for l in lines_to_add]
         lines[numero_ligne:numero_ligne] = lines_to_add
 
     output = os.path.expanduser(output or livre_journal_path)
@@ -438,10 +438,10 @@ def ajouter_ecriture(ecriture, livre_journal_path, livre_journal_as_list,
         with io.open(output, mode="w+", encoding="utf-8") as f:
             f.writelines(lines)
     if verbose:
-        print u"L'écriture suivante %s été ajoutée au Livre Journal '%s' à la ligne %d:" % (
+        print("L'écriture suivante %s été ajoutée au Livre Journal '%s' à la ligne %d:" % (
             (dry_run and "aurait" or "a"), output, numero_ligne
-        )
-        print u"".join(lines_to_add)
+        ))
+        print("".join(lines_to_add))
 
 
 def update_ecriture(ecriture, date, montants=None):
@@ -461,7 +461,7 @@ def update_ecriture(ecriture, date, montants=None):
                 if ecriture[op] != '0.00':
                     ecriture[op] = montant if montant is not None else default
 
-        map(update_montants, ecriture[ECRITURES], montants)
+        list(map(update_montants, ecriture[ECRITURES], montants))
 
 
 def sortable_date(date_fr):

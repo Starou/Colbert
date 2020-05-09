@@ -10,47 +10,47 @@ from colbert.common import titre_principal_rst
 from colbert.common import (SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
                             LABEL, NUMERO, COMPTES)
 
-TOTAL_CHARGES = u'total_charges'
-TOTAL_PRODUITS = u'total_produits'
-RESULTAT = u'resultat'
+TOTAL_CHARGES = 'total_charges'
+TOTAL_PRODUITS = 'total_produits'
+RESULTAT = 'resultat'
 
-EXPLOITATION = u"exploitation"
-FINANCIERES = u"financières"
-EXCEPTIONNELLES = u"exceptionnelles"
-AMMORTISSEMENTS_ET_PROVISIONS = u"ammortissements et provisions"
+EXPLOITATION = "exploitation"
+FINANCIERES = "financières"
+EXCEPTIONNELLES = "exceptionnelles"
+AMMORTISSEMENTS_ET_PROVISIONS = "ammortissements et provisions"
 
-CHARGES = u"charges"
-PRODUITS = u"produits"
-CHARGES_EXPLOITATION = u"charges d'exploitation"
-FOURNITURES_NON_STOCKABLES = u"fournitures non stockables"
-ACHATS_DE_MARCHANDISES = u"achats de marchandises"
-SERVICES_EXTERIEURS = u"services extérieurs"
-AUTRES_SERVICES_EXTERIEURS = u"autres services extérieurs"
-AUTRES_IMPOTS = u"Autres impôts, taxes et versements assimilés"
-REMUNERATIONS_DU_PERSONNEL = u"Rémunérations du personnel"
-AUTRES_CHARGES_GESTION_COURANTE = u"autres charges de gestion courante"
+CHARGES = "charges"
+PRODUITS = "produits"
+CHARGES_EXPLOITATION = "charges d'exploitation"
+FOURNITURES_NON_STOCKABLES = "fournitures non stockables"
+ACHATS_DE_MARCHANDISES = "achats de marchandises"
+SERVICES_EXTERIEURS = "services extérieurs"
+AUTRES_SERVICES_EXTERIEURS = "autres services extérieurs"
+AUTRES_IMPOTS = "Autres impôts, taxes et versements assimilés"
+REMUNERATIONS_DU_PERSONNEL = "Rémunérations du personnel"
+AUTRES_CHARGES_GESTION_COURANTE = "autres charges de gestion courante"
 
-CHARGES_FINANCIERES = u"charges financières"
+CHARGES_FINANCIERES = "charges financières"
 
-CHARGES_EXCEPTIONNELLES = u"charges exceptionnelles"
-CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION = u"Charges exceptionnelles sur opérations de gestion"
-DOTATIONS_AUX_AMMORTISSEMENTS_ET_PROVISIONS = u"dotations aux ammortissements et provisions"
-IMMOBILISATIONS_CORPORELLES = u"immobilisations corporelles"
+CHARGES_EXCEPTIONNELLES = "charges exceptionnelles"
+CHARGES_EXCEPTIONNELLES_OPERATIONS_GESTION = "Charges exceptionnelles sur opérations de gestion"
+DOTATIONS_AUX_AMMORTISSEMENTS_ET_PROVISIONS = "dotations aux ammortissements et provisions"
+IMMOBILISATIONS_CORPORELLES = "immobilisations corporelles"
 
-CHARGES_IMPOT_SOCIETES = u"impôt sur les sociétés"
+CHARGES_IMPOT_SOCIETES = "impôt sur les sociétés"
 
 #
 
-PRODUITS_EXPLOITATION = u"produits d'exploitation"
-AUTRES_PRODUITS_GESTION_COURANTE = u"Autres produits de gestion courante"
+PRODUITS_EXPLOITATION = "produits d'exploitation"
+AUTRES_PRODUITS_GESTION_COURANTE = "Autres produits de gestion courante"
 
-PRODUITS_FINANCIERS = u"produits financiers"
-REVENUS_VALEURS_MOBILIERES_DE_PLACEMENT = u"Revenus des valeurs mobilières de placement"
-REPRISES_SUR_AMMORTISSEMENTS_ET_PROVISIONS = u"reprises sur amortissements et provisions"
+PRODUITS_FINANCIERS = "produits financiers"
+REVENUS_VALEURS_MOBILIERES_DE_PLACEMENT = "Revenus des valeurs mobilières de placement"
+REPRISES_SUR_AMMORTISSEMENTS_ET_PROVISIONS = "reprises sur amortissements et provisions"
 
-PRODUITS_EXCEPTIONNELS = u"produits exceptionnels"
+PRODUITS_EXCEPTIONNELS = "produits exceptionnels"
 
-PRESTATIONS_DE_SERVICES = u"prestations de services"
+PRESTATIONS_DE_SERVICES = "prestations de services"
 
 LIGNES_RESULTAT = {
     CHARGES: {
@@ -211,7 +211,7 @@ def compte_de_resultat(balance_des_comptes, label="Compte de résultat"):
                 numero_compte = numero_compte[:-1]
             else:
                 return ligne_bilan
-        raise BaseException(u"Impossible de dispatcher le numero de compte %s dans le compte de resultat"
+        raise BaseException("Impossible de dispatcher le numero de compte %s dans le compte de resultat"
                             % compte[NUMERO])
 
     total_charges, total_produits = Decimal("0.00"), Decimal("0.00")
@@ -262,10 +262,10 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
                                  compte_de_resultat[DATE_FIN])
 
     table = [
-        [(u"Charges", CHARGES_LEN),
-         (u"Montant", MONTANT_LEN),
-         (u"Produits", PRODUITS_LEN),
-         (u"Montant", MONTANT_LEN)],
+        [("Charges", CHARGES_LEN),
+         ("Montant", MONTANT_LEN),
+         ("Produits", PRODUITS_LEN),
+         ("Montant", MONTANT_LEN)],
     ]
 
     def row(compte_de_resultat, categorie, ligne_charges, ligne_produits):
@@ -281,49 +281,49 @@ def compte_de_resultat_to_rst(compte_de_resultat, output_file):
 
     for categorie in (EXPLOITATION, FINANCIERES, EXCEPTIONNELLES, AMMORTISSEMENTS_ET_PROVISIONS):
         table.append([
-            (u"*%s*" % LIGNES_RESULTAT[CHARGES][categorie][LABEL].capitalize(), CHARGES_LEN),
-            (u"", MONTANT_LEN),
-            (u"*%s*" % LIGNES_RESULTAT[PRODUITS][categorie][LABEL].capitalize(), PRODUITS_LEN),
-            (u"", MONTANT_LEN),
+            ("*%s*" % LIGNES_RESULTAT[CHARGES][categorie][LABEL].capitalize(), CHARGES_LEN),
+            ("", MONTANT_LEN),
+            ("*%s*" % LIGNES_RESULTAT[PRODUITS][categorie][LABEL].capitalize(), PRODUITS_LEN),
+            ("", MONTANT_LEN),
         ])
         # La structure du tableau est donnée par le mapping LIGNES_RESULTAT.
-        map(lambda charge, produit: table.append(row(compte_de_resultat, categorie, charge, produit)),
+        list(map(lambda charge, produit: table.append(row(compte_de_resultat, categorie, charge, produit)),
             LIGNES_RESULTAT[CHARGES][categorie][COMPTES],
-            LIGNES_RESULTAT[PRODUITS][categorie][COMPTES])
+            LIGNES_RESULTAT[PRODUITS][categorie][COMPTES]))
 
-        table.append([(u"", CHARGES_LEN), (u"", MONTANT_LEN), (u"", PRODUITS_LEN), (u"", MONTANT_LEN)])
+        table.append([("", CHARGES_LEN), ("", MONTANT_LEN), ("", PRODUITS_LEN), ("", MONTANT_LEN)])
 
     # Ligne de l'impôt sur les sociétés.
     montant_is = Decimal(compte_de_resultat[CHARGES][CHARGES_IMPOT_SOCIETES].get(CHARGES_IMPOT_SOCIETES, "0.00"))
     table.append([
-        (u"*Impôt sur les sociétés*", CHARGES_LEN),
-        (u"%s" % fmt_number(montant_is), MONTANT_LEN),
-        (u"", PRODUITS_LEN),
-        (u"", MONTANT_LEN),
+        ("*Impôt sur les sociétés*", CHARGES_LEN),
+        ("%s" % fmt_number(montant_is), MONTANT_LEN),
+        ("", PRODUITS_LEN),
+        ("", MONTANT_LEN),
     ])
-    table.append([(u"", CHARGES_LEN), (u"", MONTANT_LEN), (u"", PRODUITS_LEN), (u"", MONTANT_LEN)])
+    table.append([("", CHARGES_LEN), ("", MONTANT_LEN), ("", PRODUITS_LEN), ("", MONTANT_LEN)])
 
     # Dernières lignes.
-    table.append([(u"**Sous-total charges**", CHARGES_LEN),
+    table.append([("**Sous-total charges**", CHARGES_LEN),
                   (fmt_number(Decimal(compte_de_resultat[TOTAL_CHARGES])), MONTANT_LEN),
-                  (u"**Sous-total produits**", PRODUITS_LEN),
+                  ("**Sous-total produits**", PRODUITS_LEN),
                   (fmt_number(Decimal(compte_de_resultat[TOTAL_PRODUITS])), MONTANT_LEN)])
 
     resultat = Decimal(compte_de_resultat[RESULTAT])
     if resultat >= 0:
-        table.append([(u"**Résultat (bénéfice)**", CHARGES_LEN),
+        table.append([("**Résultat (bénéfice)**", CHARGES_LEN),
                       (fmt_number(resultat), MONTANT_LEN),
-                      (u"", PRODUITS_LEN),
-                      (u"", MONTANT_LEN)])
+                      ("", PRODUITS_LEN),
+                      ("", MONTANT_LEN)])
     else:
-        table.append([(u"", CHARGES_LEN),
-                      (u"", MONTANT_LEN),
-                      (u"**Résultat (perte)**", PRODUITS_LEN),
+        table.append([("", CHARGES_LEN),
+                      ("", MONTANT_LEN),
+                      ("**Résultat (perte)**", PRODUITS_LEN),
                       (fmt_number(-resultat), MONTANT_LEN)])
 
     lines.append(rst_table(table))
 
-    output_file.write(u"\n".join(lines))
-    output_file.write(u"\n\n")
+    output_file.write("\n".join(lines))
+    output_file.write("\n\n")
 
     return output_file

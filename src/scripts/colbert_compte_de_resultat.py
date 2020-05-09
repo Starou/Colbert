@@ -38,8 +38,8 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-l", "--label", dest="label", default=u"Compte de résultat", 
-                      help=u"Titre à faire apparaitre sur le compte de résultat")
+    parser.add_option("-l", "--label", dest="label", default="Compte de résultat", 
+                      help="Titre à faire apparaitre sur le compte de résultat")
     (options, args) = parser.parse_args()
 
     if len(args) != 1:

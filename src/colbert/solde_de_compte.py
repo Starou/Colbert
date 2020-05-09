@@ -60,14 +60,14 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
     lines = []
     livre_journal = livre_journal_to_list(livre_journal_file)
     for compte in comptes:
-        lines.append(rst_title(u"Compte n°%s en Euros" % compte[NUMERO_COMPTE]))
-        lines.append(u"\n")
+        lines.append(rst_title("Compte n°%s en Euros" % compte[NUMERO_COMPTE]))
+        lines.append("\n")
         table = []
         for journal in compte['journaux']:
             lines.append(rst_section(journal[LABEL], "'"))
             # Header.
-            table.append([("Date", DATE_LEN), (u"Libellé", LIBELLE_LEN), (u"Débit", DEBIT_LEN), (u"Crédit", CREDIT_LEN),
-                          (u"Solde débiteur", SOLDE_DEBIT_LEN), (u"Solde créditeur", SOLDE_CREDIT_LEN)])
+            table.append([("Date", DATE_LEN), ("Libellé", LIBELLE_LEN), ("Débit", DEBIT_LEN), ("Crédit", CREDIT_LEN),
+                          ("Solde débiteur", SOLDE_DEBIT_LEN), ("Solde créditeur", SOLDE_CREDIT_LEN)])
 
             # Solde initial.
             solde_debiteur = Decimal(journal["debit_initial"])
@@ -76,7 +76,7 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
 
             table.append([
                 (journal[DATE_DEBUT], DATE_LEN),
-                (u"Report à nouveau", LIBELLE_LEN),
+                ("Report à nouveau", LIBELLE_LEN),
                 ('', DEBIT_LEN),
                 ('', CREDIT_LEN),
                 (solde_debiteur and fmt_number(solde_debiteur) or '', SOLDE_DEBIT_LEN),
@@ -112,31 +112,31 @@ def solde_de_compte(livre_journal_file, output_file, comptes=None):
 
             # Ligne du solde pour la période.
             solde = solde_debiteur or solde_crediteur
-            type_solde = solde_debiteur and u"débiteur" or (solde_crediteur and u"créditeur" or u"soldé")
+            type_solde = solde_debiteur and "débiteur" or (solde_crediteur and "créditeur" or "soldé")
 
             solde_debiteur_final = Decimal(journal['debit_final'])
             solde_crediteur_final = Decimal(journal['credit_final'])
 
             solde_final = solde_debiteur_final or solde_crediteur_final
-            type_solde_final = solde_debiteur_final and u"débiteur" or (solde_crediteur_final and u"créditeur" or u"soldé")
+            type_solde_final = solde_debiteur_final and "débiteur" or (solde_crediteur_final and "créditeur" or "soldé")
 
             solde_is_ok = False
             if (solde == solde_final) and (type_solde == type_solde_final):
                 solde_is_ok = True
 
-            last_row = u"Solde final calculé (*%s €*, %s) %s solde final attendu (*%s €*, %s)%s" % (
+            last_row = "Solde final calculé (*%s €*, %s) %s solde final attendu (*%s €*, %s)%s" % (
                 fmt_number(solde),
                 type_solde,
-                solde_is_ok and u"*identique* au" or u"**différent** du",
+                solde_is_ok and "*identique* au" or "**différent** du",
                 fmt_number(solde_final),
                 type_solde_final,
-                "" if solde_is_ok else u" : %s €" % fmt_number(solde - solde_final)
+                "" if solde_is_ok else " : %s €" % fmt_number(solde - solde_final)
             )
             lines.append(rst_table(table))
             lines.append(rst_table([[(last_row, SOLDE_TABLE_LEN)]]))
             lines.append("\n.. raw:: latex\n\n    \\newpage\n")
             table = []
 
-    output_file.write(u"\n".join(lines))
-    output_file.write(u"\n")
+    output_file.write("\n".join(lines))
+    output_file.write("\n")
     return output_file

@@ -35,21 +35,21 @@ from colbert.utils import DATE_FMT
 
 
 def main():
-    usage = u"usage: %prog [options] livre-journal.txt"
+    usage = "usage: %prog [options] livre-journal.txt"
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
     parser.add_option("-d", "--date-debut", dest="date_debut", 
-                      help=u"date de début de la période au format jj/mm/aaaa.")
+                      help="date de début de la période au format jj/mm/aaaa.")
     parser.add_option("-f", "--date-fin", dest="date_fin", 
-                      help=u"date de fin de la période au format jj/mm/aaaa.")
+                      help="date de fin de la période au format jj/mm/aaaa.")
 
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
-        parser.error(u"Vous devez passer en argument le chemin d'un fichier "
-                     u"Livre Journal au format reStructuredText, la date de "
-                     u"début et la date de fin.")
+        parser.error("Vous devez passer en argument le chemin d'un fichier "
+                     "Livre Journal au format reStructuredText, la date de "
+                     "début et la date de fin.")
     else:
         import json
         from colbert.utils import json_encoder

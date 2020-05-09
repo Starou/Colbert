@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
+"""
 Commande d'ajout d'entrées dans le livre journal par duplication d'écritures.
 """
 
@@ -59,22 +59,22 @@ def main():
     parser = OptionParser(usage=usage, version=version, description=__doc__)
     parser.add_option("-l", "--livre-journal", dest="livre_journal_path",
                       default=os.environ.get(LJ_PATH_ENV),
-                      help=(u"Chemin vers le fichier Livre Journal. "
-                            u"Par défaut : $%s" % LJ_PATH_ENV))
+                      help=("Chemin vers le fichier Livre Journal. "
+                            "Par défaut : $%s" % LJ_PATH_ENV))
     parser.add_option("--dry-run", action="store_true", default=False,
-                      help=u"Affiche l'entrée qui aurait été ajoutée.")
+                      help="Affiche l'entrée qui aurait été ajoutée.")
     parser.add_option("-o", "--output",
-                      help=(u"Chemin vers le fichier livre-journal de destination. "
-                            u"Ecrase le fichier source si non-précisé."))
+                      help=("Chemin vers le fichier livre-journal de destination. "
+                            "Ecrase le fichier source si non-précisé."))
     parser.add_option("-d", "--date", default=datetime.date.today().strftime(DATE_FMT),
-                      help=u"Date de l'entrée à ajouter (par défaut: %default)")
+                      help="Date de l'entrée à ajouter (par défaut: %default)")
     parser.add_option("-a", "--amounts",
-                      help=(u"Liste des montants des entrées/sorties (séparés par une virgule) "
-                            u"ou montant de l'entrée/sortie (si un seul compte de chaque côté). "
-                            u"Si non précisés, reprend les montants de l'écriture cible."))
+                      help=("Liste des montants des entrées/sorties (séparés par une virgule) "
+                            "ou montant de l'entrée/sortie (si un seul compte de chaque côté). "
+                            "Si non précisés, reprend les montants de l'écriture cible."))
     parser.add_option("-f", "--from-last-entry-like",
-                      help=(u"Chemin vers le fichier Livre Journal. "
-                            u"Par défaut : $%s" % LJ_PATH_ENV))
+                      help=("Chemin vers le fichier Livre Journal. "
+                            "Par défaut : $%s" % LJ_PATH_ENV))
 
     # Catch --help which does not play well with encoding.
     parser.parse_args()
@@ -83,7 +83,7 @@ def main():
     encoding = locale.getpreferredencoding()
     sys.stdout = codecs.getwriter(encoding)(sys.stdout)
     for i, a in enumerate(sys.argv):
-        sys.argv[i] = unicode(a.decode(encoding))
+        sys.argv[i] = str(a.decode(encoding))
 
     (options, args) = parser.parse_args()
 
@@ -116,7 +116,7 @@ def rechercher(expression, livre_journal_path):
         lj_as_list = livre_journal_to_list(lj_file, string_only=True)
         filtered = rechercher_ecriture(expression, lj_as_list)
         lines = ecritures_to_livre_journal(list(filtered))
-        print lines
+        print(lines)
 
 
 def ajouter(options):
@@ -126,8 +126,8 @@ def ajouter(options):
             template_line = list(rechercher_ecriture(options.from_last_entry_like,
                                                      lj_as_list))[-1]
         except IndexError:
-            print (u"Aucune écriture trouvée avec l'intitulé "
-                   u"ressemblant à '%s'." % options.from_last_entry_like)
+            print(("Aucune écriture trouvée avec l'intitulé "
+                   "ressemblant à '%s'." % options.from_last_entry_like))
             return
         else:
             template_line = copy.deepcopy(template_line)
