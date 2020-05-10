@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -27,11 +27,13 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import sys, locale, codecs
-from optparse import OptionParser
+import json
+import sys
 import datetime
-from decimal import Decimal
 from colbert.utils import DATE_FMT
+from colbert.utils import json_encoder
+from colbert.tva import solde_comptes_de_tva
+from optparse import OptionParser
 
 
 def main():
@@ -39,9 +41,9 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-d", "--date-debut", dest="date_debut", 
+    parser.add_option("-d", "--date-debut", dest="date_debut",
                       help="date de début de la période au format jj/mm/aaaa.")
-    parser.add_option("-f", "--date-fin", dest="date_fin", 
+    parser.add_option("-f", "--date-fin", dest="date_fin",
                       help="date de fin de la période au format jj/mm/aaaa.")
 
     (options, args) = parser.parse_args()
@@ -51,17 +53,13 @@ def main():
                      "Livre Journal au format reStructuredText, la date de "
                      "début et la date de fin.")
     else:
-        import json
-        from colbert.utils import json_encoder
-        from colbert.tva import solde_comptes_de_tva
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
-        livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
         date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()
         date_fin = datetime.datetime.strptime(options.date_fin, DATE_FMT).date()
 
-        ecriture = solde_comptes_de_tva(livre_journal, date_debut, date_fin)
-        json.dump([ecriture], sys.stdout, default=json_encoder, indent=4)
+        with open(args[0], mode="r") as livre_journal:
+            ecriture = solde_comptes_de_tva(livre_journal, date_debut, date_fin)
+            json.dump([ecriture], sys.stdout, default=json_encoder, indent=4)
+
 
 if __name__ == "__main__":
     main()
