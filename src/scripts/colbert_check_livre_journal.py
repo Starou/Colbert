@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -29,7 +29,8 @@
 """
 """
 
-import sys, locale, codecs
+import sys
+from colbert.livre_journal import check_livre_journal
 from optparse import OptionParser
 
 
@@ -44,14 +45,11 @@ def main():
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Livre-Journal au format reStructuredText")
     else:
-        import json
-        from colbert.livre_journal import check_livre_journal
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
+        with open(args[0]) as livre_journal:
+            result = check_livre_journal(livre_journal)
+            for row in result:
+                sys.stdout.write(f"{row[1]}\t\t{row[0]}\n")
 
-        livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
-        result = check_livre_journal(livre_journal)
-        for row in result:
-            print('%s\t\t%s' % (row[1], row[0]))
 
 if __name__ == "__main__":
     main()
