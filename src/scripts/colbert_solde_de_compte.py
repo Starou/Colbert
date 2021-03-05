@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
+"""
 
 Fichier de paramètres
 =====================
@@ -53,8 +53,12 @@ $ cat 512-2011.json
 
 """
 
-import sys, locale, codecs
+import sys
+import locale
 from optparse import OptionParser
+import json
+from colbert.solde_de_compte import solde_de_compte
+from pathlib import Path
 
 
 def main():
@@ -69,15 +73,11 @@ def main():
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Livre-Journal et celui d'un fichier json de comptes.")
     else:
-        import json
-        from colbert.solde_de_compte import solde_de_compte
         locale.setlocale(locale.LC_ALL, '')
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
-
-        livre_journal = codecs.open(args[0], mode="r", encoding="utf-8")
-        comptes = json.loads(codecs.open(args[1], mode="r", encoding="utf-8").read())
-
+        livre_journal = open(args[0], mode="r")
+        comptes = json.loads(Path(args[1]).read_text())
         solde_de_compte(livre_journal, sys.stdout, comptes)
+
 
 if __name__ == "__main__":
     main()

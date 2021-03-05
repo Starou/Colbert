@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -27,8 +27,12 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import sys, locale, codecs
+import json
+import locale
+import sys
+from colbert.factures import facture_to_tex
 from optparse import OptionParser
+from pathlib import Path
 
 
 def main():
@@ -39,19 +43,15 @@ def main():
     (options, args) = parser.parse_args()
 
     if len(args) != 2:
-        parser.error(u"Vous devez passer en argument le chemin d'un fichier "
-                     u"`Facture calculée' au format JSON et un modèle de "
-                     u"facture au format LaTeX.")
+        parser.error("Vous devez passer en argument le chemin d'un fichier "
+                     "`Facture calculée' au format JSON et un modèle de "
+                     "facture au format LaTeX.")
     else:
-        import json
-        from colbert.utils import json_encoder
-        from colbert.factures import facture_to_tex
         locale.setlocale(locale.LC_ALL, '')
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
-        facture = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
-        template = codecs.open(args[1], mode="r", encoding="utf-8")
+        facture = json.loads(Path(args[0]).read_text())
+        template = open(args[1], mode="r")
         facture_to_tex(facture, template, sys.stdout)
+
 
 if __name__ == "__main__":
     main()

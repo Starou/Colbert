@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -26,19 +26,18 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-u"""
+"""
 Génère un fichier d'activité au format JSON à partir d'un calendrier iCal.
 
 """
 
-import sys, locale, codecs
-from optparse import OptionParser
+import sys
 import datetime
 import json
-
+from colbert.rapports import rapport_activite
 from colbert.utils import DATE_FMT
 from colbert.utils import json_encoder
-from colbert.utils import decode_as_ecriture as as_ecriture
+from optparse import OptionParser
 
 
 def main():
@@ -46,34 +45,32 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-l", "--label", dest="label", default=u"Rapport d\'activite", 
-                      help=u"Titre à faire apparaitre sur le rapport")
-    parser.add_option("-r", "--ref-facture", dest="ref_facture", default=u"Référence facture", 
-                      help=u"Titre à faire apparaitre sur le rapport")
-    parser.add_option("-d", "--date-debut", dest="date_debut", 
-                      help=u"date de début de la période au format jj/mm/aaaa.")
-    parser.add_option("-f", "--date-fin", dest="date_fin", 
-                      help=u"date de fin de la période au format jj/mm/aaaa.")
+    parser.add_option("-l", "--label", dest="label", default="Rapport d\'activite",
+                      help="Titre à faire apparaitre sur le rapport")
+    parser.add_option("-r", "--ref-facture", dest="ref_facture", default="Référence facture",
+                      help="Titre à faire apparaitre sur le rapport")
+    parser.add_option("-d", "--date-debut", dest="date_debut",
+                      help="date de début de la période au format jj/mm/aaaa.")
+    parser.add_option("-f", "--date-fin", dest="date_fin",
+                      help="date de fin de la période au format jj/mm/aaaa.")
 
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
-        parser.error(u"Vous devez passer en argument le chemin d'un calendrier "
-                     u"iCal.")
+        parser.error("Vous devez passer en argument le chemin d'un calendrier "
+                     "iCal.")
     else:
-        from colbert.rapports import rapport_activite
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
         date_debut = datetime.datetime.strptime(options.date_debut, DATE_FMT).date()
         date_fin = datetime.datetime.strptime(options.date_fin, DATE_FMT).date()
         calendrier = open(args[0], mode="r")
-        rapport = rapport_activite(calendrier, 
+        rapport = rapport_activite(calendrier,
                                    date_debut,
                                    date_fin,
                                    options.label,
                                    options.ref_facture)
 
         json.dump(rapport, sys.stdout, default=json_encoder, indent=4)
+
 
 if __name__ == "__main__":
     main()

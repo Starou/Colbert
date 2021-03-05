@@ -27,8 +27,11 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import sys, locale, codecs
+import json
+import sys
+from colbert.livre_journal import ecritures_to_livre_journal
 from optparse import OptionParser
+from pathlib import Path
 
 
 def main():
@@ -36,8 +39,8 @@ def main():
     version = "%prog 0.1"
     parser = OptionParser(usage=usage, version=version, description=__doc__)
 
-    parser.add_option("-l", "--label", dest="label", default=u"Ecritures pour le Livre-Journal",
-                      help=u"Titre à faire apparaitre sur le tableau")
+    parser.add_option("-l", "--label", dest="label", default="Ecritures pour le Livre-Journal",
+                      help="Titre à faire apparaitre sur le tableau")
 
     (options, args) = parser.parse_args()
 
@@ -45,12 +48,9 @@ def main():
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "d'écritures au format JSON.")
     else:
-        import json
-        from colbert.livre_journal import ecritures_to_livre_journal
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
-
-        ecritures = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
+        ecritures = json.loads(Path(args[0]).read_text())
         ecritures_to_livre_journal(ecritures, sys.stdout, options.label)
+
 
 if __name__ == "__main__":
     main()

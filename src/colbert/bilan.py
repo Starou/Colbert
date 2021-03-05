@@ -2,41 +2,40 @@
 
 import datetime
 from decimal import Decimal
+from itertools import zip_longest
+from .common import titre_principal_rst
+from .common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT,
+                     DATE_FIN, LABEL, NUMERO, CATEGORIE, RUBRIQUES, COMPTES)
+from .utils import fmt_number, rst_table
+from .utils import DATE_FMT
 
-from colbert.utils import fmt_number, rst_table
-from colbert.utils import DATE_FMT
+BRUT = 'brut'
+NET = 'net'
+AMORTISSEMENT = 'amortissement'
 
-from colbert.common import titre_principal_rst
-from colbert.common import (DEBIT, CREDIT, SOLDE_DEBITEUR, SOLDE_CREDITEUR, DATE_DEBUT, DATE_FIN,
-                            LABEL, NUMERO, CATEGORIE, RUBRIQUES, COMPTES)
-
-BRUT = u'brut'
-NET = u'net'
-AMORTISSEMENT = u'amortissement'
-
-ACTIF = u'actif'
-TOTAL_ACTIF = u'total_actif'
-ACTIF_IMMOBILISE = u'actif immobilisé'
-IMMOBILISATIONS_INCORPORELLES = u'immobilisations incorporelles'
-AUTRES_IMMOBILISATIONS_INCORPORELLES = u'autres immobilisations incorporelles'
-IMMOBILISATIONS_CORPORELLES = u'immobilisations corporelles'
-AUTRES_IMMOBILISATIONS_CORPORELLES = u'autres immobilisations corporelles'
-IMMOBILISATIONS_FINANCIERES = u'immobilisations financières'
-AUTRES_IMMOBILISATIONS_FINANCIERES = u'autres immobilisations financières'
-ACTIF_CIRCULANT = u'actif circulant'
-STOCK = u'stock'
-CLIENT = u'client et comptes rattachés'
-AUTRES_CREANCES = u'autres créances'
-DISPONIBILITES = u'disponibilités'
+ACTIF = 'actif'
+TOTAL_ACTIF = 'total_actif'
+ACTIF_IMMOBILISE = 'actif immobilisé'
+IMMOBILISATIONS_INCORPORELLES = 'immobilisations incorporelles'
+AUTRES_IMMOBILISATIONS_INCORPORELLES = 'autres immobilisations incorporelles'
+IMMOBILISATIONS_CORPORELLES = 'immobilisations corporelles'
+AUTRES_IMMOBILISATIONS_CORPORELLES = 'autres immobilisations corporelles'
+IMMOBILISATIONS_FINANCIERES = 'immobilisations financières'
+AUTRES_IMMOBILISATIONS_FINANCIERES = 'autres immobilisations financières'
+ACTIF_CIRCULANT = 'actif circulant'
+STOCK = 'stock'
+CLIENT = 'client et comptes rattachés'
+AUTRES_CREANCES = 'autres créances'
+DISPONIBILITES = 'disponibilités'
 
 PASSIF = 'passif'
-CAPITAUX_PROPRES = u'capitaux propres'
-CAPITAL = u'capital'
-RESERVES = u'réserves'
-REPORT_A_NOUVEAU = u'report à nouveau'
-RESULTAT = u'résultat'
-DETTES = u'dettes'
-AUTRES_DETTES = u'autres dettes'
+CAPITAUX_PROPRES = 'capitaux propres'
+CAPITAL = 'capital'
+RESERVES = 'réserves'
+REPORT_A_NOUVEAU = 'report à nouveau'
+RESULTAT = 'résultat'
+DETTES = 'dettes'
+AUTRES_DETTES = 'autres dettes'
 
 # Mappings qui permet d'ordonner les lignes dans le bilan dans chaque catégorie.
 LIGNES_BILAN_ACTIF = [
@@ -280,9 +279,9 @@ def resultat_bilan(pre_bilan):
 
     def calcul_total(cote_bilan):
         total_brut, total_amortissement, total_net = Decimal("0.00"), Decimal("0.00"), Decimal("0.00")
-        for categorie in pre_bilan[cote_bilan].values():
-            for rubrique in categorie.values():
-                for values in rubrique.values():
+        for categorie in list(pre_bilan[cote_bilan].values()):
+            for rubrique in list(categorie.values()):
+                for values in list(rubrique.values()):
                     total_brut += values[BRUT]
                     total_amortissement += values[AMORTISSEMENT]
                     total_net += values[NET]
@@ -339,12 +338,12 @@ def bilan_to_rst(bilan, output_file):
     lines += titre_principal_rst(bilan[LABEL], bilan[DATE_DEBUT], bilan[DATE_FIN])
 
     table = [
-        [(u"Actif", ACTIF_LEN),
-         (u"Brut", BRUT_LEN),
-         (u"Amortissement", AMORTISSEMENT_LEN),
-         (u"Net", NET_LEN),
-         (u"Passif", PASSIF_LEN),
-         (u"Montant", MONTANT_LEN)]
+        [("Actif", ACTIF_LEN),
+         ("Brut", BRUT_LEN),
+         ("Amortissement", AMORTISSEMENT_LEN),
+         ("Net", NET_LEN),
+         ("Passif", PASSIF_LEN),
+         ("Montant", MONTANT_LEN)]
     ]
 
     def flatten_bilan(bilan):
@@ -357,12 +356,12 @@ def bilan_to_rst(bilan, output_file):
         def flatten_cote_bilan(cote):
             flattened = []
             for categorie, rubriques in cote:
-                flattened.append([u'**%s**' % categorie.capitalize(), '', '', ''])
+                flattened.append(['**%s**' % categorie.capitalize(), '', '', ''])
                 rubrique = rubriques[0]
                 if rubrique:
-                    flattened.append([u'*%s*' % rubrique.capitalize(), '', '', ''])
+                    flattened.append(['*%s*' % rubrique.capitalize(), '', '', ''])
                 for intitule, values in rubriques[1:]:
-                    flattened.append([u'%s' % intitule.capitalize(),
+                    flattened.append(['%s' % intitule.capitalize(),
                                       Decimal(values[BRUT]),
                                       Decimal(values[AMORTISSEMENT]),
                                       Decimal(values[NET])])
@@ -384,21 +383,22 @@ def bilan_to_rst(bilan, output_file):
              fmt_number(ligne_passif[1]) or '', MONTANT_LEN)
         ]
 
-    map(lambda actif, passif: table.append(row(actif, passif)), *flatten_bilan(bilan))
+    for actif, passif in zip_longest(*flatten_bilan(bilan)):
+        table.append(row(actif, passif))
 
     # Dernière ligne.
     table.append([
-        (u"*Total*", ACTIF_LEN),
-        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][BRUT])), BRUT_LEN),
-        (u"*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][AMORTISSEMENT])), AMORTISSEMENT_LEN),
-        (u"**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), NET_LEN),
-        (u"*Total*", PASSIF_LEN),
-        (u"**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), MONTANT_LEN)
+        ("*Total*", ACTIF_LEN),
+        ("*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][BRUT])), BRUT_LEN),
+        ("*%s*" % fmt_number(Decimal(bilan[TOTAL_ACTIF][AMORTISSEMENT])), AMORTISSEMENT_LEN),
+        ("**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), NET_LEN),
+        ("*Total*", PASSIF_LEN),
+        ("**%s**" % fmt_number(Decimal(bilan[TOTAL_ACTIF][NET])), MONTANT_LEN)
     ])
 
     lines.append(rst_table(table))
 
-    output_file.write(u"\n".join(lines))
-    output_file.write(u"\n\n")
+    output_file.write("\n".join(lines))
+    output_file.write("\n\n")
 
     return output_file

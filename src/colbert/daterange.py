@@ -9,106 +9,106 @@ Example Usage
 >>> start = datetime.date(2009, 6, 21)
 
 >>> g1 = daterange(start)
->>> g1.next()
+>>> next(g1)
 datetime.date(2009, 6, 21)
->>> g1.next()
+>>> next(g1)
 datetime.date(2009, 6, 22)
->>> g1.next()
+>>> next(g1)
 datetime.date(2009, 6, 23)
->>> g1.next()
+>>> next(g1)
 datetime.date(2009, 6, 24)
->>> g1.next()
+>>> next(g1)
 datetime.date(2009, 6, 25)
->>> g1.next()
+>>> next(g1)
 datetime.date(2009, 6, 26)
 
 >>> g2 = daterange(start, to=datetime.date(2009, 6, 25))
->>> g2.next()
+>>> next(g2)
 datetime.date(2009, 6, 21)
->>> g2.next()
+>>> next(g2)
 datetime.date(2009, 6, 22)
->>> g2.next()
+>>> next(g2)
 datetime.date(2009, 6, 23)
->>> g2.next()
+>>> next(g2)
 datetime.date(2009, 6, 24)
->>> g2.next()
+>>> next(g2)
 datetime.date(2009, 6, 25)
->>> g2.next()
+>>> next(g2)
 Traceback (most recent call last):
 ...
 StopIteration
 
 >>> g3 = daterange(start, step='2 days')
->>> g3.next()
+>>> next(g3)
 datetime.date(2009, 6, 21)
->>> g3.next()
+>>> next(g3)
 datetime.date(2009, 6, 23)
->>> g3.next()
+>>> next(g3)
 datetime.date(2009, 6, 25)
->>> g3.next()
+>>> next(g3)
 datetime.date(2009, 6, 27)
 
 >>> g4 = daterange(start, to=datetime.date(2009, 6, 25), step='2 days')
->>> g4.next()
+>>> next(g4)
 datetime.date(2009, 6, 21)
->>> g4.next()
+>>> next(g4)
 datetime.date(2009, 6, 23)
->>> g4.next()
+>>> next(g4)
 datetime.date(2009, 6, 25)
->>> g4.next()
+>>> next(g4)
 Traceback (most recent call last):
 ...
 StopIteration
 
 >>> g5 = datedaysrange(datetime.date(2011, 6, 14), datetime.date(2011, 7, 23), (1, 15))
->>> g5.next()
+>>> next(g5)
 datetime.date(2011, 6, 15)
->>> g5.next()
+>>> next(g5)
 datetime.date(2011, 7, 1)
->>> g5.next()
+>>> next(g5)
 datetime.date(2011, 7, 15)
->>> g5.next()
+>>> next(g5)
 Traceback (most recent call last):
 ...
 StopIteration
 
 >>> g6 = datedaysrange(datetime.date(2011, 12, 21), datetime.date(2012, 1, 27), (22, 29))
->>> g6.next()
+>>> next(g6)
 datetime.date(2011, 12, 22)
->>> g6.next()
+>>> next(g6)
 datetime.date(2011, 12, 29)
->>> g6.next()
+>>> next(g6)
 datetime.date(2012, 1, 22)
->>> g6.next()
+>>> next(g6)
 Traceback (most recent call last):
 ...
 StopIteration
 
 
 >>> g6 = datedaysrange(datetime.date(2011, 1, 21), datetime.date(2011, 3, 31), (15, 30))
->>> g6.next()
+>>> next(g6)
 datetime.date(2011, 1, 30)
->>> g6.next()
+>>> next(g6)
 datetime.date(2011, 2, 15)
->>> g6.next()
+>>> next(g6)
 Traceback (most recent call last):
 ...
 StopIteration
 
 >>> g7 = datedaysrange(datetime.date(2011, 6, 8), datetime.date(2011, 6, 30), (0, 6), by='week')
->>> g7.next()
+>>> next(g7)
 datetime.date(2011, 6, 12)
->>> g7.next()
+>>> next(g7)
 datetime.date(2011, 6, 13)
->>> g7.next()
+>>> next(g7)
 datetime.date(2011, 6, 19)
->>> g7.next()
+>>> next(g7)
 datetime.date(2011, 6, 20)
->>> g7.next()
+>>> next(g7)
 datetime.date(2011, 6, 26)
->>> g7.next()
+>>> next(g7)
 datetime.date(2011, 6, 27)
->>> g7.next()
+>>> next(g7)
 Traceback (most recent call last):
 ...
 StopIteration
@@ -256,11 +256,11 @@ def daterange(date, to=None, step=datetime.timedelta(days=1)):
     else:
         condition = lambda d: (d <= to)
 
-    if isinstance(step, (int, long)):
+    if isinstance(step, int):
         # By default, integers are interpreted in days. For more granular
         # steps, use a `datetime.timedelta()` instance.
         step = datetime.timedelta(days=step)
-    elif isinstance(step, basestring):
+    elif isinstance(step, str):
         # If the string
         if re.match(r'^(\d+)$', str(step)):
             step = datetime.timedelta(days=int(step))
@@ -330,7 +330,7 @@ class delta(object):
     # unit names.
     UNIT_ALIASES = {}
 
-    for cname, aliases in UNIT_NAMES.items():
+    for cname, aliases in list(UNIT_NAMES.items()):
         for alias in aliases:
             UNIT_ALIASES[alias] = cname
         # Make the canonical unit name point to itself.
@@ -359,3 +359,4 @@ class delta(object):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+

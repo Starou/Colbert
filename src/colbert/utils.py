@@ -32,7 +32,7 @@ def rst_title(title, symbol="="):
     =====
     """
     stroke = symbol * len(title)
-    return u"\n".join([stroke, title, stroke])
+    return "\n".join([stroke, title, stroke])
 
 
 def rst_section(title, symbol="="):
@@ -41,7 +41,7 @@ def rst_section(title, symbol="="):
     =====
     """
     stroke = symbol * len(title)
-    return u"\n".join([title, stroke])
+    return "\n".join([title, stroke])
 
 
 def rst_table(table):
@@ -53,7 +53,7 @@ def rst_table(table):
         stroke_char = (i == 1) and header_stroke_char or normal_stroke_char
         add_closing_stroke = (i == last_iteration) and True
         lines.extend(rst_table_row(row, stroke_char, add_closing_stroke))
-    lines = u"\n".join(lines)
+    lines = "\n".join(lines)
     return lines
 
 
@@ -67,25 +67,25 @@ def rst_table_row(row, stroke_char, add_closing_stroke=False):
                 cell_content = truncate_words(cell_content, cell_length - 2)
                 # Idéalement, on devrait faire le stroke sur la dernière sous-ligne, pas la premiere.
                 if j == 0:
-                    stroke.append(u'+%s' % (stroke_char * cell_length))
+                    stroke.append('+%s' % (stroke_char * cell_length))
                 sep = '||' if k < (len(subrow) - 1) else '| '
-                line.append(u'%s %s%s' % (sep, cell_content,
-                                          u' ' * (cell_length - 2 - len(cell_content))))
+                line.append('%s %s%s' % (sep, cell_content,
+                                          ' ' * (cell_length - 2 - len(cell_content))))
             if j == 0:
-                stroke.append(u'+')
-                lines.append(u''.join(stroke))
+                stroke.append('+')
+                lines.append(''.join(stroke))
 
-            line.append(u'|')
-            lines.append(u''.join(line))
+            line.append('|')
+            lines.append(''.join(line))
     else:
         for cell_content, cell_length in row:
             cell_content = truncate_words(cell_content, cell_length - 2)
-            stroke.append(u'+%s' % (stroke_char * cell_length))
-            line.append(u'| %s%s' % (cell_content,
-                                     u' ' * (cell_length - 1 - len(cell_content))))
+            stroke.append('+%s' % (stroke_char * cell_length))
+            line.append('| %s%s' % (cell_content,
+                                     ' ' * (cell_length - 1 - len(cell_content))))
         # End of line.
-        stroke.append(u'+')
-        line.append(u'|')
+        stroke.append('+')
+        line.append('|')
 
         lines.append(''.join(stroke))
         lines.append(''.join(line))
@@ -103,7 +103,7 @@ def truncate_words(content, length=100, suffix='...'):
         content_trunc = ' '.join(content[:length + 1 - len(suffix)].split(' ')[0:-1])
         # On rétabli un éventuel contexte italique tronqué.
         if content_trunc.count("*") % 2:
-            content_trunc = u"%s*" % content_trunc[:-1]
+            content_trunc = "%s*" % content_trunc[:-1]
         return content_trunc + suffix
 
 
@@ -114,7 +114,7 @@ def d_round(value, rounding=2):
 
 def decode_as_ecriture(ecriture_json):
     out = {}
-    for k, v in ecriture_json.iteritems():
+    for k, v in ecriture_json.items():
         try:
             v = Decimal(v)
         except:

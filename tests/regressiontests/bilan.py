@@ -3,7 +3,7 @@
 import os
 import unittest
 import codecs
-import StringIO
+import io
 import datetime
 import json
 from decimal import Decimal
@@ -27,32 +27,32 @@ class BilanTestCase(unittest.TestCase):
         #pprint(b)
         self.maxDiff = None
         self.assertEqual(b, {
-            'actif': [[u'actif circulant',
+            'actif': [['actif circulant',
                        [None,
-                        (u'client et comptes rattach\xe9s',
+                        ('client et comptes rattach\xe9s',
                          {'amortissement': Decimal('0.00'),
                           'brut': Decimal('21528.00'),
                           'net': Decimal('21528.00')}),
-                        (u'disponibilit\xe9s',
+                        ('disponibilit\xe9s',
                          {'amortissement': Decimal('0.00'),
                           'brut': Decimal('22679.35'),
                           'net': Decimal('22679.35')})]]],
             'date_debut': datetime.date(2011, 3, 1),
             'date_fin': datetime.date(2011, 12, 31),
             'label': 'Bilan 2011 - MyBusiness',
-            'passif': [[u'capitaux propres',
+            'passif': [['capitaux propres',
                         [None,
-                         (u'capital',
+                         ('capital',
                           {'amortissement': Decimal('0.00'),
                            'brut': Decimal('1500.00'),
                            'net': Decimal('1500.00')}),
-                         (u'r\xe9sultat',
+                         ('r\xe9sultat',
                           {'amortissement': Decimal('0.00'),
                            'brut': Decimal('35951.90'),
                            'net': Decimal('35951.90')})]],
-                       [u'dettes',
+                       ['dettes',
                         [None,
-                         (u'autres dettes',
+                         ('autres dettes',
                           {'amortissement': Decimal('0.00'),
                            'brut': Decimal('6755.45'),
                            'net': Decimal('6755.45')})]]],
@@ -66,7 +66,7 @@ class BilanTestCase(unittest.TestCase):
         from colbert.bilan import bilan_to_rst
         bilan = codecs.open(os.path.join(CURRENT_DIR, "bilan-2011.json"),
                             mode="r", encoding="utf-8")
-        output = StringIO.StringIO()
+        output = io.StringIO()
         # Uncomment to generate the file.
         # output = codecs.open(os.path.join(CURRENT_DIR, "bilan-2011.txt"),
         #                                   mode="w+", encoding="utf-8")

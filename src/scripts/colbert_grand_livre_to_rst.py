@@ -3,7 +3,7 @@
 
 # Copyright (c) 2012 Stanislas Guerra <stanislas.guerra@gmail.com>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
 # are met:
@@ -14,7 +14,7 @@
 #    documentation and/or other materials provided with the distribution.
 # 3. The name of the author may not be used to endorse or promote products
 #    derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 # OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -26,8 +26,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import sys, locale, codecs
+import json
+import sys
+from colbert.grand_livre import grand_livre_to_rst
 from optparse import OptionParser
+from pathlib import Path
 
 
 def main():
@@ -41,13 +44,9 @@ def main():
         parser.error("Vous devez passer en argument le chemin d'un fichier "
                      "Grand-Livre.")
     else:
-        import json
-        from colbert.grand_livre import grand_livre_to_rst
-        locale.setlocale(locale.LC_ALL, '')
-        sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
-
-        grand_livre = json.loads(codecs.open(args[0], mode="r", encoding="utf-8").read())
+        grand_livre = json.loads(Path(args[0]).read_text())
         grand_livre_to_rst(grand_livre, sys.stdout)
+
 
 if __name__ == "__main__":
     main()
