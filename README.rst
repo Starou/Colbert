@@ -16,10 +16,6 @@ Colbert
     :target: https://pypi.python.org/pypi/Colbert/
     :alt: License
 
-.. image:: https://api.travis-ci.org/Starou/Colbert.svg
-    :target: https://travis-ci.org/Starou/Colbert
-    :alt: Travis C.I.
-
 *Colbert* is not about this douche `Stephen Colbert <https://www.rt.com/usa/507821-barack-obama-stephen-colbert-interview/>`_.
 It is serious matter.
 
