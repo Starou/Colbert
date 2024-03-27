@@ -1,12 +1,13 @@
-tests:
-	@PYTHONPATH=..:${PYTHONPATH} python3 runtests.py
-
-coveralls:
-	@PYTHONPATH=..:${PYTHONPATH} coverage run --rcfile=coveragerc runtests.py
-	@coveralls -y coveralls.yaml -d .coverage
+coverage-report-html: coverage
+	@coverage html
 
 coverage-report: coverage
 	@coverage report -m
 
-coverage:
-	@PYTHONPATH=..:${PYTHONPATH} coverage run --rcfile=coveragerc runtests.py
+coverage: clean
+	@coverage run --rcfile=coveragerc -a runtests.py
+	@coverage lcov
+
+clean:
+	@if [ -f .coverage ]; then rm .coverage; fi;
+	@if [ -d htmlcov ]; then rm -rf htmlcov; fi;
